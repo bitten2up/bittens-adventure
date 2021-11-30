@@ -6,8 +6,7 @@ building
 make
 ```
 running
-```
-bash
+```bash
 make run
 ``` 
 to run it
