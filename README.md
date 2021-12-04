@@ -2,7 +2,7 @@
 the game bitten's adventure that I am currently working on
 
 # building
-you will need msys2 and sfml on windows
+you will need msys2 and sfml on windows and on Linux you will need libsfml-dev
 
 
 ```bash
