@@ -36,7 +36,7 @@ int main()
     // Load and run the music
     sf::Music music;
     // Open it from an audio file
-    if (!music.openFromFile("assets/M_IntroHP.ogg")) // default location of file if downloaded
+    if (!music.openFromFile("assets/bitten.wav")) // default location of file if downloaded
     {
         return EXIT_FAILURE; // crash
     }
@@ -164,6 +164,16 @@ int main()
             {
                 leftPaddle.move(0.f, paddleSpeed * deltaTime);
             }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) &&
+               (leftPaddle.getPosition().x + paddleSize.x / 2 < gameWidth - 5.f))
+            {
+                leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
+               (leftPaddle.getPosition().x + paddleSize.x / 2 > 5.f))
+            {
+                leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+            }
 
             // Move the computer's paddle
             if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y - paddleSize.y / 2 > 5.f)) ||
@@ -245,8 +255,8 @@ int main()
             // Right Paddle
             if (ball.getPosition().x + ballRadius > rightPaddle.getPosition().x - paddleSize.x / 2 &&
                 ball.getPosition().x + ballRadius < rightPaddle.getPosition().x &&
-                ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - paddleSize.y / 2 &&
-                ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + paddleSize.y / 2)
+                ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - paddleSize.y / 4 &&
+                ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + paddleSize.y / 4)
             {
                 if (ball.getPosition().y > rightPaddle.getPosition().y)
                     ballAngle = pi - ballAngle + (std::rand() % 20) * pi / 180;
