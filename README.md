@@ -8,8 +8,12 @@ you will need msys2 and sfml on windows
 ```bash
 make
 ```
-running
+# Running
 ```bash
 make run
 ``` 
-to run it
+to run it on windows or
+```bash
+make run-linux
+```
+to run it on linux.
