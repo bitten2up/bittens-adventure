@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "bittendef.h"
 
 ////////////////////////////////////////////////////////////
 /// Entry point of application
@@ -20,12 +21,15 @@ int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
     std::cout << "Bitten's Adventure\ndev-alpha 1\nversion 0.001" << std::endl;
+    #ifdef debug
+    std::cout << "DEBUG VERSION" << std::endl;
+    #endif
 
     // Define some constants
     const float pi = 3.14159f;
     const int gameWidth = 800;
     const int gameHeight = 600;
-    sf::Vector2f paddleSize(25, 100);
+    sf::Vector2f paddleSize(25, 25);
     float ballRadius = 10.f;
 
     // Create the window of the application
@@ -38,7 +42,10 @@ int main()
     // Open it from an audio file
     if (!music.openFromFile("assets/bitten.wav")) // default location of file if downloaded
     {
-        return EXIT_FAILURE; // crash
+        if (!music.openFromFile("~/.bitten/assets/bitten.wav")) // linux/macos compatibity for assets
+	{
+		return EXIT_FAILURE; // crash
+	}
     }
     // Change some parameters
     music.setPosition(0, 1, 10); // change its 3D position
@@ -49,20 +56,12 @@ int main()
     music.play();
     // Load the sounds used in the game
     sf::SoundBuffer ballSoundBuffer;
-    if (!ballSoundBuffer.loadFromFile("assets/ball.wav"))
-        return EXIT_FAILURE;
+    if (!ballSoundBuffer.loadFromFile("assets/ball.wav")){
+	if (!ballSoundBuffer.loadFromFile("~/assets/ball.wav")){
+        	return EXIT_FAILURE;
+	}
+    }
     sf::Sound ballSound(ballSoundBuffer);
-    // load litten (test sprite)
-    sf::Texture texture;
-    texture.loadFromFile("assets/texture.png");
-    // Create a sprite
-    sf::Sprite player;
-    player.setTexture(texture);
-    player.setTextureRect(sf::IntRect(10, 10, 50, 30));
-    player.setColor(sf::Color(255, 255, 255, 200));
-    player.setPosition(0, 0);
-    // Draw it
-    window.draw(player);
     // Create the left paddle
     sf::RectangleShape leftPaddle;
     leftPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
@@ -91,8 +90,12 @@ int main()
     // Load the text font
     sf::Font font;
     if (!font.loadFromFile("assets/sansation.ttf"))
-        return EXIT_FAILURE;
-
+    {
+        if (!font.loadFromFile("~/assets/sansation.ttf")) // for the nix
+	{
+		return EXIT_FAILURE;
+	}
+    }
     // Initialize the pause message
     sf::Text pauseMessage;
     pauseMessage.setFont(font);
@@ -124,7 +127,7 @@ int main()
                 break;
             }
 
-            // Space key pressed: play
+            // enter key pressed: play
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
             {
                 if (!isPlaying)
@@ -195,8 +198,8 @@ int main()
             }
 
             // Move the ball
-            float factor = ballSpeed * deltaTime;
-            ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
+//            float factor = ballSpeed * deltaTime;
+//            ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
 
             // Check collisions between the ball and the screen
             if (ball.getPosition().x - ballRadius < 0.f)
@@ -206,28 +209,16 @@ int main()
             }
             if (ball.getPosition().x + ballRadius > gameWidth)
             {
-                isPlaying = false;
-                pauseMessage.setString("You havn't seen my final form");
-                pauseMessage.setString("Your opponet shrunk into a small square");
-                pauseMessage.setString("and now you are a circle");
-                sf::Vector2f paddleSize(25, 25);
-                sf::CircleShape leftPaddle;
-                leftPaddle.setRadius(ballRadius - 3);
-                leftPaddle.setOutlineThickness(3);
-                leftPaddle.setOutlineColor(sf::Color::Black);
-                leftPaddle.setFillColor(sf::Color::White);
-                leftPaddle.setOrigin(ballRadius / 2, ballRadius / 2);
-                rightPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-                rightPaddle.setOutlineThickness(3);
-                rightPaddle.setOutlineColor(sf::Color::Black);
-                rightPaddle.setFillColor(sf::Color(200, 100, 100));
-                rightPaddle.setOrigin(paddleSize / 2.f);
+                #define battle
+		ball.setPosition(100 - ballRadius - 0.1f, ball.getPosition().y);
+                
             }
             if (ball.getPosition().y - ballRadius < 0.f)
             {
                 ballSound.play();
                 ballAngle = -ballAngle;
-                ball.setPosition(ball.getPosition().x, ballRadius + 0.1f);
+                ball.setPosition(ball.getPosition().y, ballRadius + 0.1f);
+		leftPaddle.setPosition(1,1);
             }
             if (ball.getPosition().y + ballRadius > gameHeight)
             {
@@ -251,8 +242,8 @@ int main()
                 ballSound.play();
                 ball.setPosition(leftPaddle.getPosition().x + ballRadius + paddleSize.x / 2 + 0.1f, ball.getPosition().y);
             }
-
-            // Right Paddle
+	    // Right Paddle
+	    #ifndef debug
             if (ball.getPosition().x + ballRadius > rightPaddle.getPosition().x - paddleSize.x / 2 &&
                 ball.getPosition().x + ballRadius < rightPaddle.getPosition().x &&
                 ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - paddleSize.y / 4 &&
@@ -266,16 +257,25 @@ int main()
                 ballSound.play();
                 ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
             }
+	    #endif
+	    #ifdef debug
+	    #endif
+	    
         }
 
         // Clear the window
-        window.clear(sf::Color(50, 200, 50));
+        window.clear(sf::Color(0, 0, 0));
 
         if (isPlaying)
         {
             // Draw the paddles and the ball
             window.draw(leftPaddle);
+	    #ifndef debug
             window.draw(rightPaddle);
+	    #endif
+	    #ifdef battle
+            window.draw(rightPaddle);
+	    #endif
             window.draw(ball);
         }
         else
