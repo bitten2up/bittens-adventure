@@ -31,7 +31,7 @@ int main()
     const int gameHeight = 600;
     sf::Vector2f paddleSize(25, 25);
     float ballRadius = 10.f;
-
+    bool battle = false;
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "Bitten's Adventure",
                             sf::Style::Titlebar | sf::Style::Close);
@@ -209,8 +209,11 @@ int main()
             }
             if (ball.getPosition().x + ballRadius > gameWidth)
             {
-                #define battle
-		ball.setPosition(100 - ballRadius - 0.1f, ball.getPosition().y);
+                
+                leftPaddle.setPosition(1 + paddleSize.x / 2, gameHeight / 2);
+                rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
+                ball.setPosition(gameWidth / 5, gameHeight / 5);
+		battle = true;
                 
             }
             if (ball.getPosition().y - ballRadius < 0.f)
@@ -270,13 +273,13 @@ int main()
         {
             // Draw the paddles and the ball
             window.draw(leftPaddle);
-	    #ifndef debug
+	    #ifdef cheese
             window.draw(rightPaddle);
 	    #endif
-	    #ifdef battle
-            window.draw(rightPaddle);
-	    #endif
-            window.draw(ball);
+	    if (battle){
+		window.draw(rightPaddle);
+	    }
+	    window.draw(ball);
         }
         else
         {
