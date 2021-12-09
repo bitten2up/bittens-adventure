@@ -89,9 +89,9 @@ int main()
 
     // Load the text font
     sf::Font font;
-    if (!font.loadFromFile("assets/sansation.ttf"))
+    if (!font.loadFromFile("assets/PressStart2P-Regular.ttf"))
     {
-        if (!font.loadFromFile("~/assets/sansation.ttf")) // for the nix
+        if (!font.loadFromFile("~/.bitten/assets/PressStart2P-Regular.ttf")) // for the nix
 	{
 		return EXIT_FAILURE;
 	}
@@ -99,10 +99,17 @@ int main()
     // Initialize the pause message
     sf::Text pauseMessage;
     pauseMessage.setFont(font);
-    pauseMessage.setCharacterSize(40);
+    pauseMessage.setCharacterSize(20);
     pauseMessage.setPosition(170.f, 150.f);
     pauseMessage.setFillColor(sf::Color::White);
     pauseMessage.setString("Bitten's Adventure\n\n\nPRESS START\n\n\n\n\n\n                                   VERSION 0.001");
+    // Initilize the opponet text for battles
+    sf::Text battleText;
+    battleText.setFont(font);
+    battleText.setCharacterSize(30);
+    battleText.setPosition(170.f, 400.f);
+    battleText.setFillColor(sf::Color::White);
+    battleText.setString("Test Battle");
     // Define the paddles properties
     sf::Clock AITimer;
     const sf::Time AITime   = sf::seconds(0.1f);
@@ -126,7 +133,7 @@ int main()
                 window.close();
                 break;
             }
-
+            #ifndef battleTest
             // enter key pressed: play
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
             {
@@ -150,6 +157,7 @@ int main()
                     while (std::abs(std::cos(ballAngle)) < 0.7f);
                 }
             }
+            #endif
         }
 
         if (isPlaying)
@@ -173,7 +181,7 @@ int main()
                 leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
-               (leftPaddle.getPosition().x + paddleSize.x / 2 > 5.f))
+               (leftPaddle.getPosition().x + paddleSize.x / 2 > gameWidth + 5.f))
             {
                 leftPaddle.move(paddleSpeed * deltaTime, 0.f);
             }
@@ -183,6 +191,10 @@ int main()
                 ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f)))
             {
                 rightPaddle.move(0.f, rightPaddleSpeed * deltaTime);
+            }
+            if (battle)
+            {
+                
             }
 
             // Update the computer's paddle direction according to the ball position
@@ -214,6 +226,7 @@ int main()
                 rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
                 ball.setPosition(gameWidth / 5, gameHeight / 5);
 		battle = true;
+		pauseMessage.setString("A wild box appered and the circle is not friendly anymore. 0_0");
                 
             }
             if (ball.getPosition().y - ballRadius < 0.f)
@@ -262,6 +275,10 @@ int main()
             }
 	    #endif
 	    #ifdef debug
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+            std::cout << "x" << std::endl;
+            ball.setRadius(ballRadius+3);
+        }
 	    #endif
 	    
         }
@@ -277,14 +294,23 @@ int main()
             window.draw(rightPaddle);
 	    #endif
 	    if (battle){
-		window.draw(rightPaddle);
+		    window.draw(rightPaddle);
+            window.draw(battleText);
+
 	    }
-	    window.draw(ball);
+	    else {
+            window.draw(ball);
+        }
         }
         else
         {
+            #ifdef battleTest
+            window.draw(battleText);
+            #endif
+            #ifndef battleTest
             // Draw the pause message
             window.draw(pauseMessage);
+            #endif
         }
 
         // Display things on screen
