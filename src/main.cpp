@@ -11,7 +11,7 @@
 #include <string>
 // #include <fstream.h>
 #include "bittendef.h"
-
+#include "version.h"
 ////////////////////////////////////////////////////////////
 /// Entry point of application
 ///
