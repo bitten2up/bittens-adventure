@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+// #include <fstream.h>
 #include "bittendef.h"
 
 ////////////////////////////////////////////////////////////
@@ -21,17 +22,26 @@ int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
     std::cout << "Bitten's Adventure\ndev-alpha 1\nversion 0.001" << std::endl;
+    bool battle = false;
+    bool up = false;
+    bool down = true;
+    bool left = true;
+    bool right = false;
     #ifdef debug
     std::cout << "DEBUG VERSION" << std::endl;
     #endif
-
+    #ifdef battleTest
+    std::cout << "BATTLE TEST" << std::endl;
+    battle = true;
+    #endif
     // Define some constants
     const float pi = 3.14159f;
     const int gameWidth = 800;
     const int gameHeight = 600;
     sf::Vector2f paddleSize(25, 25);
     float ballRadius = 10.f;
-    bool battle = false;
+    // define map loading (unused at the moment for the prototype)
+    // ofstream map;
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "Bitten's Adventure",
                             sf::Style::Titlebar | sf::Style::Close);
@@ -57,7 +67,7 @@ int main()
     // Load the sounds used in the game
     sf::SoundBuffer ballSoundBuffer;
     if (!ballSoundBuffer.loadFromFile("assets/ball.wav")){
-	if (!ballSoundBuffer.loadFromFile("~/assets/ball.wav")){
+	if (!ballSoundBuffer.loadFromFile("~/.bitten/assets/ball.wav")){
         	return EXIT_FAILURE;
 	}
     }
@@ -69,6 +79,12 @@ int main()
     leftPaddle.setOutlineColor(sf::Color::Black);
     leftPaddle.setFillColor(sf::Color(100, 100, 200));
     leftPaddle.setOrigin(paddleSize / 2.f);
+    sf::RectangleShape crusor;
+    crusor.setSize(paddleSize - sf::Vector2f(3, 3));
+    crusor.setOutlineThickness(3);
+    crusor.setOutlineColor(sf::Color::Black);
+    crusor.setFillColor(sf::Color(100, 100, 200));
+    crusor.setOrigin(paddleSize / 2.f);
 
     // Create the right paddle
     sf::RectangleShape rightPaddle;
@@ -85,7 +101,7 @@ int main()
     ball.setOutlineColor(sf::Color::Black);
     ball.setFillColor(sf::Color::White);
     ball.setOrigin(ballRadius / 2, ballRadius / 2);
-
+    int enemyhp = 100;
 
     // Load the text font
     sf::Font font;
@@ -132,8 +148,13 @@ int main()
             {
                 window.close();
                 break;
+                isPlaying = true;
             }
-            #ifndef battleTest
+	    #ifdef battleTest
+	    leftPaddle.setPosition(10 + paddleSize.x / 2, gameHeight / 2);
+            rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
+            ball.setPosition(gameWidth / 2, gameHeight / 2);
+	    #endif
             // enter key pressed: play
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
             {
@@ -157,44 +178,101 @@ int main()
                     while (std::abs(std::cos(ballAngle)) < 0.7f);
                 }
             }
-            #endif
         }
 
         if (isPlaying)
         {
             float deltaTime = clock.restart().asSeconds();
-
-            // Move the player's paddle
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
-               (leftPaddle.getPosition().y - paddleSize.y / 2 > 5.f))
-            {
-                leftPaddle.move(0.f, -paddleSpeed * deltaTime);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
-               (leftPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f))
-            {
-                leftPaddle.move(0.f, paddleSpeed * deltaTime);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) &&
-               (leftPaddle.getPosition().x + paddleSize.x / 2 < gameWidth - 5.f))
-            {
-                leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
-               (leftPaddle.getPosition().x + paddleSize.x / 2 > gameWidth + 5.f))
-            {
-                leftPaddle.move(paddleSpeed * deltaTime, 0.f);
-            }
+            if(!battle){ // revoke player movement in battles, we will using a different object for menu and we don't want the player moving in the menus, if it is not an battle you can move normaly
+                // Move the player's paddle
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
+                   (leftPaddle.getPosition().y - paddleSize.y / 2 > 5.f))
+                {
+                    leftPaddle.move(0.f, -paddleSpeed * deltaTime);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
+                   (leftPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f))
+                {
+                    leftPaddle.move(0.f, paddleSpeed * deltaTime);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) &&
+                   (leftPaddle.getPosition().x + paddleSize.x / 2 > 5.f))
+                {
+                    leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) &&
+		        (leftPaddle.getPosition().x + paddleSize.x / 2 < gameWidth - 5.f))
+                {
+                    leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+                }
+             }
+	     else {
+                // Move the battle crusor
+                if (enemyhp = 0){
+                    battleText.setString("You won");
+                    while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                    }
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+                {
+                    if (down){
+                        std::cout << "move up" << std::endl;
+                        up = true;
+                        down = false;
+                        crusor.setPosition(crusor.getPosition().x, gameHeight - paddleSize.y - 100); 
+                    }
+                    else {
+                        std::cout << "can't move up" << std::endl;
+                    }
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                {
+                    if (up){
+                        std::cout << "move down" << std::endl;
+                        up = false;
+                        down = true;
+                        crusor.setPosition(crusor.getPosition().x, gameHeight - paddleSize.y);
+                    }
+                    else {
+                        std::cout << "can't move down" << std::endl;
+                    }
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+                {
+                    if (right){
+                        std::cout << "move down" << std::endl;
+                        left = true;
+                        right = false;
+                        crusor.setPosition(100 + paddleSize.x / 2, crusor.getPosition().y);
+                    }
+                    else {
+                        std::cout << "can't move left" << std::endl;
+                    }
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                {
+                    if (left){
+                        std::cout << "move down" << std::endl;
+                        left = false;
+                        right = true;
+                        crusor.setPosition(gameWidth - paddleSize.x - 50, crusor.getPosition().y);
+                    }
+                    else {
+                        std::cout << "can't move right" << std::endl;
+                    }
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                    if (down && left){
+                        enemyhp = enemyhp - 10;
+                    }
+                }
+             }
 
             // Move the computer's paddle
             if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y - paddleSize.y / 2 > 5.f)) ||
                 ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f)))
             {
                 rightPaddle.move(0.f, rightPaddleSpeed * deltaTime);
-            }
-            if (battle)
-            {
-                
             }
 
             // Update the computer's paddle direction according to the ball position
@@ -222,12 +300,15 @@ int main()
             if (ball.getPosition().x + ballRadius > gameWidth)
             {
                 
-                leftPaddle.setPosition(1 + paddleSize.x / 2, gameHeight / 2);
+                leftPaddle.setPosition(10.f, 50.f);
                 rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
                 ball.setPosition(gameWidth / 5, gameHeight / 5);
-		battle = true;
-		pauseMessage.setString("A wild box appered and the circle is not friendly anymore. 0_0");
-                
+		        battle = true;
+			    battleText.setCharacterSize(10);
+		        battleText.setString("A wild box appered and the circle is not friendly anymore. 0_0");
+                leftPaddle.setPosition(10 + paddleSize.x / 2, gameHeight / 2);
+                crusor.setPosition(100 + paddleSize.x / 2, gameHeight - paddleSize.y);
+                crusor.rotate(45);
             }
             if (ball.getPosition().y - ballRadius < 0.f)
             {
@@ -275,32 +356,32 @@ int main()
             }
 	    #endif
 	    #ifdef debug
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-            std::cout << "x" << std::endl;
-            ball.setRadius(ballRadius+3);
-        }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+            	battleText.setString("battle");
+                ball.setRadius(ballRadius+3);
+            }
 	    #endif
 	    
         }
-
         // Clear the window
         window.clear(sf::Color(0, 0, 0));
 
         if (isPlaying)
         {
             // Draw the paddles and the ball
-            window.draw(leftPaddle);
-	    #ifdef cheese
-            window.draw(rightPaddle);
-	    #endif
-	    if (battle){
-		    window.draw(rightPaddle);
-            window.draw(battleText);
+           window.draw(leftPaddle);
+	       #ifdef drawall
+           window.draw(rightPaddle);
+	       #endif
+	       if (battle){
+		       window.draw(rightPaddle);
+             	       window.draw(battleText);
+		       window.draw(crusor);
 
-	    }
-	    else {
-            window.draw(ball);
-        }
+	       }
+	       else {
+             window.draw(ball);
+            }
         }
         else
         {
@@ -316,6 +397,6 @@ int main()
         // Display things on screen
         window.display();
     }
-
+    std::cout << "Exiting" << std::endl;
     return EXIT_SUCCESS;
 }
