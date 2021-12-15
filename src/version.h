@@ -1,1 +1,1 @@
-#define version "0.001"
+int version = 1

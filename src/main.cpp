@@ -21,7 +21,7 @@
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
-    std::cout << "Bitten's Adventure\ndev-alpha 1\nversion 0.001" << std::endl;
+    std::cout << "Bitten's Adventure\nVersion " << version << std::endl;
     bool battle = false;
     bool up = false;
     bool down = true;
