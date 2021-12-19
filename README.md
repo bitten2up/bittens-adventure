@@ -16,4 +16,4 @@ to run it on windows or
 ```bash
 make run-unix
 ```
-to run it on linux.
+to run it on linux/Mac os.
