@@ -1,0 +1,68 @@
+name: main
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 6 * * 6'
+
+jobs:
+  try:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {sfml: latest, config: Release}
+          - {sfml: nightly}
+          - {sfml: '2.5.1', config: Debug}
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: windows-latest
+          - os: ubuntu-latest
+            config: {sfml: package}
+          - os: macos-latest
+            config: {sfml: package}
+
+    name: sfml ${{ matrix.config.sfml }} ${{ matrix.config.config }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install --only=prod
+      - uses: ./
+        with: ${{ matrix.config }}
+        id: install
+
+      - run: |
+          echo '${{ steps.install.outputs.sfml }}' : '${{ steps.install.outputs.path }}'
+      - run: ls '${{ steps.install.outputs.path }}/include/SFML/System.hpp'
+
+      - run: make
+
+      - run: c++ ./src/main.cpp -o ./bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -Wall
+        if: runner.os != 'Windows' && matrix.config.config != 'Debug'
+
+      - uses: ilammy/msvc-dev-cmd@376515093de803c897e7e6d576553c3104267e17
+        if: runner.os == 'Windows' && matrix.config.config != 'Debug'
+      - uses: ./
+        with: ${{ matrix.config }}
+        if: runner.os == 'Windows' && matrix.config.config != 'Debug'
+      - run: cl main.cpp sfml-window.lib sfml-system.lib
+        if: runner.os == 'Windows' && matrix.config.config != 'Debug'
+
+      - run: |
+          Xvfb :99 -screen 0 1024x768x24 +extension GLX &
+          echo DISPLAY=:99.0 >>$GITHUB_ENV
+        if: runner.os == 'Linux'
+      - run: make
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm test
+      - run: npm audit --audit-level=moderate --only=prod
