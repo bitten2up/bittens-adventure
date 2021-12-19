@@ -17,3 +17,7 @@ jobs:
       run: sudo apt install libsfml-dev
     - name: make
       run: make
+    - name: install mingw
+      run: sudo apt install g++-mingw-w64
+    - name: build windows
+      run: make windows
