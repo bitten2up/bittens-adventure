@@ -14,6 +14,6 @@ make run
 ``` 
 to run it on windows or
 ```bash
-make run-linux
+make run-unix
 ```
 to run it on linux.
