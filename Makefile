@@ -13,5 +13,5 @@ makeandrun: src/main.cpp
 	g++ build/main.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lvorbis -Wall
 	bin/bitten-adventure
 windows: src/main.cpp
-	x86_64-w64-mingw32-g++ src/main.cpp -o build/*.o
-	x86_64-w64-mingw32-g++ build/main.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lvorbis -Wall
+#	x86_64-w64-mingw32-g++ src/main.cpp -o build/*.o
+#	x86_64-w64-mingw32-g++ build/main.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lvorbis -Wall
