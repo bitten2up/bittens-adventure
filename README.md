@@ -1,3 +1,4 @@
+[![main](https://github.com/litten2up/bittens-adventure/actions/workflows/build.yml/badge.svg)](https://github.com/litten2up/bittens-adventure/actions/workflows/build.yml)
 # bittens-adventure
 the game bitten's adventure that I am currently working on
 
