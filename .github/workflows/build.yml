@@ -19,11 +19,11 @@ jobs:
       run: make
     - name: install mingw
       run: sudo apt install g++-mingw-w64
-    - name: ghrelease
     - uses: actions/upload-artifact@v2
       with:
         name: my-release
         path: |
           bin/*.exe
           assets
+        if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
