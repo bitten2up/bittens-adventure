@@ -19,10 +19,5 @@ jobs:
       run: make
     - name: install mingw
       run: sudo apt install g++-mingw-w64
-    - name: build windows
-      run: make windows
-    - name: releases-action
-      uses: nickatnight/releases-action@v2
-        with: 
-          prerelease: true
-          tag: "ghbuild"
+    - name: GitHub Releases
+      uses: fnkr/github-action-ghr@v1.3
