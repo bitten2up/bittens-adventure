@@ -21,9 +21,9 @@ jobs:
       run: sudo apt install g++-mingw-w64
     - uses: actions/upload-artifact@v2
       with:
-        name: my-release
+        name: ubuntu
         path: |
-          bin/*.exe
+          bin/
           assets
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
