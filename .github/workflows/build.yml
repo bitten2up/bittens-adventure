@@ -21,14 +21,8 @@ jobs:
       run: sudo apt install g++-mingw-w64
     - name: build windows
       run: make windows
-    - uses: "./packages/automatic-releases/"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+    - name: releases-action
+      uses: nickatnight/releases-action@v2
+        with: 
           prerelease: true
-          title: "Development Build"
-          files: |
-            bin/*
-            assets/
-        id: "automatic_releases"
-    
+          tag: "ghbuild"
