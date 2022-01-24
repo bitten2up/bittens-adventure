@@ -5,6 +5,12 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+name: pre-release
+
+on:
+  push:
+    branches:
+      - "master"
 
 jobs:
   build:
@@ -21,15 +27,7 @@ jobs:
       run: sudo apt install g++-mingw-w64
     - name: build windows
       run: make windows
----
-name: "pre-release"
 
-on:
-  push:
-    branches:
-      - "master"
-
-jobs:
   pre-release:
     name: "Pre Release"
     runs-on: "ubuntu-latest"
