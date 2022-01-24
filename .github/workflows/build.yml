@@ -20,7 +20,10 @@ jobs:
     - name: install mingw
       run: sudo apt install g++-mingw-w64
     - name: install sfml for mingw
-      run: wget https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; ls /usr 
+      run: cd /usr/x86_64-w64-mingw32; wget https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; unzip SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip ls; ls*;
+    - name: windows
+      run: make windows
+      
     - uses: actions/upload-artifact@v2
       with:
         name: ubuntu
