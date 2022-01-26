@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: sfml
-      run: sudo apt install libsfml-dev
+      run: sudo apt update; sudo apt install libsfml-dev
     - name: make
       run: make
     - name: install mingw
