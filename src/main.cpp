@@ -286,7 +286,6 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     if (down && left){
                         enemyhp = enemyhp - 10;
-			battlecalc();
                     }
                 }
              }
@@ -422,10 +421,4 @@ int main()
     }
     std::cout << "Exiting" << std::endl;
     return EXIT_SUCCESS;
-}
-int battlecalc() {
-    const int gameWidth = 90;
-    const int gameHeight = 60;
-    sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "battle test",
-                            sf::Style::Titlebar | sf::Style::Close);
 }
