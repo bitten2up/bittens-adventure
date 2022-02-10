@@ -58,8 +58,6 @@ int main()
     #endif
     // Define some constants
     const float pi = 3.14159f;
-    const int gameWidth = 800;
-    const int gameHeight = 600;
     sf::Vector2f paddleSize(25, 25);
     float ballRadius = 10.f;
     // define map loading (unused at the moment for the prototype)
@@ -74,6 +72,8 @@ int main()
     
     window.setVerticalSyncEnabled(true);
     window.setActive();
+    int gameWidth = window.getSize().x;
+    int gameHeight = window.getSize().y;
     sf::Image image;
     if (!image.loadFromFile("assets/bitten.png"))
     {
