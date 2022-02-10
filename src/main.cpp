@@ -152,7 +152,13 @@ int main()
     pauseMessage.setCharacterSize(20);
     pauseMessage.setPosition(170.f, 150.f);
     pauseMessage.setFillColor(sf::Color::White);
-    pauseMessage.setString("Bitten's Adventure\n\n\nPRESS START\n\n\n\n\n\n                                   VERSION 0.001");
+    pauseMessage.setString("Bitten's Adventure\n\n\nPRESS START\n\n\n\n\n\nVERSION 0.001");
+    sf::Text copyright;
+    copyright.setFont(font);
+    copyright.setCharacterSize(20);
+    copyright.setPosition(170.f, gameHeight);
+    copyright.setFillColor(sf::Color::White);
+    copyright.setString("©bitten1up(sean tipton) 2022");
     // Initilize the opponet text for battles
     sf::Text battleText;
     battleText.setFont(font);
