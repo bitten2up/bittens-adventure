@@ -69,6 +69,13 @@ int main()
                             sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);
     window.setActive();
+    sf::Image image;
+    if (!image.loadFromFile("assets/bitten.png"))
+    {
+    // Error handling...
+        return EXIT_FAILURE;
+    }
+    window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
     // Load and run the music
     sf::Music music;
     // Open it from an audio file
@@ -228,9 +235,10 @@ int main()
                     leftPaddle.move(paddleSpeed * deltaTime, 0.f);
                 }
              }
-	     else {
+             // the battle mode, i probly should have a bool for this and have it in a different if statement but this will work for now
+	        else {
                 // Move the battle crusor
-                if (enemyhp = 0){
+                if (enemyhp == 0){
                     battleText.setString("You won");
                     while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     }
@@ -286,6 +294,9 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     if (down && left){
                         enemyhp = enemyhp - 10;
+                        #ifdef debug
+                        std::cout << enemyhp << std::endl;
+                        #endif
                     }
                 }
              }
@@ -337,7 +348,7 @@ int main()
                 ballSound.play();
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().y, ballRadius + 0.1f);
-		leftPaddle.setPosition(1,1);
+		        leftPaddle.setPosition(1,1);
             }
             if (ball.getPosition().y + ballRadius > gameHeight)
             {
