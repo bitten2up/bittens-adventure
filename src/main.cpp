@@ -65,8 +65,13 @@ int main()
     // define map loading (unused at the moment for the prototype)
     // ofstream map;
     // Create the window of the application
-    sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "Bitten's Adventure",
-                            sf::Style::Titlebar | sf::Style::Close);
+    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(sf::VideoMode(  desktopMode.width,
+                                            desktopMode.height,
+                                            desktopMode.bitsPerPixel),
+                            "Bitten's adventure",
+                            sf::Style::Fullscreen);
+    
     window.setVerticalSyncEnabled(true);
     window.setActive();
     sf::Image image;
