@@ -31,9 +31,12 @@ SOFTWARE.
 #include <cstdlib>
 #include <iostream>
 #include <string>
-// #include <fstream.h>
+#include <fstream>
 #include "bittendef.h"
 #include "version.h"
+#include <chrono>
+#include <thread>
+using namespace std;
 ////////////////////////////////////////////////////////////
 /// Entry point of application
 ///
@@ -49,6 +52,7 @@ int main()
     bool down = true;
     bool left = true;
     bool right = false;
+    string savedata;
     #ifdef debug
     std::cout << "DEBUG VERSION" << std::endl;
     #endif
@@ -105,6 +109,17 @@ int main()
         	return EXIT_FAILURE;
 	}
     }
+    // load our savedata
+    ifstream myfile("bitten.sav", ios::in); // open the savefile
+    if (!myfile.is_open()){
+        std::ofstream outfile ("bitten.sav");
+        outfile << "[bitten-engine-save-file]";
+        outfile.close();
+    }
+    // print our savefile data
+    std::cout << savedata << endl;
+    myfile >> savedata; // writes the information from the file to a buffer for later use
+    myfile.close();
     sf::Sound ballSound(ballSoundBuffer);
     // Create the left paddle
     sf::RectangleShape leftPaddle;
@@ -156,7 +171,7 @@ int main()
     sf::Text copyright;
     copyright.setFont(font);
     copyright.setCharacterSize(20);
-    copyright.setPosition(170.f, gameHeight);
+    copyright.setPosition(gameWidth-20, gameHeight-20);
     copyright.setFillColor(sf::Color::White);
     copyright.setString("©bitten1up(sean tipton) 2022");
     // Initilize the opponet text for battles
@@ -428,7 +443,8 @@ int main()
             }
         }
         else
-        {
+        {   
+            window.draw(copyright);
             #ifdef battleTest
             window.draw(battleText);
             #endif

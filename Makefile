@@ -3,7 +3,7 @@ main: src/main.cpp
 	g++ build/main.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -Wall
 macos: src/main.cpp
 	g++ -c src/main.cpp -o build/*.o -I ~/homebrew/include
-	g++ build/*.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -Wall -L ~/homebrew/lib
+	g++ build/*.o -o bin/bitten-adventure -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lc -lSystem -lc++ -Wall -nodefaultlibs -L ~/homebrew/lib
 run:
 	bin/bitten-adventure.exe
 run-unix: bin/bitten-adventure
