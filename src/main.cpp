@@ -52,7 +52,7 @@ int main()
     bool down = true;
     bool left = true;
     bool right = false;
-    string savedata;
+    string savedata = "null lol";
     #ifdef debug
     std::cout << "DEBUG VERSION" << std::endl;
     #endif
