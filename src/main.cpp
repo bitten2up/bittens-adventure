@@ -135,7 +135,7 @@ int main()
     crusor.setOutlineColor(sf::Color::Black);
     crusor.setFillColor(sf::Color(100, 100, 200));
     crusor.setOrigin(paddleSize / 2.f);
-    int wait = 100;
+    int wait = 1000;
 
     // Create the right paddle
     sf::RectangleShape rightPaddle;
@@ -327,19 +327,20 @@ int main()
                         enemyhp = enemyhp - 10;
                         #ifdef debug
                         std::cout << enemyhp << std::endl;
+                        while (wait!=0){
+                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+                            wait=wait-1;
+                        }
+                        while (wait!=1000){
+                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+                            wait=wait+1;
+                        }
                         #endif
                         while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                         }
                         while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                         }
-                        while (wait!=0){
-                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
-                            wait=wait-1;
-                        }
-                        while (wait!=100){
-                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
-                            wait=wait+1;
-                        }
+                        
                     }
                 }
              }
