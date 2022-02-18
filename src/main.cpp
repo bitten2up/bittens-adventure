@@ -64,7 +64,7 @@ int main()
     const float pi = 3.14159f;
     sf::Vector2f paddleSize(25, 25);
     float ballRadius = 10.f;
-    remove( "log.txt" )
+    remove( "log.txt" );
     // define map loading (unused at the moment for the prototype)
     // ofstream map;
     // Create the window of the application
