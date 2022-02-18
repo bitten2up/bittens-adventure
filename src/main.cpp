@@ -267,9 +267,9 @@ int main()
                 // Move the battle crusor
                 if (enemyhp == 0){
                     battleText.setString("You won");
-                    while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-                    }
                     while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                    }
+                    while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     }
                     battle=false;
                 }
@@ -327,9 +327,9 @@ int main()
                         #ifdef debug
                         std::cout << enemyhp << std::endl;
                         #endif
-                        while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-                        }
                         while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                        }
+                        while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                         }
                         while (wait!=0){
                             leftPaddle.move(paddleSpeed * deltaTime, 0.f);
