@@ -142,7 +142,7 @@ int main()
     rightPaddle.setOutlineColor(sf::Color::Black);
     rightPaddle.setFillColor(sf::Color(200, 100, 100));
     rightPaddle.setOrigin(paddleSize / 2.f);
-
+    freopen( "log.txt", "w", stdout );
     // Create the ball
     sf::CircleShape ball;
     ball.setRadius(ballRadius - 3);
@@ -268,10 +268,11 @@ int main()
                     battleText.setString("You won");
                     while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     }
+                    battle=false;
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
-                    if (down){
+                    else if (down){
                         std::cout << "move up" << std::endl;
                         up = true;
                         down = false;
@@ -281,7 +282,7 @@ int main()
                         std::cout << "can't move up" << std::endl;
                     }
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                 {
                     if (up){
                         std::cout << "move down" << std::endl;
@@ -293,7 +294,7 @@ int main()
                         std::cout << "can't move down" << std::endl;
                     }
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 {
                     if (right){
                         std::cout << "move down" << std::endl;
@@ -305,7 +306,7 @@ int main()
                         std::cout << "can't move left" << std::endl;
                     }
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                 {
                     if (left){
                         std::cout << "move down" << std::endl;
@@ -317,7 +318,7 @@ int main()
                         std::cout << "can't move right" << std::endl;
                     }
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     if (down && left){
                         enemyhp = enemyhp - 10;
                         #ifdef debug
