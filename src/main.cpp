@@ -134,6 +134,7 @@ int main()
     crusor.setOutlineColor(sf::Color::Black);
     crusor.setFillColor(sf::Color(100, 100, 200));
     crusor.setOrigin(paddleSize / 2.f);
+    int wait = 100;
 
     // Create the right paddle
     sf::RectangleShape rightPaddle;
@@ -266,6 +267,8 @@ int main()
                 // Move the battle crusor
                 if (enemyhp == 0){
                     battleText.setString("You won");
+                    while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+                    }
                     while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     }
                     battle=false;
@@ -324,6 +327,14 @@ int main()
                         #ifdef debug
                         std::cout << enemyhp << std::endl;
                         #endif
+                        while (wait!=0){
+                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+                            wait=wait-1;
+                        }
+                        while (wait!=100){
+                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+                            wait=wait+1;
+                        }
                     }
                 }
              }
