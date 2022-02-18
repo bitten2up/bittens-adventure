@@ -117,9 +117,9 @@ int main()
         outfile.close();
     }
     // print our savefile data
-    std::cout << savedata << endl;
     myfile >> savedata; // writes the information from the file to a buffer for later use
     myfile.close();
+    std::cout << savedata << endl;
     sf::Sound ballSound(ballSoundBuffer);
     // Create the left paddle
     sf::RectangleShape leftPaddle;
@@ -445,7 +445,7 @@ int main()
         else
         {   
             window.draw(copyright);
-            #ifdef battleTest
+             #ifdef battleTest
             window.draw(battleText);
             #endif
             #ifndef battleTest
