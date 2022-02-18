@@ -387,14 +387,14 @@ int main()
             }
             if (ball.getPosition().y - ballRadius < 0.f)
             {
-                ballSound.play();
+                //ballSound.play();
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().y, ballRadius + 0.1f);
 		        leftPaddle.setPosition(1,1);
             }
             if (ball.getPosition().y + ballRadius > gameHeight)
             {
-                ballSound.play();
+                //ballSound.play();
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
             }
@@ -411,7 +411,7 @@ int main()
                 else
                     ballAngle = pi - ballAngle - (std::rand() % 20) * pi / 180;
 
-                ballSound.play();
+                //ballSound.play();
                 ball.setPosition(leftPaddle.getPosition().x + ballRadius + paddleSize.x / 2 + 0.1f, ball.getPosition().y);
             }
 	    // Right Paddle
@@ -426,7 +426,7 @@ int main()
                 else
                     ballAngle = pi - ballAngle - (std::rand() % 20) * pi / 180;
 
-                ballSound.play();
+                //ballSound.play();
                 ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
             }
 	    #endif
