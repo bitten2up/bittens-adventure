@@ -37,6 +37,9 @@ SOFTWARE.
 #include <chrono>
 #include <thread>
 using namespace std;
+using namespace std::this_thread;     // sleep_for, sleep_until
+using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
+using std::chrono::system_clock;
 ////////////////////////////////////////////////////////////
 /// Entry point of application
 ///
@@ -330,10 +333,12 @@ int main()
                         while (wait!=0){
                             leftPaddle.move(paddleSpeed * deltaTime, 0.f);
                             wait=wait-1;
+                            sleep_until(system_clock::now() + 1s);
                         }
                         while (wait!=1000){
                             leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
                             wait=wait+1;
+                            sleep_until(system_clock::now() + 1s);
                         }
                         #endif
                         while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
