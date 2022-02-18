@@ -272,7 +272,7 @@ int main()
                 }
                 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
-                    else if (down){
+                    if (down){
                         std::cout << "move up" << std::endl;
                         up = true;
                         down = false;
