@@ -40,22 +40,31 @@ using namespace std;
 using namespace std::this_thread;     // sleep_for, sleep_until
 using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
 using std::chrono::system_clock;
+using namespace std::chrono;
 ////////////////////////////////////////////////////////////
 /// Entry point of application
 ///
 /// \return Application exit code
 ///
 ////////////////////////////////////////////////////////////
+class options{
+    public: 
+        bool fullscreen = true;
+        string savedata = "null lol";
+        bool bittendev = true;
+        int whatthehell = 1;
+};
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
     std::cout << "Bitten's Adventure\nVersion " << version << std::endl;
+    options settings;
+    std::cout << settings.fullscreen << std::endl;
     bool battle = false;
     bool up = false;
     bool down = true;
     bool left = true;
     bool right = false;
-    string savedata = "null lol";
     #ifdef debug
     std::cout << "DEBUG VERSION" << std::endl;
     #endif
@@ -114,16 +123,16 @@ int main()
 	}
     }
     // load our savedata
-    ifstream myfile("bitten.sav", ios::in); // open the savefile
-    if (!myfile.is_open()){
+    ifstream savedata("bitten.sav", ios::in); // open the savefile
+    if (!savedata.is_open()){
         std::ofstream outfile ("bitten.sav");
         outfile << "[bitten-engine-save-file]";
         outfile.close();
     }
     // print our savefile data
-    myfile >> savedata; // writes the information from the file to a buffer for later use
-    myfile.close();
-    std::cout << savedata << endl;
+    savedata >> settings.savedata; // writes the information from the file to a buffer for later use
+    savedata.close();
+    std::cout << settings.savedata << endl;
     sf::Sound ballSound(ballSoundBuffer);
     // Create the left paddle
     sf::RectangleShape leftPaddle;
@@ -202,7 +211,7 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            // Window closed or escape key pressed: exit
+                // Window closed or escape key pressed: exit
             if ((event.type == sf::Event::Closed) ||
                ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
             {
@@ -210,6 +219,7 @@ int main()
                 break;
                 isPlaying = true;
             }
+            
 	    #ifdef battleTest
 	    leftPaddle.setPosition(10 + paddleSize.x / 2, gameHeight / 2);
             rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
@@ -268,6 +278,7 @@ int main()
              }
              // the battle mode, i probly should have a bool for this and have it in a different if statement but this will work for now
 	        else {
+                
                 // Move the battle crusor
                 if (enemyhp == 0){
                     battleText.setString("You won");
@@ -328,24 +339,7 @@ int main()
                 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     if (down && left){
                         enemyhp = enemyhp - 10;
-                        #ifdef debug
-                        std::cout << enemyhp << std::endl;
-                        while (wait!=0){
-                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
-                            wait=wait-1;
-                            sleep_until(system_clock::now() + 1s);
-                        }
-                        while (wait!=1000){
-                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
-                            wait=wait+1;
-                            sleep_until(system_clock::now() + 1s);
-                        }
-                        #endif
-                        while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-                        }
-                        while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-                        }
-                        
+                        isPlaying = false; 
                     }
                 }
              }
@@ -445,6 +439,63 @@ int main()
 	    #endif
 	    
         }
+        else if (battle){
+            float deltaTime = clock.restart().asSeconds();
+            wait=99999;
+            bool right = true;
+            if (right){
+                leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+                wait=wait-1;
+                std::cout << wait << std::endl;
+                if (wait == 0){
+                    right = false;
+                    std::cout << "stop moving right" << std::endl;
+                } 
+            }
+            if (!right){
+                leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+                wait=wait+1;
+                if (wait==gameWidth){
+                    isPlaying=true;
+                }
+            }
+            else {
+                isPlaying=true;
+            }
+        }
+        /*#ifdef debug
+                        //wait=100;
+                        std::cout << enemyhp << std::endl;
+                        while (wait!=0){
+                            if ((event.type == sf::Event::Closed) ||
+                              ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+                              {
+                                    window.close();
+                                    break;
+                                    isPlaying = false;
+                               }
+                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
+                            wait=wait-0.01;
+                            sleep_for(nanoseconds(10));
+                        }
+                        while (wait!=100){
+                            if ((event.type == sf::Event::Closed) ||
+                              ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+                              {
+                                    window.close();
+                                    break;
+                                    isPlaying = false;
+                               }
+                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
+                            wait=wait+0.01;
+                            sleep_for(nanoseconds(10));
+                        }
+                        wait=100;
+                        #endif
+                        while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+}
+        while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+        }*/
         // Clear the window
         window.clear(sf::Color(0, 0, 0));
 
@@ -457,7 +508,24 @@ int main()
 	       #endif
 	       if (battle){
 		       window.draw(rightPaddle);
-             	       window.draw(battleText);
+             	window.draw(battleText);
+		       window.draw(crusor);
+
+	       }
+	       else {
+             window.draw(ball);
+            }
+        }
+        else if (battle)
+        {
+            // Draw the paddles and the ball
+           window.draw(leftPaddle);
+	       #ifdef drawall
+           window.draw(rightPaddle);
+	       #endif
+	       if (battle){
+		       window.draw(rightPaddle);
+             	window.draw(battleText);
 		       window.draw(crusor);
 
 	       }
