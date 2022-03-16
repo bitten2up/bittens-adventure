@@ -21,6 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/*
+note from dev DONT EVER BASE YOUR GAME OFF OF PONG CODE IT IS A PAIN TO WORK WITH now thanks sfml for the pong example
+*/
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -33,7 +36,6 @@ SOFTWARE.
 #include <string>
 #include <fstream>
 #include "bittendef.h"
-#include "version.h"
 #include <chrono>
 #include <thread>
 using namespace std;
@@ -57,14 +59,16 @@ class options{
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
-    std::cout << "Bitten's Adventure\nVersion " << version << std::endl;
+    std::cout << "Bitten's Adventure\nVersion " << version << debug.versioncodename << std::endl;
     options settings;
+    debugsettings debug;
     std::cout << settings.fullscreen << std::endl;
     bool battle = false;
     bool up = false;
     bool down = true;
     bool left = true;
     bool right = false;
+    bool aniright = true;
     #ifdef debug
     std::cout << "DEBUG VERSION" << std::endl;
     #endif
@@ -198,9 +202,9 @@ int main()
     // Define the paddles properties
     sf::Clock AITimer;
     const sf::Time AITime   = sf::seconds(0.1f);
-    const float paddleSpeed = 400.f;
+    const double paddleSpeed = 400.f;
     float rightPaddleSpeed  = 0.f;
-    const float ballSpeed   = 400.f;
+    const double ballSpeed   = 400.f;
     float ballAngle         = 0.f; // to be changed later
 
     sf::Clock clock;
@@ -278,6 +282,7 @@ int main()
              }
              // the battle mode, i probly should have a bool for this and have it in a different if statement but this will work for now
 	        else {
+                battleText.setString("A wild box appered and the circle is not friendly anymore. 0_0");
                 
                 // Move the battle crusor
                 if (enemyhp == 0){
@@ -339,7 +344,9 @@ int main()
                 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
                     if (down && left){
                         enemyhp = enemyhp - 10;
-                        isPlaying = false; 
+                        isPlaying = false;
+                        aniright = true;
+                        wait=gameWidth-1000;
                     }
                 }
              }
@@ -439,63 +446,31 @@ int main()
 	    #endif
 	    
         }
+        //[aha yes workarounds that are stupid in design but work]
         else if (battle){
             float deltaTime = clock.restart().asSeconds();
-            wait=99999;
-            bool right = true;
-            if (right){
+            
+            std::cout << wait << std::endl;
+            
+            if (aniright){
                 leftPaddle.move(paddleSpeed * deltaTime, 0.f);
                 wait=wait-1;
-                std::cout << wait << std::endl;
+                
                 if (wait == 0){
-                    right = false;
+                    aniright = false;
                     std::cout << "stop moving right" << std::endl;
                 } 
             }
-            if (!right){
+            else if (!aniright){
                 leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
                 wait=wait+1;
-                if (wait==gameWidth){
+                if (wait==gameWidth-1100){
                     isPlaying=true;
                 }
             }
-            else {
-                isPlaying=true;
-            }
+            
         }
-        /*#ifdef debug
-                        //wait=100;
-                        std::cout << enemyhp << std::endl;
-                        while (wait!=0){
-                            if ((event.type == sf::Event::Closed) ||
-                              ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
-                              {
-                                    window.close();
-                                    break;
-                                    isPlaying = false;
-                               }
-                            leftPaddle.move(paddleSpeed * deltaTime, 0.f);
-                            wait=wait-0.01;
-                            sleep_for(nanoseconds(10));
-                        }
-                        while (wait!=100){
-                            if ((event.type == sf::Event::Closed) ||
-                              ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
-                              {
-                                    window.close();
-                                    break;
-                                    isPlaying = false;
-                               }
-                            leftPaddle.move(-paddleSpeed * deltaTime, 0.f);
-                            wait=wait+0.01;
-                            sleep_for(nanoseconds(10));
-                        }
-                        wait=100;
-                        #endif
-                        while(!sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-}
-        while(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-        }*/
+    
         // Clear the window
         window.clear(sf::Color(0, 0, 0));
 
@@ -518,6 +493,7 @@ int main()
         }
         else if (battle)
         {
+            //battleText.setString("im too good for this");
             // Draw the paddles and the ball
            window.draw(leftPaddle);
 	       #ifdef drawall
