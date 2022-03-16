@@ -38,11 +38,11 @@ note from dev DONT EVER BASE YOUR GAME OFF OF PONG CODE IT IS A PAIN TO WORK WIT
 #include "bittendef.h"
 #include <chrono>
 #include <thread>
-using namespace std;
-using namespace std::this_thread;     // sleep_for, sleep_until
-using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
-using std::chrono::system_clock;
-using namespace std::chrono;
+//using namespace std;
+//using namespace std::this_thread;     // sleep_for, sleep_until
+//using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
+//using std::chrono::system_clock;
+//using namespace std::chrono;
 ////////////////////////////////////////////////////////////
 /// Entry point of application
 ///
@@ -59,9 +59,9 @@ class options{
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
+    debugsettings debug;
     std::cout << "Bitten's Adventure\nVersion " << version << debug.versioncodename << std::endl;
     options settings;
-    debugsettings debug;
     std::cout << settings.fullscreen << std::endl;
     bool battle = false;
     bool up = false;
