@@ -60,7 +60,7 @@ int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
     debugsettings debug;
-    std::cout << "Bitten's Adventure\nVersion " << version << debug.versioncodename << std::endl;
+    std::cout << "Bitten's Adventure\nVersion " << version << debug.codename << std::endl;
     options settings;
     std::cout << settings.fullscreen << std::endl;
     bool battle = false;
