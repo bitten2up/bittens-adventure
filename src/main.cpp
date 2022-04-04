@@ -35,9 +35,10 @@ note from dev DONT EVER BASE YOUR GAME OFF OF PONG CODE IT IS A PAIN TO WORK WIT
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "bittendef.h"
-#include <chrono>
 #include <thread>
+#include <chrono>
+#include "bittendef.h"
+#include "settings.h"
 using namespace std;
 //using namespace std::this_thread;     // sleep_for, sleep_until
 //using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
@@ -49,18 +50,12 @@ using namespace std;
 /// \return Application exit code
 ///
 ////////////////////////////////////////////////////////////
-class options{
-    public: 
-        bool fullscreen = true;
-        string savedata = "null lol";
-        bool bittendev = true;
-        int whatthehell = 1;
 };
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
-    //debugsettings debug;
-    std::cout << "Bitten's Adventure\nVersion " << version << "iced bitten" << std::endl;
+    debugsettings debug;
+    std::cout << "Bitten's Adventure\nVersion " << version << debug.codename << std::endl;
     options settings;
     std::cout << settings.fullscreen << std::endl;
     bool battle = false;
