@@ -20,5 +20,5 @@ class debugsettings{
         bool instentwin=false; //win battles instently
         bool noclip=false; // tbh everything is noclip when adding this it is for the future
         bool battletest=false; // replases #define battleTest
-        char codename[] ="iced bitten"; // used for eastereggs when i add them
+        string ="iced bitten"; // used for eastereggs when i add them
 };
