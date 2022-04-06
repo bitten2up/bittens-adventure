@@ -15,7 +15,7 @@ class debugsettings{
         bool instentwin=false; //win battles instently
         bool noclip=false; // tbh everything is noclip when adding this it is for the future
         bool battletest=false; // replases #define battleTest
-        const float version = "0.01"
+        const float version = 0.01
         string getCodename(){
             if (debugmode){ // used for eastereggs when i add them
                 codename ="iced bitten" ;  //define the debug codename;
