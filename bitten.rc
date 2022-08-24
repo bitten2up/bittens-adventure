@@ -10,10 +10,10 @@ BEGIN
       VALUE "FileDescription", "Bittens adventure"
       VALUE "FileVersion", "1.0"
       VALUE "InternalName", "Bittens adventure"
-      VALUE "LegalCopyright", "Sean Tipton 2022"
+      VALUE "LegalCopyright", "bitten2up"
       VALUE "OriginalFilename", "bitten-adventure.exe"
       VALUE "ProductName", "bitten-engine"
-      VALUE "ProductVersion", "1.0"
+      VALUE "ProductVersion", "0.1"
     END
   END
   BLOCK "VarFileInfo"
