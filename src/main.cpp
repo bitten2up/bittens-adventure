@@ -54,6 +54,10 @@ int main(){
     // game loop
     while (!WindowShouldClose())
     {
+        if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
+        if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
+        if (IsKeyDown(KEY_UP)) bittenPos.y -= 2;
+        if (IsKeyDown(KEY_DOWN)) bittenPos.y += 2;
         BeginDrawing();
             ClearBackground(WHITE);
             DrawText("bitten's adventure", 190, 200, 20, BLACK);
