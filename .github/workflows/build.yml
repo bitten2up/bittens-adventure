@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: sfml
+    - name: Raylib
       run: sudo apt update; sudo apt install libsfml-dev
     - name: make
       run: make
