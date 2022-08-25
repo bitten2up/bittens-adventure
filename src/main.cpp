@@ -25,10 +25,17 @@ SOFTWARE.
 // Headers
 ////////////////////////////////////////////////////////////
 #include <raylib.h>
+#include <iostream>
+#include <sstream>
 #include "bittendef.h"
 // the settings.h file is currently broken
 //#include "settings.h"
-
+const char* ConvertDoubleToString(double value){
+    std::stringstream ss ;
+    ss << value;
+    const char* str = ss.str().c_str();
+    return str;
+}
 int main(){
     // intinalization
     // TODO make this editable in an settings menu
@@ -53,6 +60,9 @@ int main(){
     bittenPos.y = screenHeight/2 - bittenRec.height;
     bool title=true;
     bool battle=false;
+    char* enemy;
+    double enemyHP;
+    double playerHP = 200;
     // game loop
     while (!WindowShouldClose())
     {
@@ -61,16 +71,29 @@ int main(){
             if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
             if (IsKeyDown(KEY_UP)) bittenPos.y -= 2;
             if (IsKeyDown(KEY_DOWN)) bittenPos.y += 2;
-            if (IsKeyDown(KEY_X)) battle=true;
+            if (IsKeyDown(KEY_X)){
+                battle=true;
+                enemy = "test";
+                enemyHP=1;
+                bittenPos.x = screenWidth/4- bittenRec.width/2;
+                bittenPos.x = screenHeight/4 - bittenRec.height/2;
+            }
         }
         if (title){
             if (IsKeyDown(KEY_ENTER)) title=false;
+        }
+        if (battle){
+            
         }
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-            if (battle) DrawText("Battle", 190, 200, 20, BLACK);
+            if (battle){
+                DrawText("Battle", 190, 200, 20, BLACK);
+                DrawText(enemy, screenWidth/4*3, screenHeight/4*3, 10, BLACK);
+                DrawText(ConvertDoubleToString(playerHP), screenWidth/4, screenHeight/4*3, 10, BLACK);
+            }
         EndDrawing();
     }
     UnloadTexture(bitten);
