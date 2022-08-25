@@ -51,17 +51,26 @@ int main(){
     Vector2 bittenPos;
     bittenPos.x = screenWidth/2 - bittenRec.width/2;
     bittenPos.y = screenHeight/2 - bittenRec.height;
+    bool title=true;
+    bool battle=false;
     // game loop
     while (!WindowShouldClose())
     {
-        if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
-        if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
-        if (IsKeyDown(KEY_UP)) bittenPos.y -= 2;
-        if (IsKeyDown(KEY_DOWN)) bittenPos.y += 2;
+        if (!battle & !title){
+            if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
+            if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
+            if (IsKeyDown(KEY_UP)) bittenPos.y -= 2;
+            if (IsKeyDown(KEY_DOWN)) bittenPos.y += 2;
+            if (IsKeyDown(KEY_X)) battle=true;
+        }
+        if (title){
+            if (IsKeyDown(KEY_ENTER)) title=false;
+        }
         BeginDrawing();
             ClearBackground(WHITE);
-            DrawText("bitten's adventure", 190, 200, 20, BLACK);
+            if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+            if (battle) DrawText("Battle", 190, 200, 20, BLACK);
         EndDrawing();
     }
     UnloadTexture(bitten);
