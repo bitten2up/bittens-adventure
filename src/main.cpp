@@ -44,6 +44,13 @@ int main(){
     // init the window
     InitWindow(screenWidth, screenHeight, "bittens adventure");
     SetTargetFPS(60);               // we want our game running at 60 fps
+    // set window icon
+    #ifdef notepadplusplusDebug
+    SetWindowIcon(LoadImage("../assets/bitten.png"));
+    #endif
+    #ifndef notepadplusplusDebug
+    SetWindowIcon(LoadImage("assets/bitten.png"));
+    #endif
     // setup player sprite
     #ifdef notepadplusplusDebug
     Texture2D bitten = LoadTexture("../assets/bitten.png");
@@ -58,6 +65,7 @@ int main(){
     Vector2 bittenPos;
     bittenPos.x = screenWidth/2 - bittenRec.width/2;
     bittenPos.y = screenHeight/2 - bittenRec.height;
+    // define some vars
     bool title=true;
     bool battle=false;
     char* enemy;
