@@ -46,7 +46,7 @@ int main(){
     SetTargetFPS(60);               // we want our game running at 60 fps
     // set window icon
     #ifdef notepadplusplusDebug
-    SetWindowIcon(LoadImage("../assets/bitten.png"));
+    SetWindowIcon(LoadImage("../assets/window.png"));
     #endif
     #ifndef notepadplusplusDebug
     SetWindowIcon(LoadImage("assets/bitten.png"));
@@ -59,12 +59,14 @@ int main(){
     Texture2D bitten = LoadTexture("assets/bitten.png");
     #endif
     Rectangle bittenRec;
-    bittenRec.width = bitten.width;
+    bittenRec.width = bitten.width/2;
     bittenRec.height = bitten.height;
     // position of player
     Vector2 bittenPos;
     bittenPos.x = screenWidth/2 - bittenRec.width/2;
     bittenPos.y = screenHeight/2 - bittenRec.height;
+    bittenRec.x = 2*bitten.width/2;
+    bittenRec.y = bitten.height;
     // define some vars
     bool title=true;
     bool battle=false;
@@ -78,14 +80,20 @@ int main(){
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
         }
-        if (battle){
+        else if (battle){
             if (IsKeyReleased(KEY_X)) battle=false;
         }
         if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
             if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
-            if (IsKeyDown(KEY_UP)) bittenPos.y -= 2;
-            if (IsKeyDown(KEY_DOWN)) bittenPos.y += 2;
+            if (IsKeyDown(KEY_UP)){
+                bittenPos.y -= 2;
+                bittenRec.x = 2*bitten.width/2;
+            }
+            if (IsKeyDown(KEY_DOWN)) {
+                bittenPos.y += 2;
+                bittenRec.x = bitten.width/2;
+            }
             if (IsKeyReleased(KEY_X)){
                 battle=true;
                 enemy = "Dummy";
