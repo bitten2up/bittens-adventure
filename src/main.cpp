@@ -43,7 +43,13 @@ int main(){
     const int screenHeight = 450;
     // init the window
     InitWindow(screenWidth, screenHeight, "bittens adventure");
+    InitAudioDevice();  
+    #ifdef debugsprites
+    SetTargetFPS(15);
+    #endif
+    #ifndef debugsprites
     SetTargetFPS(60);               // we want our game running at 60 fps
+    #endif
     // set window icon
     #ifdef notepadplusplusDebug
     SetWindowIcon(LoadImage("../assets/window.png"));
@@ -54,34 +60,39 @@ int main(){
     // setup player sprite
     #ifdef notepadplusplusDebug
     Texture2D bitten = LoadTexture("../assets/bitten.png");
+    Music music = LoadMusicStream("../assets/M_IntroHP.ogg");
     #endif
     #ifndef notepadplusplusDebug
     Texture2D bitten = LoadTexture("assets/bitten.png");
+    Music music = LoadMusicStream("assets/M_IntroHP.ogg");
+    PlayMusicStream(music);
     #endif
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
-    bittenRec.height = bitten.height;
+    bittenRec.height = bitten.height/3;
     // position of player
     Vector2 bittenPos;
     bittenPos.x = screenWidth/2 - bittenRec.width/2;
     bittenPos.y = screenHeight/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
-    bittenRec.y = bitten.height;
+    bittenRec.y = 3*bitten.height/3;
     // define some vars
     bool title=true;
     bool battle=false;
     char* enemy;
     double enemyHP;
     double playerHP = 200;
+    int frame = 4;
     // game loop
     while (!WindowShouldClose())
     {
+        UpdateMusicStream(music);
         
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
         }
         else if (battle){
-            if (IsKeyReleased(KEY_X)) battle=false;
+            if (IsKeyReleased(KEY_X))   battle=false; //will be updated later
         }
         if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
@@ -89,10 +100,13 @@ int main(){
             if (IsKeyDown(KEY_UP)){
                 bittenPos.y -= 2;
                 bittenRec.x = 2*bitten.width/2;
+                frame+=1;
+                bittenRec.y=frame*bitten.height/3;
             }
             if (IsKeyDown(KEY_DOWN)) {
                 bittenPos.y += 2;
                 bittenRec.x = bitten.width/2;
+                bittenRec.y=3*bitten.height/3;
             }
             if (IsKeyReleased(KEY_X)){
                 battle=true;
@@ -114,6 +128,9 @@ int main(){
             }
         EndDrawing();
     }
+    UnloadMusicStream(music);   // Unload music stream buffers from RAM
+
+    CloseAudioDevice(); 
     UnloadTexture(bitten);
     CloseWindow();
     return 0;
