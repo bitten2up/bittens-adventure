@@ -61,6 +61,7 @@ int main(){
     #ifdef notepadplusplusDebug
     Texture2D bitten = LoadTexture("../assets/bitten.png");
     Music music = LoadMusicStream("../assets/M_IntroHP.ogg");
+    PlayMusicStream(music);
     #endif
     #ifndef notepadplusplusDebug
     Texture2D bitten = LoadTexture("assets/bitten.png");
