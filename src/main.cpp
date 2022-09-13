@@ -27,6 +27,7 @@ SOFTWARE.
 #include <raylib.h>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include "bittendef.h"
 // the settings.h file is currently broken
 //#include "settings.h"
@@ -36,6 +37,7 @@ const char* ConvertDoubleToString(double value){
     const char* str = ss.str().c_str();
     return str;
 }
+static int LoadStorageValue(unsigned int position);
 int main(){
     // intinalization
     // TODO make this editable in an settings menu
@@ -57,16 +59,16 @@ int main(){
     #ifndef notepadplusplusDebug
     SetWindowIcon(LoadImage("assets/bitten.png"));
     #endif
-    // setup player sprite
+    // setup player sprite and bgm
     #ifdef notepadplusplusDebug
     Texture2D bitten = LoadTexture("../assets/bitten.png");
-    Music music = LoadMusicStream("../assets/M_IntroHP.ogg");
-    PlayMusicStream(music);
+    Music bgm = LoadMusicStream("../assets/bitten.wav");
+    PlayMusicStream(bgm);
     #endif
     #ifndef notepadplusplusDebug
     Texture2D bitten = LoadTexture("assets/bitten.png");
-    Music music = LoadMusicStream("assets/M_IntroHP.ogg");
-    PlayMusicStream(music);
+    Music bgm = LoadMusicStream("assets/bitten.wav");
+    PlayMusicStream(bgm);
     #endif
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
@@ -84,13 +86,24 @@ int main(){
     double enemyHP;
     double playerHP = 200;
     int frame = 4;
+    //load settings file, should be in a class but eh dont got time
+    bool audio = true;
+    int music =LoadStorageValue(0);
+    if (music=='1'){
+        audio=false;
+        PauseMusicStream(bgm);
+    }
+    
     // game loop
     while (!WindowShouldClose())
     {
-        UpdateMusicStream(music);
+        UpdateMusicStream(bgm);
         
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
+            if (IsKeyReleased(KEY_M)) {
+                PauseMusicStream(bgm);
+            }
         }
         else if (battle){
             if (IsKeyReleased(KEY_X))   battle=false; //will be updated later
@@ -129,10 +142,32 @@ int main(){
             }
         EndDrawing();
     }
-    UnloadMusicStream(music);   // Unload music stream buffers from RAM
+    UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
 
     CloseAudioDevice(); 
     UnloadTexture(bitten);
     CloseWindow();
     return 0;
+}
+int LoadStorageValue(unsigned int position)
+{
+    int value = 0;
+    unsigned int dataSize = 0;
+    unsigned char *fileData = LoadFileData(SETTINGS_FILE, &dataSize);
+
+    if (fileData != NULL)
+    {
+        if (dataSize < (position*4)) TraceLog(LOG_WARNING, "FILEIO: [%s] Failed to find storage position: %i", SETTINGS_FILE, position);
+        else
+        {
+            int *dataPtr = (int *)fileData;
+            value = dataPtr[position];
+        }
+
+        UnloadFileData(fileData);
+
+        TraceLog(LOG_INFO, "FILEIO: [%s] Loaded storage value: %i", SETTINGS_FILE, value);
+    }
+
+    return value;
 }
