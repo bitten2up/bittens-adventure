@@ -98,6 +98,7 @@ int main(){
         audio=false;
         PauseMusicStream(bgm);
     }
+    //free music somewhere here
     
     // game loop
     while (!WindowShouldClose())
@@ -107,7 +108,7 @@ int main(){
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
             if (IsKeyReleased(KEY_M) & audio) {
-                PauseMusicStream(bgm);
+                StopMusicStream(bgm);
                 audio=false;
                 SaveStorageValue(MUSIC, 0);
             }
