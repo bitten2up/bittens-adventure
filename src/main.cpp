@@ -31,12 +31,17 @@ SOFTWARE.
 #include "bittendef.h"
 // the settings.h file is currently broken
 //#include "settings.h"
+typedef enum {
+    MUSIC    = 0
+} StorageData;
 const char* ConvertDoubleToString(double value){
     std::stringstream ss ;
     ss << value;
     const char* str = ss.str().c_str();
     return str;
 }
+// Persistent storage functions
+static bool SaveStorageValue(unsigned int position, int value);
 static int LoadStorageValue(unsigned int position);
 int main(){
     // intinalization
@@ -89,7 +94,7 @@ int main(){
     //load settings file, should be in a class but eh dont got time
     bool audio = true;
     int music =LoadStorageValue(0);
-    if (music=='1'){
+    if (music==0){
         audio=false;
         PauseMusicStream(bgm);
     }
@@ -101,8 +106,15 @@ int main(){
         
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
-            if (IsKeyReleased(KEY_M)) {
+            if (IsKeyReleased(KEY_M) & audio) {
                 PauseMusicStream(bgm);
+                audio=false;
+                SaveStorageValue(MUSIC, 0);
+            }
+            else if (IsKeyReleased(KEY_M)){
+                PlayMusicStream(bgm);
+                audio=true;
+                SaveStorageValue(MUSIC, 1);
             }
         }
         else if (battle){
@@ -149,9 +161,76 @@ int main(){
     CloseWindow();
     return 0;
 }
+bool SaveStorageValue(unsigned int position, int value)
+{
+    bool success = false;
+    unsigned int dataSize = 0;
+    unsigned int newDataSize = 0;
+    unsigned char *fileData = LoadFileData(SETTINGS_FILE, &dataSize);
+    unsigned char *newFileData = NULL;
+
+    if (fileData != NULL)
+    {
+        if (dataSize <= (position*sizeof(int)))
+        {
+            // Increase data size up to position and store value
+            newDataSize = (position + 1)*sizeof(int);
+            newFileData = (unsigned char *)RL_REALLOC(fileData, newDataSize);
+
+            if (newFileData != NULL)
+            {
+                // RL_REALLOC succeded
+                int *dataPtr = (int *)newFileData;
+                dataPtr[position] = value;
+            }
+            else
+            {
+                // RL_REALLOC failed
+                TraceLog(LOG_WARNING, "FILEIO: [%s] Failed to realloc data (%u), position in bytes (%u) bigger than actual file size", SETTINGS_FILE, dataSize, position*sizeof(int));
+
+                // We store the old size of the file
+                newFileData = fileData;
+                newDataSize = dataSize;
+            }
+        }
+        else
+        {
+            // Store the old size of the file
+            newFileData = fileData;
+            newDataSize = dataSize;
+
+            // Replace value on selected position
+            int *dataPtr = (int *)newFileData;
+            dataPtr[position] = value;
+        }
+
+        success = SaveFileData(SETTINGS_FILE, newFileData, newDataSize);
+        RL_FREE(newFileData);
+
+        TraceLog(LOG_INFO, "FILEIO: [%s] Saved storage value: %i", SETTINGS_FILE, value);
+    }
+    else
+    {
+        TraceLog(LOG_INFO, "FILEIO: [%s] File created successfully", SETTINGS_FILE);
+
+        dataSize = (position + 1)*sizeof(int);
+        fileData = (unsigned char *)RL_MALLOC(dataSize);
+        int *dataPtr = (int *)fileData;
+        dataPtr[position] = value;
+
+        success = SaveFileData(SETTINGS_FILE, fileData, dataSize);
+        UnloadFileData(fileData);
+
+        TraceLog(LOG_INFO, "FILEIO: [%s] Saved storage value: %i", SETTINGS_FILE, value);
+    }
+
+    return success;
+}
+
 int LoadStorageValue(unsigned int position)
 {
     int value = 0;
+    char ascii = 0;
     unsigned int dataSize = 0;
     unsigned char *fileData = LoadFileData(SETTINGS_FILE, &dataSize);
 
@@ -162,11 +241,11 @@ int LoadStorageValue(unsigned int position)
         {
             int *dataPtr = (int *)fileData;
             value = dataPtr[position];
+            ascii << value;
         }
 
         UnloadFileData(fileData);
-
-        TraceLog(LOG_INFO, "FILEIO: [%s] Loaded storage value: %i", SETTINGS_FILE, value);
+        TraceLog(LOG_INFO, "FILEIO: [%s] Loaded storage value: %i(%a)", SETTINGS_FILE, value, ascii);
     }
 
     return value;
