@@ -121,7 +121,8 @@ int main(){
         else if (battle){
             if (IsKeyReleased(KEY_X))   battle=false; //will be updated later
         }
-        if (!battle & !title){
+        
+        else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
             if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
             if (IsKeyDown(KEY_UP)){
