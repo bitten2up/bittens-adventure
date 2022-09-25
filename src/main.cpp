@@ -29,7 +29,8 @@ SOFTWARE.
 #include <sstream>
 #include <fstream>
 #include "bittendef.h"
-// the settings.h file is currently broken
+#define RAYLIB_TMX_IMPLEMENTATION
+#include "raylib-tmx.h"
 //#include "settings.h"
 typedef enum {
     MUSIC    = 0
@@ -43,41 +44,32 @@ const char* ConvertDoubleToString(double value){
 // Persistent storage functions
 static bool SaveStorageValue(unsigned int position, int value);
 static int LoadStorageValue(unsigned int position);
-int main(){
+int main(int argc, char **argv){
     // intinalization
     // TODO make this editable in an settings menu
     const int screenWidth = 800;
     const int screenHeight = 450;
     // init the window
     InitWindow(screenWidth, screenHeight, "bittens adventure");
-    InitAudioDevice();  
+    InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(15);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(60);               // we want our game running at 60 fps
+    SetTargetFPS(30);               // we want our game running at 30 fps
     #endif
     // set window icon
-    #ifdef notepadplusplusDebug
-    SetWindowIcon(LoadImage("../assets/window.png"));
-    #endif
-    #ifndef notepadplusplusDebug
-    SetWindowIcon(LoadImage("assets/bitten.png"));
-    #endif
-    // setup player sprite and bgm
-    #ifdef notepadplusplusDebug
-    Texture2D bitten = LoadTexture("../assets/bitten.png");
-    Music bgm = LoadMusicStream("../assets/bitten.wav");
-    PlayMusicStream(bgm);
-    #endif
-    #ifndef notepadplusplusDebug
+    SetWindowIcon(LoadImage("assets/window.png"));
+    // setup map
+    tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
+    // setup player sprite
     Texture2D bitten = LoadTexture("assets/bitten.png");
-    Music bgm = LoadMusicStream("assets/bitten.wav");
-    PlayMusicStream(bgm);
-    #endif
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
     bittenRec.height = bitten.height/3;
+    // setup music
+    Music bgm = LoadMusicStream("assets/bitten.wav");
+    PlayMusicStream(bgm);
     // position of player
     Vector2 bittenPos;
     bittenPos.x = screenWidth/2 - bittenRec.width/2;
@@ -99,7 +91,6 @@ int main(){
         PauseMusicStream(bgm);
     }
     //free music somewhere here
-    
     // game loop
     while (!WindowShouldClose())
     {
@@ -154,14 +145,16 @@ int main(){
                 DrawText(ConvertDoubleToString(playerHP), screenWidth/4, screenHeight/4*3, 10, BLACK);
                 DrawText(ConvertDoubleToString(enemyHP), screenWidth/4*3, screenHeight/4*3.1, 10, BLACK);
             }
+            DrawTMX(map, 0, 0, WHITE);
         EndDrawing();
     }
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
-
     CloseAudioDevice(); 
+    UnloadTMX(map);
     UnloadTexture(bitten);
     CloseWindow();
     return 0;
+    
 }
 bool SaveStorageValue(unsigned int position, int value)
 {

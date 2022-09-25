@@ -11,5 +11,5 @@
 // enables battle menu test disable this so then you can do other things than the test battle
 //#define battleTest //outdated
 // this is a really nesh flag, it is used in my notepad++ debug compiles
-#define notepadplusplusDebug
+//#define notepadplusplusDebug
 #endif
