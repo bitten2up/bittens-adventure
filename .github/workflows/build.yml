@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ next ]
+    branches: [ raylib-rewrite-because-yes ]
   pull_request:
-    branches: [ next ]
+    branches: [ raylib-rewrite-because-yes ]
 
 jobs:
   build:
@@ -13,22 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Raylib
-      run: sudo apt update; sudo apt install libsfml-dev
-    - name: make
-      run: make
-    - name: install mingw
-      run: sudo apt install g++-mingw-w64
-    - name: install sfml for mingw
-      run: cd /usr/x86_64-w64-mingw32; sudo wget https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; sudo unzip SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; ls; ls *;
-    - name: windows
-      run: make windows
-      
+    - name: install emuscription
+      run: git clone https://github.com/emscripten-core/emsdk.git; cd emsdk; ./emsdk install latest; ./emsdk activate latest; source ./emsdk_env.sh
+    - name: install Raylib
+      run: git clone https://github.com/raysan5/raylib; cd raylib/src; emcc -c rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rshapes.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtextures.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtext.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c utils.c -Os -Wall -DPLATFORM_WEB; emcc -c raudio.c -Os -Wall -DPLATFORM_WEB; emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o;
+    - name: Compile
+      run: cd src; emcc -o game.html main.c -Os -Wall ../raylib/src/libraylib.a -I. -I../raylib/src/raylib.h -L. -L../raylib/src/libraylib.a -s USE_GLFW=3 --shell-file ../raylib/src/shell.html -DPLATFORM_WEB;
     - uses: actions/upload-artifact@v2
       with:
         name: ubuntu
         path: |
-          bin/
-          assets
+          src/
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
