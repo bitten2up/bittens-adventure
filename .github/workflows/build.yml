@@ -18,7 +18,7 @@ jobs:
     - name: install Raylib
       run: cd emsdk; source ./emsdk_env.sh; cd ..; git clone https://github.com/raysan5/raylib; cd raylib/src; emcc -c rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rshapes.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtextures.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtext.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c utils.c -Os -Wall -DPLATFORM_WEB; emcc -c raudio.c -Os -Wall -DPLATFORM_WEB; emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o;
     - name: Compile
-      run: cd emsdk; source ./emsdk_env.sh; cd ..; cd src; emcc -o game.html web-test.c -Os -Wall ../raylib/src/libraylib.a -I. -I../raylib/src/ -L. -L../raylib/src/libraylib.a -s USE_GLFW=3 -s ASYNCIFY --shell-file ../raylib/src/shell.html -DPLATFORM_WEB;
+      run: cd emsdk; source ./emsdk_env.sh; cd ..; cd src; emcc -o bitten.html web-test.c -Os --preload-file ../assets -Wall ../raylib/src/libraylib.a -I. -I../raylib/src/ -L. -L../raylib/src/libraylib.a -s USE_GLFW=3 -s ASYNCIFY --shell-file ../raylib/src/shell.html -DPLATFORM_WEB;
     - uses: actions/upload-artifact@v2
       with:
         name: ubuntu
@@ -27,7 +27,7 @@ jobs:
           src/
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
     - name: setup publishing to github pages
-      run: mkdir website; cp src/game.html website/index.html; cp src/game.js website/game.js; cp src/game.wasm website/game.wasm; cp -r assets website/
+      run: mkdir website; cp src/bitten.html website/index.html; cp bitten/game.js website/bitten.js; cp src/bitten.wasm website/bitten.wasm; cp src/bitten.data website/bitten.data
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
       env:
