@@ -27,7 +27,7 @@ jobs:
           src/
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
     - name: setup publishing to github pages
-      run: mkdir website; cp src/bitten.html website/index.html; cp bitten/bitten.js website/bitten.js; cp src/bitten.wasm website/bitten.wasm; cp src/bitten.data website/bitten.data; echo "adventure.bitten2up.dev" > website/CNAME
+      run: mkdir website; cp src/bitten.html website/index.html; cp src/bitten.js website/bitten.js; cp src/bitten.wasm website/bitten.wasm; cp src/bitten.data website/bitten.data; echo "adventure.bitten2up.dev" > website/CNAME
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
       env:
