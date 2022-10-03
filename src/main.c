@@ -133,6 +133,7 @@ int main(int argc, char **argv){
     float enemyHP;
     float playerHP = 200;
     int frame = 4;
+    #ifndef PLATFORM_WEB
     //load settings file, should be in a class but eh dont got time
     bool audio = true;
     int music =LoadStorageValue(0);
@@ -141,7 +142,7 @@ int main(int argc, char **argv){
         PauseMusicStream(bgm);
     }
     //free music somewhere here
-    
+    #endif
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
@@ -155,7 +156,9 @@ int main(int argc, char **argv){
             if (IsKeyReleased(KEY_M) & audio) {
                 StopMusicStream(bgm);
                 audio=false;
+                #ifndef PLATFORM_WEB
                 SaveStorageValue(MUSIC, 0);
+                #endif
             }
             else if (IsKeyReleased(KEY_M)){
                 PlayMusicStream(bgm);
