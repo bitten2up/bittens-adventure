@@ -2,19 +2,9 @@
 # bittens-adventure
 the game bitten's adventure that I am currently working on
 
-# building
+## building
 you will need to install [raylib](https://github.com/raysan5/raylib/)
-
-
 ```bash
 make
 ```
-# Running
-```bash
-make run
-``` 
-to run it on windows or
-```bash
-make run-unix
-```
-to run it on linux/Mac os.
+## credits
