@@ -7,7 +7,7 @@
 #define debug
 //#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
 // files
-#define SETTINGS_FILE "asssets/settings.cfg"
+#define SETTINGS_FILE "assets/settings.cfg"
 // enables battle menu test disable this so then you can do other things than the test battle
 //#define battleTest //outdated
 // this is a really nesh flag, it is used in my notepad++ debug compiles
