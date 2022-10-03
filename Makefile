@@ -247,6 +247,9 @@ endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     INCLUDE_PATHS += -I/usr/include/libdrm
 endif
+ifeq ($(PLATFORM),PLATFORM_WEB)
+    INCLUDE_PATHS += -Iinclude/emuscripten
+endif
 
 # Define library paths containing required libs: LDFLAGS
 #------------------------------------------------------------------------------------------------
@@ -299,6 +302,8 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     ifeq ($(BUILD_MODE),DEBUG)
         LDFLAGS += -s ASSERTIONS=1 --profiling
     endif
+    # add libs
+    LDFLAGS += -Llib/emuscripten
 
     # Define a custom shell .html and output extension
     LDFLAGS += --shell-file $(BUILD_WEB_SHELL)
