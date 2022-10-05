@@ -24,16 +24,28 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <raylib.h>
-#include "bittendef.h"
+// STD and Raylib
+////////////////////////////////////////////////////////////
 #include <stdlib.h>
+#include <math.h>
+#include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
 #include "raylib-tmx.h"
-#include <math.h>
+
+////////////////////////////////////////////////////////////
+// ENGINE HEADERS
+////////////////////////////////////////////////////////////
+
+#include "bittendef.h" // defines for the engine
+#include "bit_loadfile.h" // file loading functionality
+// settings.h for when  i go to fix that trainwreck of a file
 //#include "settings.h"
-typedef enum {
-    MUSIC    = 0
-} StorageData;
+
+////////////////////////////////////////////////////////////
+// Just some conversion tools
+////////////////////////////////////////////////////////////
+
+
 // Reverses a string 'str' of length 'len'
 void reverse(char* str, int len)
 {
@@ -93,9 +105,11 @@ void ftoa(float n, char* res, int afterpoint)
         intToStr((int)fpart, res + i + 1, afterpoint);
     }
 }
-// Persistent storage functions
-static bool SaveStorageValue(unsigned int position, int value);
-static int LoadStorageValue(unsigned int position);
+
+////////////////////////////////////////////////////////////
+// Entrypoint of Engine
+////////////////////////////////////////////////////////////
+
 int main(int argc, char **argv){
     // intinalization
     // TODO make this editable in an settings menu
@@ -105,7 +119,7 @@ int main(int argc, char **argv){
     InitWindow(screenWidth, screenHeight, "bittens adventure");
     InitAudioDevice();
     #ifdef debugsprites
-    SetTargetFPS(15);
+    SetTargetFPS(20);
     #endif
     #ifndef debugsprites
     SetTargetFPS(30);               // we want our game running at 30 fps
@@ -133,9 +147,9 @@ int main(int argc, char **argv){
     float enemyHP;
     float playerHP = 200;
     int frame = 4;
-    #ifndef PLATFORM_WEB
     //load settings file, should be in a class but eh dont got time
     bool audio = true;
+    #ifndef PLATFORM_WEB
     int music =LoadStorageValue(0);
     if (music==0){
         audio=false;
@@ -143,6 +157,8 @@ int main(int argc, char **argv){
     }
     //free music somewhere here
     #endif
+    //free music somewhere here
+    TraceLog(LOG_DEBUG, "FILEIO: Read music: %a", music);
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
@@ -171,16 +187,16 @@ int main(int argc, char **argv){
         }
         
         else if (!battle & !title){
-            if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
-            if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
+            if (IsKeyDown(KEY_RIGHT)) x -= 4;
+            if (IsKeyDown(KEY_LEFT))  x += 4;
             if (IsKeyDown(KEY_UP)){
-                bittenPos.y -= 2;
+                y += 4;
                 bittenRec.x = 2*bitten.width/2;
                 frame+=1;
                 bittenRec.y=frame*bitten.height/3;
             }
             if (IsKeyDown(KEY_DOWN)) {
-                bittenPos.y += 2;
+                y -= 4;
                 bittenRec.x = bitten.width/2;
                 bittenRec.y=3*bitten.height/3;
             }
@@ -195,6 +211,7 @@ int main(int argc, char **argv){
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
+            if (!title) DrawTMX(map, x, y, WHITE);
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
             if (battle){
                 DrawText("Well That was easy", 190, 200, 20, BLACK);
@@ -205,7 +222,7 @@ int main(int argc, char **argv){
                 ftoa(playerHP, working, 4);
                 DrawText(working, screenWidth/4*3, screenHeight/4*3.1, 10, BLACK);
             }
-            DrawTMX(map, 0, 0, WHITE);
+            DrawFPS(10, 10);
         EndDrawing();
     }
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
@@ -214,94 +231,4 @@ int main(int argc, char **argv){
     UnloadTexture(bitten);
     CloseWindow();
     return 0;
-    
-}
-bool SaveStorageValue(unsigned int position, int value)
-{
-    bool success = false;
-    unsigned int dataSize = 0;
-    unsigned int newDataSize = 0;
-    unsigned char *fileData = LoadFileData(SETTINGS_FILE, &dataSize);
-    unsigned char *newFileData = NULL;
-
-    if (fileData != NULL)
-    {
-        if (dataSize <= (position*sizeof(int)))
-        {
-            // Increase data size up to position and store value
-            newDataSize = (position + 1)*sizeof(int);
-            newFileData = (unsigned char *)RL_REALLOC(fileData, newDataSize);
-
-            if (newFileData != NULL)
-            {
-                // RL_REALLOC succeded
-                int *dataPtr = (int *)newFileData;
-                dataPtr[position] = value;
-            }
-            else
-            {
-                // RL_REALLOC failed
-                TraceLog(LOG_WARNING, "FILEIO: [%s] Failed to realloc data (%u), position in bytes (%u) bigger than actual file size", SETTINGS_FILE, dataSize, position*sizeof(int));
-
-                // We store the old size of the file
-                newFileData = fileData;
-                newDataSize = dataSize;
-            }
-        }
-        else
-        {
-            // Store the old size of the file
-            newFileData = fileData;
-            newDataSize = dataSize;
-
-            // Replace value on selected position
-            int *dataPtr = (int *)newFileData;
-            dataPtr[position] = value;
-        }
-
-        success = SaveFileData(SETTINGS_FILE, newFileData, newDataSize);
-        RL_FREE(newFileData);
-
-        TraceLog(LOG_INFO, "FILEIO: [%s] Saved storage value: %i", SETTINGS_FILE, value);
-    }
-    else
-    {
-        TraceLog(LOG_INFO, "FILEIO: [%s] File created successfully", SETTINGS_FILE);
-
-        dataSize = (position + 1)*sizeof(int);
-        fileData = (unsigned char *)RL_MALLOC(dataSize);
-        int *dataPtr = (int *)fileData;
-        dataPtr[position] = value;
-
-        success = SaveFileData(SETTINGS_FILE, fileData, dataSize);
-        UnloadFileData(fileData);
-
-        TraceLog(LOG_INFO, "FILEIO: [%s] Saved storage value: %i", SETTINGS_FILE, value);
-    }
-
-    return success;
-}
-
-int LoadStorageValue(unsigned int position)
-{
-    int value = 0;
-    char ascii = 0;
-    unsigned int dataSize = 0;
-    unsigned char *fileData = LoadFileData(SETTINGS_FILE, &dataSize);
-
-    if (fileData != NULL)
-    {
-        if (dataSize < (position*4)) TraceLog(LOG_WARNING, "FILEIO: [%s] Failed to find storage position: %i", SETTINGS_FILE, position);
-        else
-        {
-            int *dataPtr = (int *)fileData;
-            value = dataPtr[position];
-            ascii << value;
-        }
-
-        UnloadFileData(fileData);
-        TraceLog(LOG_INFO, "FILEIO: [%s] Loaded storage value: %i(%a)", SETTINGS_FILE, value, ascii);
-    }
-
-    return value;
 }

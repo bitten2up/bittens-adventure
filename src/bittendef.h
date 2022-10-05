@@ -12,4 +12,12 @@
 //#define battleTest //outdated
 // this is a really nesh flag, it is used in my notepad++ debug compiles
 //#define notepadplusplusDebug
+
+
+////////////////////////////////////////////////////////////
+// settings storage
+////////////////////////////////////////////////////////////
+typedef enum {
+    MUSIC    = 0
+} SettingsData;
 #endif
