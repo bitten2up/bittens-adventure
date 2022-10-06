@@ -44,7 +44,7 @@ SOFTWARE.
 
 #include "bittendef.h"
 #include "bit_battle.h"
-void bit_Battle()
+void bit_BattleDraw(int* hp)
 {
     
 }

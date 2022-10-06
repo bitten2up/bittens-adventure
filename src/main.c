@@ -22,11 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 ////////////////////////////////////////////////////////////
+// MAIN file                                              //
+////////////////////////////////////////////////////////////
+// Handles logic                                          //
+////////////////////////////////////////////////////////////
+
+
+
+
+
+////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 // STD and Raylib
 ////////////////////////////////////////////////////////////
-#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
@@ -183,7 +193,7 @@ int main(int argc, char **argv){
             }
         }
         else if (battle){
-            if (IsKeyReleased(KEY_X))   battle=false; //will be updated later
+            if (IsKeyReleased(KEY_X))   battle=false; //will be updated ~~later~~ NOW
         }
         
         else if (!battle & !title){
