@@ -379,7 +379,8 @@ endif
 #------------------------------------------------------------------------------------------------
 PROJECT_SOURCE_FILES ?= \
     src/bit_loadfile.c \
-    src/main.c
+    src/main.c \
+    src/bit_battle.c
 
 # Define all object files from source files
 OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
