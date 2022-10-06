@@ -1,3 +1,5 @@
+#include <stdbool.h>
+#include <raylib.h>
 #include "bit_loadfile.h"
 #include "bittendef.h"
 

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 name: build
 
 on:
@@ -35,3 +36,39 @@ jobs:
         BRANCH: web
         FOLDER: website
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+=======
+name: build
+
+on:
+  push:
+    branches: [ next ]
+  pull_request:
+    branches: [ next ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Raylib
+      run: sudo apt update; sudo apt install libsfml-dev
+    - name: make
+      run: make
+    - name: install mingw
+      run: sudo apt install g++-mingw-w64
+    - name: install sfml for mingw
+      run: cd /usr/x86_64-w64-mingw32; sudo wget https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; sudo unzip SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip; ls; ls *;
+    - name: windows
+      run: make windows
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ubuntu
+        path: |
+          bin/
+          assets
+        if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+
+>>>>>>> Stashed changes

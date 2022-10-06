@@ -157,6 +157,8 @@ int main(int argc, char **argv){
     float enemyHP;
     float playerHP = 200;
     int frame = 4;
+    int x = 0;
+    int y = 0;
     //load settings file, should be in a class but eh dont got time
     bool audio = true;
     #ifndef PLATFORM_WEB
