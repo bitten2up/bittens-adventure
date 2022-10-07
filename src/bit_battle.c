@@ -137,7 +137,8 @@ void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 // battle test
 ////////////////////////////////////////////////////////////
 // function for testing the battle mode. Mostly a lighter
-// weight version of int main()
+// weight version of int main() with only the
+// stuff for battles
 ////////////////////////////////////////////////////////////
 
 void bit_BattleTest()
