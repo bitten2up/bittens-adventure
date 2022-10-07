@@ -178,4 +178,6 @@ void bit_BattleTest()
             DrawFPS(10, 10);
         EndDrawing();
     }
+    UnloadTexture(bitten);
+    CloseWindow();
 }
