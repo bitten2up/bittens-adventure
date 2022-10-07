@@ -22,7 +22,13 @@ bool cmdlineParams(int argc, char** argv){
                 printf("cold bitten 0_0\n");
                 return true;
             }
-            if (strcmp(argv[i], "--battletest")) // return of the battle test
+            if (strcmp(argv[i], "--mental-stablity")==0){
+                // damm you did me dirty, also why are you asking lol
+                printf("nonexistent, im having a stroke 24/7\n\nWait why are you asking 0_0\nlike searisly\n");
+                printf("Oh and don't even start with your excuses random stranger who is playing this game");
+                return true;
+            }
+            if (strcmp(argv[i], "--battletest")==0) // return of the battle test
             {
                 bit_BattleTest();
                 return true;
