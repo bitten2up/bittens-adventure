@@ -18,6 +18,7 @@ bool cmdlineParams(int argc, char** argv){
                 printf("\nBitten Engine\n\nversion 1.0 indev\n\nfeatures subject to change\n\n\nCopyright (c) 2022 Bitten2up, licened under the M.I.T license check LICENSE\n");
                 return true;
             }
+            // easter eggs
             if (strcmp(argv[i], "--iced")==0){
                 printf("cold bitten 0_0\n");
                 return true;
@@ -28,7 +29,13 @@ bool cmdlineParams(int argc, char** argv){
                 printf("Oh and don't even start with your excuses random stranger who is playing this game");
                 return true;
             }
-            if (strcmp(argv[i], "--battletest")==0) // return of the battle test
+            // legit dont spoil these hints, if this is ever popular enough to get spoiled hints i want the player to find this on their own
+            if (strcmp(argv[i], "--up2bitten")==0){
+                printf("Thats weird, sounds like a mirrored version of me");
+                return true;
+            }
+            // the battletest return, really you dont need to be here unless you are updating the battle system
+            if (strcmp(argv[i], "--battletest")==0)
             {
                 bit_BattleTest();
                 return true;
