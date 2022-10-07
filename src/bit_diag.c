@@ -38,6 +38,7 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "raylib.h"
 
 ////////////////////////////////////////////////////////////
 // Engine headers
@@ -47,6 +48,13 @@ SOFTWARE.
 
 
 ////////////////////////////////////////////////////////////
-// Main code
+// Drawing
 ////////////////////////////////////////////////////////////
-
+void diagDraw(bool diagDrawrect)
+{
+    // draw rectangle if defined
+    if (diagDrawrect)
+    {
+       DrawRectangle(0, SCREENHEIGHT-200, SCREENWIDTH, SCREENHEIGHT-60, BLACK);
+    }
+}
