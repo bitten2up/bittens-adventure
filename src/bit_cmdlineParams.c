@@ -22,7 +22,7 @@ bool cmdlineParams(int argc, char** argv){
                 printf("cold bitten 0_0\n");
                 return true;
             }
-            if (strcmp(argv[i], "battletest")) // return of the battle test
+            if (strcmp(argv[i], "--battletest")) // return of the battle test
             {
                 bit_BattleTest();
                 return true;
