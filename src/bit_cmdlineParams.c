@@ -19,6 +19,11 @@ bool cmdlineParams(int argc, char** argv){
                 printf("\nBitten Engine\n\nversion 1.0 indev\n\nfeatures subject to change\n\n\nCopyright (c) 2022 Bitten2up, licened under the M.I.T license check LICENSE\n");
                 return true;
             }
+            if (strcmp(argv[i], "battletest")) // return of the battle test
+            {
+                bit_BattleTest();
+                return true;
+            }
         }
     }
     return false;

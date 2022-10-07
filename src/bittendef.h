@@ -13,7 +13,9 @@
 // this is a really nesh flag, it is used in my notepad++ debug compiles
 //#define notepadplusplusDebug
 
-
+    // TODO make this editable in an settings menu
+#define SCREENWIDTH 800
+#define SCREENHEIGHT 450
 ////////////////////////////////////////////////////////////
 // settings storage
 ////////////////////////////////////////////////////////////

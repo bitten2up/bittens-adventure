@@ -23,5 +23,6 @@ SOFTWARE.
 */
 #ifndef BIT_BATTLE_H
 #define BIT_BATTLE_H
-void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw, int* screenWidthw, int* screenHeightw);
+void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw);
+void bit_BattleTest();
 #endif

@@ -37,6 +37,7 @@ SOFTWARE.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include <raylib.h>
 
@@ -46,6 +47,7 @@ SOFTWARE.
 
 #include "bittendef.h"
 #include "bit_battle.h"
+#include "bit_diag.h"
 
 ////////////////////////////////////////////////////////////
 // Just some conversion tools
@@ -117,13 +119,62 @@ void ftoa(float n, char* res, int afterpoint)
 // battle display
 ////////////////////////////////////////////////////////////
 
-void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw, int* screenWidthw, int* screenHeightw)
+void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 {
-    DrawText("Well That was easy", 190, 200, 20, BLACK);
-    DrawText(*enemyw, *screenWidthw/4*3, *screenHeightw/4*3, 10, BLACK);
+    diagDraw(true);
+    // draw the text, to be implmented into diagDraw
+    DrawText("Well That was easy", 190, 200, 20, WHITE);
+    DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/4*2.5, 10, WHITE);
+    DrawText(*enemyw, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
     char working[5];
     ftoa(*playerHPw, working, 4);
-    DrawText(working, *screenWidthw/4, *screenHeightw/4*3, 10, BLACK);
-    ftoa(*playerHPw, working, 4);
-    DrawText(working, *screenWidthw/4*3, *screenHeightw/4*3.1, 10, BLACK);
+    DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/4*2.6, 10, WHITE);
+    ftoa(*enemyHPw, working, 4);
+    DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.6, 10, WHITE);
+}
+
+////////////////////////////////////////////////////////////
+// battle test
+////////////////////////////////////////////////////////////
+// function for testing the battle mode. Mostly a lighter
+// weight version of int main()
+////////////////////////////////////////////////////////////
+
+void bit_BattleTest()
+{
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure BATTLE TEST");
+    // set window icon
+    SetWindowIcon(LoadImage("assets/window.png"));
+    SetTargetFPS(30);
+    char* enemy;
+    float enemyHP;
+    float playerHP = 200;
+    TraceLog(LOG_INFO, "ENGINE: You have loaded into the battle test, if you didn't mean to enter this mode close this window and relaunch the program");
+    // setup player sprite
+    Texture2D bitten = LoadTexture("assets/bitten.png");
+    Rectangle bittenRec;
+    bittenRec.width = bitten.width/2;
+    bittenRec.height = bitten.height/3;
+    // position of player
+    Vector2 bittenPos;
+    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
+    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
+    bittenRec.x = 2*bitten.width/2;
+    bittenRec.y = 3*bitten.height/3;
+    // ah this is defined when we go in battle, but rn i dont want to add this in the function
+    enemy = "Dummy";
+    enemyHP=0;
+    bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+    bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+    while (!WindowShouldClose())
+    {
+        // to be replaced with a function, but for now its ok
+        if (IsKeyReleased(KEY_X))   return;
+        BeginDrawing();
+            ClearBackground(WHITE);
+            DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+            bit_BattleDraw(&playerHP, &enemy, &enemyHP);
+            DrawFPS(10, 10);
+        EndDrawing();
+    }
 }

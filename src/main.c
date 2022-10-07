@@ -46,22 +46,21 @@ SOFTWARE.
 // ENGINE HEADERS
 ////////////////////////////////////////////////////////////
 
-#include "bittendef.h" // defines for the engine
-#include "bit_loadfile.h" // file loading functionality
-#include "bit_battle.h"
+#include "bittendef.h"          // defines for the engine
+#include "bit_cmdlineParams.h"   // command line functionality
+#include "bit_loadfile.h"       // file loading functionality
+#include "bit_battle.h"         // battle functionality
 
 
 ////////////////////////////////////////////////////////////
 // Entrypoint of Engine
 ////////////////////////////////////////////////////////////
 
-int main(int argc, char **argv){
-    // intinalization
-    // TODO make this editable in an settings menu
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+int main(int argc, char *argv[]){
+    // check command line paramiters to see if we need to exit or not because of a command line parm
+    if(cmdlineParams(argc, argv))   return 1;
     // init the window
-    InitWindow(screenWidth, screenHeight, "bittens adventure");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
     InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(20);
@@ -81,8 +80,8 @@ int main(int argc, char **argv){
     PlayMusicStream(bgm);
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = screenWidth/2 - bittenRec.width/2;
-    bittenPos.y = screenHeight/2 - bittenRec.height;
+    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
+    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/3;
     // define some vars
@@ -151,8 +150,8 @@ int main(int argc, char **argv){
                 battle=true;
                 enemy = "Dummy";
                 enemyHP=0;
-                bittenPos.x = screenWidth/4- bittenRec.width/2;
-                bittenPos.x = screenHeight/4 - bittenRec.height/2;
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
             }
         }
         BeginDrawing();
@@ -160,7 +159,7 @@ int main(int argc, char **argv){
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (!title && !battle) DrawTMX(map, x, y, WHITE);
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-            if (battle) bit_BattleDraw(&playerHP, &enemy, &enemyHP, &screenWidth, &screenHeight);
+            if (battle) bit_BattleDraw(&playerHP, &enemy, &enemyHP);
             DrawFPS(10, 10);
         EndDrawing();
     }
