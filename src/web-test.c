@@ -29,9 +29,7 @@ SOFTWARE.
 #include <stdlib.h>
 #include <math.h>
 //#include "settings.h"
-typedef enum {
-    MUSIC    = 0
-} StorageData;
+
 // Reverses a string 'str' of length 'len'
 void reverse(char* str, int len)
 {
