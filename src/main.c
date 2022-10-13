@@ -129,7 +129,7 @@ int main(int argc, char *argv[]){
             }
         }
         else if (battle){
-            if (IsKeyReleased(KEY_X))   battle=false; //will be updated ~~later~~ NOW
+            bit_battleInput(&battle);
         }
         
         else if (!battle & !title){
@@ -157,7 +157,13 @@ int main(int argc, char *argv[]){
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
-            if (!title && !battle) DrawTMX(map, x, y, WHITE);
+            if (!title && !battle) 
+	    {
+		DrawTMX(map, x, y, WHITE);
+		char xandy[10];
+		snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
+		DrawText(xandy, 20,10,20, BLACK);
+	    }
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
             if (battle) bit_BattleDraw(&playerHP, &enemy, &enemyHP);
             DrawFPS(10, 10);

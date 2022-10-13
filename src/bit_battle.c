@@ -118,9 +118,16 @@ void ftoa(float n, char* res, int afterpoint)
 ////////////////////////////////////////////////////////////
 // battle display
 ////////////////////////////////////////////////////////////
-
+int frame=0;
+bool battleAnimation=true;
+static void battleIntro();
 void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 {
+    if (battleAnimation)
+    {
+	battleIntro();
+	return;
+    }
     diagDraw(true);
     // draw the text, to be implmented into diagDraw
     DrawText("Well That was easy", 190, 200, 20, WHITE);
@@ -133,6 +140,30 @@ void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
     DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.6, 10, WHITE);
 }
 
+static void battleIntro()
+{
+	DrawRectangle(frame*50, frame*50, SCREENWIDTH-frame*50, SCREENWIDTH-frame*50, BLACK);
+	frame+=1;
+	if (frame==10)
+	{
+	    battleAnimation=false;
+	}
+	return;
+}
+
+////////////////////////////////////////////////////////////
+// battle input
+////////////////////////////////////////////////////////////
+
+void bit_battleInput(bool* battleEnabled)
+{
+    if (IsKeyReleased(KEY_X))
+    {
+	*battleEnabled=false;
+	battleAnimation=true;
+	return; // we don't want to run the rest of the code
+    }
+}
 ////////////////////////////////////////////////////////////
 // battle test
 ////////////////////////////////////////////////////////////
