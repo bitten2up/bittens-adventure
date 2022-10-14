@@ -118,19 +118,19 @@ void ftoa(float n, char* res, int afterpoint)
 ////////////////////////////////////////////////////////////
 // battle display
 ////////////////////////////////////////////////////////////
-int frame=0;
+float frame=0;
 bool battleAnimation=true;
 static void battleIntro();
-void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
+bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 {
     if (battleAnimation)
     {
-	battleIntro();
-	return;
+        battleIntro();
+        return false;
     }
     diagDraw(true);
     // draw the text, to be implmented into diagDraw
-    DrawText("Well That was easy", 190, 200, 20, WHITE);
+    DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/4*2.5, 10, WHITE);
     DrawText(*enemyw, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
     char working[5];
@@ -138,13 +138,16 @@ void bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
     DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/4*2.6, 10, WHITE);
     ftoa(*enemyHPw, working, 4);
     DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.6, 10, WHITE);
+    return true;
 }
 
 static void battleIntro()
 {
-	DrawRectangle(frame*50, frame*50, SCREENWIDTH-frame*50, SCREENWIDTH-frame*50, BLACK);
-	frame+=1;
-	if (frame==10)
+    float wframe=frame-10;
+	if (frame>=10)  DrawRectangle(0, wframe*50, SCREENWIDTH, SCREENHEIGHT-wframe*50, BLACK);
+    else DrawRectangle(0, SCREENHEIGHT-frame*50, SCREENWIDTH, frame*50, BLACK);
+	frame+=0.25;
+	if (frame==15)
 	{
 	    battleAnimation=false;
 	}
@@ -155,14 +158,16 @@ static void battleIntro()
 // battle input
 ////////////////////////////////////////////////////////////
 
-void bit_battleInput(bool* battleEnabled)
+bool bit_battleInput(bool* battleEnabled)
 {
     if (IsKeyReleased(KEY_X))
     {
 	*battleEnabled=false;
 	battleAnimation=true;
-	return; // we don't want to run the rest of the code
+    frame=0;
+	return true; // we don't want to run the rest of the code
     }
+    return false;
 }
 ////////////////////////////////////////////////////////////
 // battle test

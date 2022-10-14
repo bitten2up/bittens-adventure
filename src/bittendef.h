@@ -7,15 +7,17 @@
 #define debug
 //#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
 // files
-#define SETTINGS_FILE "assets/settings.cfg"
+#define SETTINGS_FILE "bitten.sav"
 
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
 ////////////////////////////////////////////////////////////
-// settings storage
+// Game storage
 ////////////////////////////////////////////////////////////
 typedef enum {
-    MUSIC    = 0
-} SettingsData;
+    MUSIC    = 0,
+    SAVEDX   = 1,
+    SAVEDY    = 2
+} SaveData;
 #endif

@@ -93,21 +93,21 @@ int main(int argc, char *argv[]){
     int frame = 4;
     int x = 0;
     int y = 0;
-    //load settings file, should be in a class but eh dont got time
+    //load save file, should be in a function but eh dont got time
     bool audio = true;
     #ifndef PLATFORM_WEB
-    int music =LoadStorageValue(0);
-    if (music==0){
+    if (LoadStorageValue(MUSIC)==0){ // for somereason writing a bool set to true saves as a 0
         audio=false;
         PauseMusicStream(bgm);
     }
-    //free music somewhere here
+    if (LoadStorageValue(SAVEDX))       x=LoadStorageValue(SAVEDX);
+    if (LoadStorageValue(SAVEDY))       y=LoadStorageValue(SAVEDY);
     #endif
-    //free music somewhere here
-    TraceLog(LOG_DEBUG, "FILEIO: Read music: %a", music);
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
+    int lastx=0;
+    int lasty=0;
     // game loop
     while (!WindowShouldClose())
     {
@@ -129,43 +129,65 @@ int main(int argc, char *argv[]){
             }
         }
         else if (battle){
-            bit_battleInput(&battle);
+            if (bit_battleInput(&battle)){
+                bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
+                bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
+                x=lastx;
+            }
         }
         
         else if (!battle & !title){
-            if (IsKeyDown(KEY_RIGHT)) x -= 4;
-            if (IsKeyDown(KEY_LEFT))  x += 4;
+            if (IsKeyDown(KEY_RIGHT)){
+                lastx=x;
+                x -= 4;
+            }
+            if (IsKeyDown(KEY_LEFT)){
+                lastx=x;
+                x += 4;
+            }
             if (IsKeyDown(KEY_UP)){
+                lasty=y;
                 y += 4;
                 bittenRec.x = 2*bitten.width/2;
                 frame+=1;
                 bittenRec.y=frame*bitten.height/3;
             }
             if (IsKeyDown(KEY_DOWN)) {
+                lasty=y;
                 y -= 4;
                 bittenRec.x = bitten.width/2;
                 bittenRec.y=3*bitten.height/3;
             }
-            if (IsKeyReleased(KEY_X)){
+            if (x==4){
                 battle=true;
                 enemy = "Dummy";
                 enemyHP=0;
+                TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                x-=4;
+            }
+            if (IsKeyReleased(KEY_TAB)){
+                SaveStorageValue(SAVEDX, x);
+                SaveStorageValue(SAVEDY, y);
             }
         }
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (!title && !battle) 
-	    {
-		DrawTMX(map, x, y, WHITE);
-		char xandy[10];
-		snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
-		DrawText(xandy, 20,10,20, BLACK);
-	    }
-            DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-            if (battle) bit_BattleDraw(&playerHP, &enemy, &enemyHP);
+            {
+                DrawTMX(map, x, y, WHITE);
+                DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+                char xandy[10];
+                snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
+                DrawText(xandy, 20,10,20, BLACK);
+            }
+            if (battle) {
+                if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
+                    DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+                }
+            }
             DrawFPS(10, 10);
         EndDrawing();
     }
