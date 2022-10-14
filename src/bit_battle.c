@@ -130,7 +130,7 @@ bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
     }
     diagDraw(true);
     // draw the text, to be implmented into diagDraw
-    DrawText("Well That was easy", 190, 200, 20, BLACK);
+    if (enemyHPw==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/4*2.5, 10, WHITE);
     DrawText(*enemyw, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
     char working[5];
@@ -158,14 +158,15 @@ static void battleIntro()
 // battle input
 ////////////////////////////////////////////////////////////
 
-bool bit_battleInput(bool* battleEnabled)
+bool bit_battleInput(bool* battleEnabled, float* health)
 {
-    if (IsKeyReleased(KEY_X))
+    if (IsKeyReleased(KEY_X) && *health==0)
     {
-	*battleEnabled=false;
-	battleAnimation=true;
-    frame=0;
-	return true; // we don't want to run the rest of the code
+        //free(health);
+        *battleEnabled=false;
+        battleAnimation=true;
+        frame=0;
+        return true; // we don't want to run the rest of the code
     }
     return false;
 }

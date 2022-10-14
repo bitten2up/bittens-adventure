@@ -129,7 +129,7 @@ int main(int argc, char *argv[]){
             }
         }
         else if (battle){
-            if (bit_battleInput(&battle)){
+            if (bit_battleInput(&battle, &enemyHP)){
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=lastx;
@@ -165,6 +165,16 @@ int main(int argc, char *argv[]){
                 TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+            }
+            if (y==4){
+                battle=true;
+                enemy = "Generator";
+                enemyHP=100;
+                TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                UnloadMusicStream(bgm);
+                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
