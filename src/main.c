@@ -46,10 +46,10 @@ SOFTWARE.
 // ENGINE HEADERS
 ////////////////////////////////////////////////////////////
 
-#include "bittendef.h"          // defines for the engine
+#include "bittendef.h"           // defines for the engine
 #include "bit_cmdlineParams.h"   // command line functionality
-#include "bit_loadfile.h"       // file loading functionality
-#include "bit_battle.h"         // battle functionality
+#include "bit_loadfile.h"        // file loading functionality
+#include "bit_battle.h"          // battle functionality
 
 
 ////////////////////////////////////////////////////////////
@@ -165,7 +165,6 @@ int main(int argc, char *argv[]){
                 TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                x-=4;
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
@@ -179,7 +178,7 @@ int main(int argc, char *argv[]){
             {
                 DrawTMX(map, x, y, WHITE);
                 DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-                char xandy[10];
+                char xandy[20];
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
                 DrawText(xandy, 20,10,20, BLACK);
             }
