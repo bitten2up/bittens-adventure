@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
     SetTargetFPS(20);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(30);               // we want our game running at 30 fps
+    SetTargetFPS(60);               // we want our game running at 30 fps
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
+                if (audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
