@@ -118,7 +118,7 @@ void ftoa(float n, char* res, int afterpoint)
 ////////////////////////////////////////////////////////////
 // battle display
 ////////////////////////////////////////////////////////////
-float frame=0;
+double frame=0;
 bool battleAnimation=true;
 static void battleIntro();
 bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
@@ -162,11 +162,14 @@ bool bit_battleInput(bool* battleEnabled, float* health)
 {
     if (IsKeyReleased(KEY_X) && *health==0)
     {
-        //free(health);
         *battleEnabled=false;
         battleAnimation=true;
         frame=0;
         return true; // we don't want to run the rest of the code
+    }
+    else if (IsKeyReleased(KEY_X)) {
+        health-=10;
+        return false;
     }
     return false;
 }

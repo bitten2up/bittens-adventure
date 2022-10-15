@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
     SetTargetFPS(20);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(60);               // we want our game running at 30 fps
+    SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]){
                 bittenRec.x = bitten.width/2;
                 bittenRec.y=3*bitten.height/3;
             }
-            if (x==4){
+            if (x>=4){
                 battle=true;
                 enemy = "Dummy";
                 enemyHP=0;
