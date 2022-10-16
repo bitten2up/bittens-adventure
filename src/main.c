@@ -66,15 +66,17 @@ int main(int argc, char *argv[]){
     SetTargetFPS(20);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
+    SetTargetFPS(4);               // we want our game running at 60 fps to avoid audio skipping
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
     Texture2D bitten = LoadTexture("assets/bitten.png");
+    bitten.width=bitten.width*2;
+    bitten.height=bitten.height*2;
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
-    bittenRec.height = bitten.height/3;
+    bittenRec.height = bitten.height/4;
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
     PlayMusicStream(bgm);
@@ -83,13 +85,14 @@ int main(int argc, char *argv[]){
     bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
     bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
-    bittenRec.y = 3*bitten.height/3;
+    bittenRec.y = 3*bitten.height/4;
     // define some vars
     bool title=true;
     bool battle=false;
     char* enemy;
     float enemyHP;
     float playerHP = 200;
+    int ticker = 0;
     int frame = 4;
     int x = 0;
     int y = 0;
@@ -108,6 +111,7 @@ int main(int argc, char *argv[]){
     tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
     int lastx=0;
     int lasty=0;
+    bool collision = false; 
     // game loop
     while (!WindowShouldClose())
     {
@@ -149,14 +153,25 @@ int main(int argc, char *argv[]){
                 lasty=y;
                 y += 4;
                 bittenRec.x = 2*bitten.width/2;
-                frame+=1;
-                bittenRec.y=frame*bitten.height/3;
+                ticker+=1;
+                if (ticker==5)
+                {
+                    frame+=1;
+                    bittenRec.y=frame*bitten.height/4;
+                    ticker=0;
+                }
             }
             if (IsKeyDown(KEY_DOWN)) {
                 lasty=y;
                 y -= 4;
                 bittenRec.x = bitten.width/2;
-                bittenRec.y=3*bitten.height/3;
+                ticker+=1;
+                if (ticker==5)
+                {
+                    frame+=1;
+                    bittenRec.y=frame*bitten.height/4;
+                    ticker=0;
+                }
             }
             if (x>=4){
                 battle=true;
@@ -185,18 +200,18 @@ int main(int argc, char *argv[]){
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
-            if (!title && !battle) 
+            else if (battle) {
+                if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
+                    DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+                }
+            }
+            else if (!battle) 
             {
                 DrawTMX(map, x, y, WHITE);
                 DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
                 char xandy[20];
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
                 DrawText(xandy, 20,10,20, BLACK);
-            }
-            if (battle) {
-                if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
-                    DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-                }
             }
             DrawFPS(10, 10);
         EndDrawing();
