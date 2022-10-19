@@ -192,7 +192,7 @@ endif
 CFLAGS = -std=gnu99 -Wall -Wno-missing-braces -Wunused-result -D_DEFAULT_SOURCE
 
 ifeq ($(BUILD_MODE),DEBUG)
-    CFLAGS += -g -D_DEBUG
+    CFLAGS += -g3 -D_DEBUG
 else
     ifeq ($(PLATFORM),PLATFORM_WEB)
         ifeq ($(BUILD_WEB_ASYNCIFY),TRUE)

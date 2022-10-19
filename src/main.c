@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
     SetTargetFPS(20);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(4);               // we want our game running at 60 fps to avoid audio skipping
+    SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
@@ -77,15 +77,27 @@ int main(int argc, char *argv[]){
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
     bittenRec.height = bitten.height/4;
-    // setup music
-    Music bgm = LoadMusicStream("assets/bitten.wav");
-    PlayMusicStream(bgm);
     // position of player
     Vector2 bittenPos;
     bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
     bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/4;
+    // Enemy sprite loading
+    Texture2D enemySprite;
+    enemySprite.width=enemySprite.width*2;
+    enemySprite.height=enemySprite.height*2;
+    Rectangle enemyRec;
+    enemyRec.width = enemySprite.width/2;
+    enemyRec.height = enemySprite.height/4;
+    Vector2 enemyPos;
+    enemyPos.x = SCREENWIDTH/2 - enemyRec.width/2;
+    enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
+    enemyRec.x = 2*enemySprite.width/2;
+    enemyRec.y = 3*enemySprite.height/4;
+    // setup music
+    Music bgm = LoadMusicStream("assets/bitten.wav");
+    PlayMusicStream(bgm);
     // define some vars
     bool title=true;
     bool battle=false;
@@ -116,7 +128,6 @@ int main(int argc, char *argv[]){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
-        
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
             if (IsKeyReleased(KEY_M) & audio) {
@@ -137,6 +148,7 @@ int main(int argc, char *argv[]){
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=lastx;
+                UnloadTexture(enemySprite);
             }
         }
         
@@ -177,19 +189,21 @@ int main(int argc, char *argv[]){
                 battle=true;
                 enemy = "Dummy";
                 enemyHP=0;
-                TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                LoadTexture("assets/bitten.png");
             }
             if (y==4){
                 battle=true;
                 enemy = "Generator";
                 enemyHP=100;
-                TraceLog(LOG_INFO, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
+                LoadTexture("assets/bitten.png");
                 if (audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
@@ -203,6 +217,7 @@ int main(int argc, char *argv[]){
             else if (battle) {
                 if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
                     DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
+                    DrawTextureRec(enemySprite, enemyRec, enemyPos);
                 }
             }
             else if (!battle) 
