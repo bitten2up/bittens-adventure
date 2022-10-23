@@ -10,8 +10,9 @@
 #define SETTINGS_FILE "bitten.sav"
 
 // TODO make this editable in an settings menu
-#define SCREENWIDTH 800
-#define SCREENHEIGHT 450
+#define SCREENWIDTH 1200
+#define SCREENHEIGHT 720
+
 ////////////////////////////////////////////////////////////
 // Game storage
 ////////////////////////////////////////////////////////////

@@ -52,6 +52,8 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 void diagDraw(bool diagDrawrect)
 {
+    SCREENWIDTH;
+    SCREENHEIGHT;
     // draw rectangle if defined
     if (diagDrawrect)
     {

@@ -123,6 +123,8 @@ bool battleAnimation=true;
 static void battleIntro();
 bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 {
+    SCREENWIDTH;
+    SCREENHEIGHT;
     if (battleAnimation)
     {
         battleIntro();
@@ -143,6 +145,8 @@ bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 
 static void battleIntro()
 {
+    SCREENWIDTH;
+    SCREENHEIGHT;
     float wframe=frame-10;
 	if (frame>=10)  DrawRectangle(0, wframe*50, SCREENWIDTH, SCREENHEIGHT-wframe*50, BLACK);
     else DrawRectangle(0, SCREENHEIGHT-frame*50, SCREENWIDTH, frame*50, BLACK);
@@ -182,7 +186,7 @@ bool bit_battleInput(bool* battleEnabled, float* health)
 ////////////////////////////////////////////////////////////
 
 void bit_BattleTest()
-{
+{/*
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure BATTLE TEST");
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
@@ -220,4 +224,5 @@ void bit_BattleTest()
     }
     UnloadTexture(bitten);
     CloseWindow();
+    */
 }

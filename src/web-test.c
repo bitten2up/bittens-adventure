@@ -95,10 +95,10 @@ static int LoadStorageValue(unsigned int position);
 int main(int argc, char **argv){
     // intinalization
     // TODO make this editable in an settings menu
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int SCREENWIDTH = 800;
+    const SCREENHEIGHT = 450;
     // init the window
-    InitWindow(screenWidth, screenHeight, "bittens adventure");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
     InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(15);
@@ -118,8 +118,8 @@ int main(int argc, char **argv){
     PlayMusicStream(bgm);
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = screenWidth/2 - bittenRec.width/2;
-    bittenPos.y = screenHeight/2 - bittenRec.height;
+    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
+    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/3;
     // define some vars
@@ -181,8 +181,8 @@ int main(int argc, char **argv){
                 battle=true;
                 enemy = "Dummy";
                 enemyHP=0;
-                bittenPos.x = screenWidth/4- bittenRec.width/2;
-                bittenPos.x = screenHeight/4 - bittenRec.height/2;
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
             }
         }
         BeginDrawing();
@@ -191,12 +191,12 @@ int main(int argc, char **argv){
             DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
             if (battle){
                 DrawText("Well That was easy", 190, 200, 20, BLACK);
-                DrawText(enemy, screenWidth/4*3, screenHeight/4*3, 10, BLACK);
+                DrawText(enemy, SCREENWIDTH/4*3, SCREENHEIGHT/4*3, 10, BLACK);
                 char working[5];
                 ftoa(playerHP, working, 4);
-                DrawText(working, screenWidth/4, screenHeight/4*3, 10, BLACK);
+                DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/4*3, 10, BLACK);
                 ftoa(playerHP, working, 4);
-                DrawText(working, screenWidth/4*3, screenHeight/4*3.1, 10, BLACK);
+                DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*3.1, 10, BLACK);
             }
             //DrawTMX(map, 0, 0, WHITE);
         EndDrawing();

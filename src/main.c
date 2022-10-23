@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { patch(); }
+    else if (startup==2)    { patch(0); }
     // init the window
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
     InitAudioDevice();
@@ -70,7 +70,6 @@ int main(int argc, char *argv[]){
     #ifndef debugsprites
     SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
     #endif
-    bool patched = patch();
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
@@ -132,7 +131,7 @@ int main(int argc, char *argv[]){
     {
         UpdateMusicStream(bgm);
         if (title){
-            if (IsKeyReleased(KEY_TAB))     patch();
+            if (IsKeyReleased(KEY_TAB))     patch(0);
             if (IsKeyReleased(KEY_ENTER)) title=false;
             if (IsKeyReleased(KEY_M) & audio) {
                 StopMusicStream(bgm);
