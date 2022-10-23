@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { patch(); return 2; }
+    else if (startup==2)    { patch(); }
     // init the window
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
     InitAudioDevice();
