@@ -50,7 +50,7 @@ SOFTWARE.
 #include "bit_cmdlineParams.h"   // command line functionality
 #include "bit_loadfile.h"        // file loading functionality
 #include "bit_battle.h"          // battle functionality
-
+#include "bit_patch.h"
 
 ////////////////////////////////////////////////////////////
 // Entrypoint of Engine
@@ -58,7 +58,9 @@ SOFTWARE.
 
 int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm
-    if(cmdlineParams(argc, argv))   return 1;
+    int startup = cmdlineParams(argc, argv);
+    if (startup==0)   { return 1; }
+    else if (startup==2)    { patch(); return 2; }
     // init the window
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
     InitAudioDevice();
@@ -68,6 +70,7 @@ int main(int argc, char *argv[]){
     #ifndef debugsprites
     SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
     #endif
+    bool patched = patch();
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
@@ -123,12 +126,13 @@ int main(int argc, char *argv[]){
     tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
     int lastx=0;
     int lasty=0;
-    bool collision = false; 
+    bool collision = false;
     // game loop
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
         if (title){
+            if (IsKeyReleased(KEY_TAB))     patch();
             if (IsKeyReleased(KEY_ENTER)) title=false;
             if (IsKeyReleased(KEY_M) & audio) {
                 StopMusicStream(bgm);
@@ -141,6 +145,17 @@ int main(int argc, char *argv[]){
                 PlayMusicStream(bgm);
                 audio=true;
                 SaveStorageValue(MUSIC, 1);
+            }
+            if (IsKeyPressed(KEY_F)){
+                int display = GetCurrentMonitor();
+                if (!IsWindowFullscreen()){
+                    SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
+                    ToggleFullscreen();
+                }
+                else {
+                    ToggleFullscreen();
+                    SetWindowSize(SCREENWIDTH, SCREENHEIGHT);
+                }
             }
         }
         else if (battle){
@@ -217,7 +232,7 @@ int main(int argc, char *argv[]){
             else if (battle) {
                 if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
                     DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
-                    DrawTextureRec(enemySprite, enemyRec, enemyPos);
+                    DrawTextureRec(enemySprite, enemyRec, enemyPos, WHITE);
                 }
             }
             else if (!battle) 

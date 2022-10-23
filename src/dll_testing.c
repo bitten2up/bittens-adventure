@@ -1,0 +1,11 @@
+////////////////////////////////////////////////////////////
+// Dll testing                                            //
+////////////////////////////////////////////////////////////
+// Sample dll for patching                                //
+////////////////////////////////////////////////////////////
+
+#include <stdio.h>
+int __declspec(dllexport) __cdecl bittenEnginePatch() {
+    printf("Bitten engine patching worked\n");
+    return 1;
+}
