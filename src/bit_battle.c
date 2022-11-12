@@ -145,10 +145,8 @@ bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
 
 static void battleIntro()
 {
-    SCREENWIDTH;
-    SCREENHEIGHT;
     float wframe=frame-10;
-	if (frame>=10)  DrawRectangle(0, wframe*50, SCREENWIDTH, SCREENHEIGHT-wframe*50, BLACK);
+	if (frame>=10)  DrawRectangle(0, wframe*50, SCREENWIDTH, SCREENHEIGHT, BLACK);
     else DrawRectangle(0, SCREENHEIGHT-frame*50, SCREENWIDTH, frame*50, BLACK);
 	frame+=0.25;
 	if (frame==15)
