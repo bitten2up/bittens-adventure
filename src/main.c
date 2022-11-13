@@ -123,7 +123,7 @@ int main(int argc, char *argv[]){
     #endif
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
-    tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
+    tmx_map* map = LoadTMX("assets/maps/bit_towntest.tmx");
     int lastx=0;
     int lasty=0;
     bool collision = false;
@@ -170,15 +170,15 @@ int main(int argc, char *argv[]){
         else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)){
                 lastx=x;
-                x -= 4;
+                x -= 1;
             }
             if (IsKeyDown(KEY_LEFT)){
                 lastx=x;
-                x += 4;
+                x += 1;
             }
             if (IsKeyDown(KEY_UP)){
                 lasty=y;
-                y += 4;
+                y += 1;
                 bittenRec.x = 2*bitten.width/2;
                 ticker+=1;
                 if (ticker==5)
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]){
             }
             if (IsKeyDown(KEY_DOWN)) {
                 lasty=y;
-                y -= 4;
+                y -= 1;
                 bittenRec.x = bitten.width/2;
                 ticker+=1;
                 if (ticker==5)
@@ -199,7 +199,7 @@ int main(int argc, char *argv[]){
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
-            }
+            }/*
             if (x>=4){
                 battle=true;
                 enemy = "Dummy";
@@ -219,7 +219,18 @@ int main(int argc, char *argv[]){
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (audio)          PlayMusicStream(bgm);
-            }
+            }*/
+            if ((x < -178 && x > -230) && (y>-180 && y<-130)) {
+                battle=true;
+                enemy = "Generator";
+                enemyHP=0;
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                UnloadMusicStream(bgm);
+                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
+                if (audio)          PlayMusicStream(bgm);
+            }//*/
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
                 SaveStorageValue(SAVEDY, y);
