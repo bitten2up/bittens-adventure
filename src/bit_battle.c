@@ -170,7 +170,7 @@ bool bit_battleInput(bool* battleEnabled, float* health)
         return true; // we don't want to run the rest of the code
     }
     else if (IsKeyReleased(KEY_X)) {
-        health-=10;
+        *health-=10;
         return false;
     }
     return false;
