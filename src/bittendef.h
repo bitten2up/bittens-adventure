@@ -3,12 +3,13 @@
 */
 #ifndef bittendef
 #define bittendef
+// set the title of the game
+#define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
 #define debug
 //#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
 // files
 #define SETTINGS_FILE "bitten.sav"
-
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450

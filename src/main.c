@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
     if (startup==0)   { return 1; }
     else if (startup==2)    { patch(0); }
     // init the window
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, GAME_NAME);
     InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(20);
@@ -74,8 +74,8 @@ int main(int argc, char *argv[]){
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
     Texture2D bitten = LoadTexture("assets/bitten.png");
-    bitten.width=bitten.width*2;
-    bitten.height=bitten.height*2;
+    bitten.width=bitten.width;
+    bitten.height=bitten.height;
     Rectangle bittenRec;
     bittenRec.width = bitten.width/2;
     bittenRec.height = bitten.height/4;
@@ -86,14 +86,14 @@ int main(int argc, char *argv[]){
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/4;
     // Enemy sprite loading
-    Texture2D enemySprite;
+    Texture2D enemySprite = LoadTexture("assets/enemy.png");
     enemySprite.width=enemySprite.width*2;
     enemySprite.height=enemySprite.height*2;
     Rectangle enemyRec;
     enemyRec.width = enemySprite.width/2;
     enemyRec.height = enemySprite.height/4;
     Vector2 enemyPos;
-    enemyPos.x = SCREENWIDTH/2 - enemyRec.width/2;
+    enemyPos.x = SCREENWIDTH/2 + SCREENWIDTH/3 - enemyRec.width/2;
     enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
     enemyRec.x = 2*enemySprite.width/2;
     enemyRec.y = 3*enemySprite.height/4;
@@ -162,7 +162,10 @@ int main(int argc, char *argv[]){
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=lastx;
-                UnloadTexture(enemySprite);
+                y=lasty;
+                bitten.width=bitten.width/2;
+                bitten.height=bitten.height/2;
+                //UnloadTexture(enemySprite);
             }
         }
         
@@ -206,6 +209,8 @@ int main(int argc, char *argv[]){
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                bitten.width=bitten.width*2;
+                bitten.height=bitten.height*2;
                 LoadTexture("assets/bitten.png");
             }
             if (y==4){
@@ -217,7 +222,6 @@ int main(int argc, char *argv[]){
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                LoadTexture("assets/bitten.png");
                 if (audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
