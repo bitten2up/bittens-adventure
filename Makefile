@@ -30,7 +30,7 @@ PLATFORM              ?= PLATFORM_DESKTOP
 
 # Define project variables
 PROJECT_NAME          ?= bittens-adventure
-PROJECT_VERSION       ?= 0.01
+PROJECT_VERSION       ?= 0.2
 PROJECT_BUILD_PATH    ?= ./src
 
 RAYLIB_PATH           ?= ../../raylib
