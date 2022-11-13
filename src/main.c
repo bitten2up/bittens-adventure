@@ -164,9 +164,6 @@ int main(int argc, char *argv[]){
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=lastx;
                 y=lasty;
-                bitten.width=bitten.width/2;
-                bitten.height=bitten.height/2;
-                //UnloadTexture(enemySprite);
             }
         }
         
@@ -210,8 +207,6 @@ int main(int argc, char *argv[]){
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                bitten.width=bitten.width*2;
-                bitten.height=bitten.height*2;
                 LoadTexture("assets/bitten.png");
             }
             if (y==4){
