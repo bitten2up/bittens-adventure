@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 ////////////////////////////////////////////////////////////
 // MAIN file                                              //
 ////////////////////////////////////////////////////////////
@@ -57,7 +58,7 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
-    // check command line paramiters to see if we need to exit or not because of a command line parm
+    // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
     else if (startup==2)    { patch(0); }
