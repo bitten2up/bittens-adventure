@@ -46,6 +46,8 @@ RAYLIB_LIBTYPE        ?= STATIC
 # Build mode for project: DEBUG or RELEASE
 BUILD_MODE            ?= RELEASE
 
+# Builds with discord rpc if true
+DISCORDRPC            ?= FALSE
 # Use Wayland display server protocol on Linux desktop (by default it uses X11 windowing system)
 # NOTE: This variable is only used for PLATFORM_OS: LINUX
 USE_WAYLAND_DISPLAY   ?= FALSE
@@ -190,7 +192,9 @@ endif
 #  -Wno-unused-value    ignore unused return values of some functions (i.e. fread())
 #  -D_DEFAULT_SOURCE    use with -std=c99 on Linux and PLATFORM_WEB, required for timespec
 CFLAGS = -std=gnu99 -Wall -Wno-missing-braces -Wunused-result -D_DEFAULT_SOURCE
-
+ifeq ($(DISCORDRPC),TRUE)
+    CFLAGS += -DDISCORD
+endif
 ifeq ($(BUILD_MODE),DEBUG)
     CFLAGS += -g3 -D_DEBUG
 else
@@ -323,6 +327,9 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         LDLIBS = -lraylib -ltmx -lxml2 -lopengl32 -lgdi32 -lwinmm -lz -L/c/raylib/raylib/src
         # Required for physac examples
         LDLIBS += -static -lpthread
+        ifeq ($(DISCORDRPC),TRUE)
+            LDLIBS += -ldiscord-rpc
+        endif
     endif
     ifeq ($(PLATFORM_OS),LINUX)
         # Libraries for Debian GNU/Linux desktop compiling

@@ -39,9 +39,12 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <time.h>
 #include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
 #include "raylib-tmx.h"
+
 
 ////////////////////////////////////////////////////////////
 // ENGINE HEADERS
@@ -52,6 +55,98 @@ SOFTWARE.
 #include "bit_loadfile.h"        // file loading functionality
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"
+
+////////////////////////////////////////////////////////////
+// Discord RPC headers
+////////////////////////////////////////////////////////////
+
+#ifdef DISCORD
+#include <discord_rpc.h>
+//#include "discord_game_sdk.h"
+#endif
+
+////////////////////////////////////////////////////////////
+// some stuff needed for Discord RPC
+// feel free to hide this if your ide supports it
+////////////////////////////////////////////////////////////
+
+#ifdef DISCORD
+static const char* APPLICATION_ID = "905202859686129784";
+static int64_t StartTime;
+static int SendPresence = 1;
+
+static void updateDiscordPresence(char* message)
+{
+    DiscordRichPresence discordPresence;
+    memset(&discordPresence, 0, sizeof(discordPresence));
+    discordPresence.state = "Bittens adventure";
+    discordPresence.details = message;
+    discordPresence.startTimestamp = 1507665886;
+    discordPresence.endTimestamp = 1507665886;
+    discordPresence.largeImageKey = "window";
+    discordPresence.largeImageText = "bittens-adventure";
+    discordPresence.joinSecret = "MTI4NzM0OjFpMmhuZToxMjMxMjM= ";
+    Discord_UpdatePresence(&discordPresence);
+}
+
+
+static void handleDiscordReady(const DiscordUser* connectedUser)
+{
+    printf("\nDiscord: connected to user %s#%s - %s\n",
+           connectedUser->username,
+           connectedUser->discriminator,
+           connectedUser->userId);
+}
+
+static void handleDiscordDisconnected(int errcode, const char* message)
+{
+    printf("\nDiscord: disconnected (%d: %s)\n", errcode, message);
+}
+
+static void handleDiscordError(int errcode, const char* message)
+{
+    printf("\nDiscord: error (%d: %s)\n", errcode, message);
+}
+
+static void handleDiscordJoin(const char* secret)
+{
+    printf("\nDiscord: join (%s)\n", secret);
+}
+/*
+static void handleDiscordSpectate(const char* secret)
+{
+    printf("\nDiscord: spectate (%s)\n", secret);
+}
+
+static void handleDiscordJoinRequest(const DiscordUser* request)
+{
+    int response = -1;
+    char yn[4];
+    printf("\nDiscord: join request from %s#%s - %s\n",
+           request->username,
+           request->discriminator,
+           request->userId);
+        response = DISCORD_REPLY_NO;
+    if (response != -1) {
+        Discord_Respond(request->userId, response);
+    }
+}
+*/
+static void discordInit()
+{
+    DiscordEventHandlers handlers;
+    memset(&handlers, 0, sizeof(handlers));
+    handlers.ready = handleDiscordReady;
+    handlers.disconnected = handleDiscordDisconnected;
+    handlers.errored = handleDiscordError;
+    handlers.joinGame = handleDiscordJoin;
+    //handlers.spectateGame = handleDiscordSpectate;
+    //handlers.joinRequest = handleDiscordJoinRequest;
+    Discord_Initialize(APPLICATION_ID, &handlers, 1, NULL);
+}
+
+#endif
+
 
 ////////////////////////////////////////////////////////////
 // Entrypoint of Engine
@@ -127,6 +222,14 @@ int main(int argc, char *argv[]){
     int lastx=0;
     int lasty=0;
     bool collision = false;
+    // lastly in our setting up, setup discord rpc
+    #ifdef DISCORD
+    TraceLog(LOG_INFO, "Discord RPC activating");
+    discordInit();
+    TraceLog(LOG_INFO, "Discord RPC activated");
+    updateDiscordPresence("Discord rpc testing");
+    TraceLog(LOG_INFO, "Discord RPC status set");
+    #endif
     // game loop
     while (!WindowShouldClose())
     {
@@ -164,6 +267,9 @@ int main(int argc, char *argv[]){
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=lastx;
                 y=lasty;
+                #ifdef DISCORD
+                updateDiscordPresence("Overworld");
+                #endif
             }
         }
         
@@ -230,12 +336,18 @@ int main(int argc, char *argv[]){
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (audio)          PlayMusicStream(bgm);
+                #ifdef DISCORD
+                char buf[20];
+                sprintf(buf, "battling %s", enemy);
+                updateDiscordPresence(buf);
+                #endif
             }//*/
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
                 SaveStorageValue(SAVEDY, y);
             }
         }
+        
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
@@ -256,6 +368,9 @@ int main(int argc, char *argv[]){
             DrawFPS(10, 10);
         EndDrawing();
     }
+    #ifdef DISCORD
+    Discord_Shutdown();
+    #endif
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
     CloseAudioDevice(); 
     UnloadTMX(map);

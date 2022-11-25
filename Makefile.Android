@@ -49,19 +49,19 @@ endif
 # Required path variables
 # NOTE: JAVA_HOME must be set to JDK (using OpenJDK 13)
 JAVA_HOME              ?= C:/open-jdk
-ANDROID_HOME           ?= C:/android-sdk
 ANDROID_NDK            ?= C:/android-ndk
+ANDROID_HOME           ?= C:/android-sdk
 ANDROID_TOOLCHAIN      ?= $(ANDROID_NDK)/toolchains/llvm/prebuilt/windows-x86_64
-ANDROID_BUILD_TOOLS    ?= $(ANDROID_HOME)/build-tools/33.0.0
+ANDROID_BUILD_TOOLS    ?= $(ANDROID_HOME)/build-tools/29.0.0
 ANDROID_PLATFORM_TOOLS  = $(ANDROID_HOME)/platform-tools
 
 # Android project configuration variables
 PROJECT_NAME           ?= Bittens_adventure
 PROJECT_LIBRARY_NAME   ?= main
-PROJECT_BUILD_ID       ?= android
+PROJECT_BUILD_ID       ?= dev.bitten2up
 PROJECT_BUILD_PATH     ?= $(PROJECT_BUILD_ID).$(PROJECT_NAME)
-PROJECT_RESOURCES_PATH ?= resources
-PROJECT_SOURCE_FILES   ?= src/main.cpp
+PROJECT_RESOURCES_PATH ?= assets
+PROJECT_SOURCE_FILES   ?= src/main.c, src/bit_battle.c, src/bit_cmdlineParams.c src/bit_diag.c src/bit_loadfile.c src/bit_tmxload.c src/web-test.c
 NATIVE_APP_GLUE_PATH    = $(ANDROID_NDK)/sources/android/native_app_glue
 
 # Some source files are placed in directories, when compiling to some 
@@ -83,7 +83,7 @@ APP_SCREEN_ORIENTATION ?= landscape
 APP_KEYSTORE_PASS      ?= bitten2up
 
 # Library type used for raylib: STATIC (.a) or SHARED (.so/.dll)
-RAYLIB_LIBTYPE         ?= STATIC
+RAYLIB_LIBTYPE         ?= SHARED
 
 # Library path for libraylib.a/libraylib.so
 RAYLIB_LIB_PATH         = $(RAYLIB_PATH)\src
@@ -127,7 +127,7 @@ CFLAGS += -Wall -Wa,--noexecstack -Wformat -Werror=format-security -no-canonical
 CFLAGS += -DANDROID -DPLATFORM_ANDROID -D__ANDROID_API__=$(ANDROID_API_VERSION)
 
 # Paths containing required header files
-INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(NATIVE_APP_GLUE_PATH)
+INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(NATIVE_APP_GLUE_PATH) -I./include -IC:/Users/seant/AppData/Local/Android/Sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android
 
 # Linker options
 LDFLAGS = -Wl,-soname,lib$(PROJECT_LIBRARY_NAME).so -Wl,--exclude-libs,libatomic.a 
@@ -139,7 +139,7 @@ LDFLAGS += -L. -L$(PROJECT_BUILD_PATH)/obj -L$(PROJECT_BUILD_PATH)/lib/$(ANDROID
 
 # Define any libraries to link into executable
 # if you want to link libraries (libname.so or libname.a), use the -lname
-LDLIBS = -lm -lc -lraylib -llog -landroid -lEGL -lGLESv2 -lOpenSLES -ldl
+LDLIBS = -lm -lc -lraylib -llog -landroid -lEGL -lGLESv2 -lOpenSLES -ldl -ltmx -lz -lxml2
 
 # Generate target objects list from PROJECT_SOURCE_FILES
 OBJS = $(patsubst %.c, $(PROJECT_BUILD_PATH)/obj/%.o, $(PROJECT_SOURCE_FILES))
@@ -164,6 +164,7 @@ all: create_temp_project_dirs \
 create_temp_project_dirs:
 	if not exist $(PROJECT_BUILD_PATH) mkdir $(PROJECT_BUILD_PATH) 
 	if not exist $(PROJECT_BUILD_PATH)\obj mkdir $(PROJECT_BUILD_PATH)\obj
+	if not exist $(PROJECT_BUILD_PATH)\obj\src mkdir $(PROJECT_BUILD_PATH)\obj\src
 	if not exist $(PROJECT_BUILD_PATH)\src mkdir $(PROJECT_BUILD_PATH)\src
 	if not exist $(PROJECT_BUILD_PATH)\src\com mkdir $(PROJECT_BUILD_PATH)\src\com
 	if not exist $(PROJECT_BUILD_PATH)\src\com\$(APP_COMPANY_NAME) mkdir $(PROJECT_BUILD_PATH)\src\com\$(APP_COMPANY_NAME)
@@ -190,10 +191,13 @@ endef
 copy_project_required_libs:
 ifeq ($(RAYLIB_LIBTYPE),SHARED)
 	copy /Y $(RAYLIB_LIB_PATH)\libraylib.so $(PROJECT_BUILD_PATH)\lib\$(ANDROID_ARCH_NAME)\libraylib.so 
+	cp ./lib/arm64-v8a/*.so $(PROJECT_BUILD_PATH)\lib\$(ANDROID_ARCH_NAME)
 endif
 ifeq ($(RAYLIB_LIBTYPE),STATIC)
 	copy /Y $(RAYLIB_LIB_PATH)\libraylib.a $(PROJECT_BUILD_PATH)\lib\$(ANDROID_ARCH_NAME)\libraylib.a 
+	copy /Y .\lib\arm64-v8a\*.so $(PROJECT_BUILD_PATH)\lib\$(ANDROID_ARCH_NAME)
 endif
+
 
 # Copy project required resources: strings.xml, icon.png, assets
 # NOTE: Required strings.xml is generated and game resources are copied to assets folder
@@ -229,7 +233,7 @@ generate_android_manifest:
 	@echo         android:versionCode="$(APP_VERSION_CODE)" android:versionName="$(APP_VERSION_NAME)" ^> >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
 	@echo     ^<uses-sdk android:minSdkVersion="$(ANDROID_API_VERSION)" /^> >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
 	@echo     ^<uses-feature android:glEsVersion="0x00020000" android:required="true" /^> >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
-	@echo     ^<application android:allowBackup="false" android:label="@string/app_name" android:icon="@drawable/icon" ^> >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
+	@echo     ^<application android:allowBackup="false" android:label="@string/app_name" android:icon="@drawable/icon" android:debuggable="true"^> >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
 	@echo         ^<activity android:name="com.$(APP_COMPANY_NAME).$(APP_PRODUCT_NAME).NativeLoader" >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
 	@echo             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml
 	@echo             android:configChanges="orientation|keyboardHidden|screenSize" >> $(PROJECT_BUILD_PATH)/AndroidManifest.xml

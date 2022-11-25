@@ -22,4 +22,5 @@ typedef enum {
     SAVEDX   = 1,
     SAVEDY    = 2
 } SaveData;
+//#define DISCORD
 #endif
