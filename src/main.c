@@ -173,14 +173,14 @@ int main(int argc, char *argv[]){
     bitten.width=bitten.width;
     bitten.height=bitten.height;
     Rectangle bittenRec;
-    bittenRec.width = bitten.width/2;
+    bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
+    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/3;
     bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
-    bittenRec.x = 2*bitten.width/2;
-    bittenRec.y = 3*bitten.height/4;
+    bittenRec.x = 4*bitten.width/4;
+    bittenRec.y = bitten.height/4;
     // Enemy sprite loading
     Texture2D enemySprite = LoadTexture("assets/enemy.png");
     enemySprite.width=enemySprite.width*2;
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]){
     Vector2 enemyPos;
     enemyPos.x = SCREENWIDTH/2 + SCREENWIDTH/3 - enemyRec.width/2;
     enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
-    enemyRec.x = 2*enemySprite.width/2;
+    enemyRec.x = 2*enemySprite.width/4;
     enemyRec.y = 3*enemySprite.height/4;
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
@@ -277,10 +277,26 @@ int main(int argc, char *argv[]){
             if (IsKeyDown(KEY_RIGHT)){
                 lastx=x;
                 x -= 1;
+                bittenRec.x = 3*bitten.width/4;
+                ticker+=1;
+                if (ticker==5)
+                {
+                    frame+=1;
+                    bittenRec.y=frame*bitten.height/4;
+                    ticker=0;
+                }
             }
             if (IsKeyDown(KEY_LEFT)){
                 lastx=x;
                 x += 1;
+                bittenRec.x = 2*bitten.width/4;
+                ticker+=1;
+                if (ticker==5)
+                {
+                    frame+=1;
+                    bittenRec.y=frame*bitten.height/4;
+                    ticker=0;
+                }
             }
             if (IsKeyDown(KEY_UP)){
                 lasty=y;
@@ -297,7 +313,7 @@ int main(int argc, char *argv[]){
             if (IsKeyDown(KEY_DOWN)) {
                 lasty=y;
                 y -= 1;
-                bittenRec.x = bitten.width/2;
+                bittenRec.x = bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
                 {
