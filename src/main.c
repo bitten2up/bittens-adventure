@@ -170,8 +170,8 @@ int main(int argc, char *argv[]){
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
     Texture2D bitten = LoadTexture("assets/bitten.png");
-    bitten.width=bitten.width;
-    bitten.height=bitten.height;
+    bitten.width=2*bitten.width;
+    bitten.height=2*bitten.height;
     Rectangle bittenRec;
     bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
