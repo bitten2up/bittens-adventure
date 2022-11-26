@@ -112,7 +112,7 @@ static void handleDiscordJoin(const char* secret)
 {
     printf("\nDiscord: join (%s)\n", secret);
 }
-/*
+
 static void handleDiscordSpectate(const char* secret)
 {
     printf("\nDiscord: spectate (%s)\n", secret);
@@ -131,7 +131,7 @@ static void handleDiscordJoinRequest(const DiscordUser* request)
         Discord_Respond(request->userId, response);
     }
 }
-*/
+
 static void discordInit()
 {
     DiscordEventHandlers handlers;
@@ -140,8 +140,8 @@ static void discordInit()
     handlers.disconnected = handleDiscordDisconnected;
     handlers.errored = handleDiscordError;
     handlers.joinGame = handleDiscordJoin;
-    //handlers.spectateGame = handleDiscordSpectate;
-    //handlers.joinRequest = handleDiscordJoinRequest;
+    handlers.spectateGame = handleDiscordSpectate;
+    handlers.joinRequest = handleDiscordJoinRequest;
     Discord_Initialize(APPLICATION_ID, &handlers, 1, NULL);
 }
 
