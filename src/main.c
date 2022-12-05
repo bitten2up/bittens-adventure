@@ -54,7 +54,7 @@ SOFTWARE.
 #include "bit_cmdlineParams.h"   // command line functionality
 #include "bit_loadfile.h"        // file loading functionality
 #include "bit_battle.h"          // battle functionality
-#include "bit_patch.h"
+#include "bit_patch.h"           // dll patching
 
 ////////////////////////////////////////////////////////////
 // Discord RPC headers
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]){
     SetTargetFPS(20);
     #endif
     #ifndef debugsprites
-    SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
+    SetTargetFPS(6);               // we want our game running at 60 fps to avoid audio skipping
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
@@ -219,9 +219,14 @@ int main(int argc, char *argv[]){
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     tmx_map* map = LoadTMX("assets/maps/bit_towntest.tmx");
-    int lastx=0;
-    int lasty=0;
-    bool collision = false;
+    
+    
+    // last x and y to go back to
+    int lastx=x;
+    int lasty=y;
+    //bool collision = false;
+    int collision=checkCollision(map, (x/32+map->width)/2, (y/32+map->width)/2);
+    TraceLog(LOG_INFO, "%i", collision);
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
     TraceLog(LOG_INFO, "Discord RPC activating");
@@ -276,9 +281,15 @@ int main(int argc, char *argv[]){
         else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)){
                 lastx=x;
-                x -= 1;
+                x -= 32;
+                int tilex = (map->width/2)-(x/32)-3;
+                int tiley = (map->height/2)-(y/32)-4;
                 bittenRec.x = 3*bitten.width/4;
                 ticker+=1;
+                int collision=checkCollision(map, tilex, tiley);
+                TraceLog(LOG_INFO, "collision: %i", collision);
+                TraceLog(LOG_INFO,"tilex: %i", tilex);
+                TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
                     frame+=1;
@@ -288,7 +299,7 @@ int main(int argc, char *argv[]){
             }
             if (IsKeyDown(KEY_LEFT)){
                 lastx=x;
-                x += 1;
+                x += 32;
                 bittenRec.x = 2*bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
@@ -300,7 +311,7 @@ int main(int argc, char *argv[]){
             }
             if (IsKeyDown(KEY_UP)){
                 lasty=y;
-                y += 1;
+                y += 32;
                 bittenRec.x = 2*bitten.width/2;
                 ticker+=1;
                 if (ticker==5)
@@ -312,7 +323,7 @@ int main(int argc, char *argv[]){
             }
             if (IsKeyDown(KEY_DOWN)) {
                 lasty=y;
-                y -= 1;
+                y -= 32;
                 bittenRec.x = bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
@@ -321,7 +332,8 @@ int main(int argc, char *argv[]){
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
-            }/*
+            }
+            /*
             if (x>=4){
                 battle=true;
                 enemy = "Dummy";
@@ -341,7 +353,8 @@ int main(int argc, char *argv[]){
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (audio)          PlayMusicStream(bgm);
-            }*/
+            }
+            *//*
             if ((x < -178 && x > -230) && (y>-180 && y<-130)) {
                 battle=true;
                 enemy = "Generator";
@@ -389,6 +402,7 @@ int main(int argc, char *argv[]){
     #endif
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
     CloseAudioDevice(); 
+    //free_layers(chests);
     UnloadTMX(map);
     UnloadTexture(bitten);
     CloseWindow();

@@ -390,7 +390,8 @@ PROJECT_SOURCE_FILES ?= \
     src/bit_loadfile.c \
     src/bit_battle.c \
     src/bit_diag.c  \
-    src/bit_patch.c
+    src/bit_patch.c \
+    src/bit_collision.c
 
 # Define all object files from source files
 OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
