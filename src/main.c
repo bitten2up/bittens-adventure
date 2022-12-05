@@ -77,12 +77,14 @@ static int SendPresence = 1;
 
 static void updateDiscordPresence(char* message)
 {
+    time_t seconds;
+    seconds = time(NULL);
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
     discordPresence.state = "Bittens adventure";
     discordPresence.details = message;
-    discordPresence.startTimestamp = 1507665886;
-    discordPresence.endTimestamp = 1507665886;
+    discordPresence.startTimestamp = seconds;
+    discordPresence.endTimestamp = seconds+818;
     discordPresence.largeImageKey = "window";
     discordPresence.largeImageText = "bittens-adventure";
     discordPresence.joinSecret = "MTI4NzM0OjFpMmhuZToxMjMxMjM= ";
@@ -279,6 +281,11 @@ int main(int argc, char *argv[]){
                 updateDiscordPresence("Overworld");
                 #endif
             }
+            #ifdef DISCORD
+            char buf[20];
+            sprintf(buf, "battling %s", enemy);
+            updateDiscordPresence(buf);
+            #endif
         }
         
         else if (!battle & !title){
@@ -334,28 +341,7 @@ int main(int argc, char *argv[]){
                     ticker=0;
                 }
             }
-            /*
-            if (x>=4){
-                battle=true;
-                enemy = "Dummy";
-                enemyHP=0;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
-                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                LoadTexture("assets/bitten.png");
-            }
-            if (y==4){
-                battle=true;
-                enemy = "Generator";
-                enemyHP=100;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
-                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                UnloadMusicStream(bgm);
-                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                if (audio)          PlayMusicStream(bgm);
-            }
-            */
+            
             tilex = (map->width/2)-((x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             tiley = (map->height/2)-((y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             //TraceLog(LOG_INFO,"tilex: %i", tilex);
@@ -364,7 +350,7 @@ int main(int argc, char *argv[]){
             collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 battle=true;
-                enemy = "Generator";
+                enemy = "chest monster";
                 enemyHP=0;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
@@ -372,11 +358,6 @@ int main(int argc, char *argv[]){
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (audio)          PlayMusicStream(bgm);
-                #ifdef DISCORD
-                char buf[20];
-                sprintf(buf, "battling %s", enemy);
-                updateDiscordPresence(buf);
-                #endif
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
