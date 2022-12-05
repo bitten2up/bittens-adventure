@@ -55,7 +55,7 @@ SOFTWARE.
 #include "bit_loadfile.h"        // file loading functionality
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
-
+#include "bit_collision.h"       // colision handling
 ////////////////////////////////////////////////////////////
 // Discord RPC headers
 ////////////////////////////////////////////////////////////
@@ -170,8 +170,8 @@ int main(int argc, char *argv[]){
     SetWindowIcon(LoadImage("assets/window.png"));
     // setup player sprite
     Texture2D bitten = LoadTexture("assets/bitten.png");
-    bitten.width=2*bitten.width;
-    bitten.height=2*bitten.height;
+    bitten.width=bitten.width;
+    bitten.height=bitten.height;
     Rectangle bittenRec;
     bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
@@ -273,8 +273,8 @@ int main(int argc, char *argv[]){
             if (bit_battleInput(&battle, &enemyHP)){
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
-                x=lastx;
-                y=lasty;
+                x=(lastx*8);
+                y=(lasty*8);
                 #ifdef DISCORD
                 updateDiscordPresence("Overworld");
                 #endif
@@ -283,8 +283,7 @@ int main(int argc, char *argv[]){
         
         else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)){
-                lastx=x;
-                x-=1;
+                lastx=x/8;
                 bittenRec.x = 3*bitten.width/4;
                 ticker+=1;
                 //TraceLog(LOG_INFO, "collision: %i", collision);
@@ -292,42 +291,44 @@ int main(int argc, char *argv[]){
                 //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
+                    x -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
             }
             if (IsKeyDown(KEY_LEFT)){
-                lastx=x;
-                x += 1;
+                lastx=x/8;
+                
                 bittenRec.x = 2*bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    x += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
             }
             if (IsKeyDown(KEY_UP)){
-                lasty=y;
-                y += 1;
+                lasty=y/8;
                 bittenRec.x = 2*bitten.width/2;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    y += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
             }
             if (IsKeyDown(KEY_DOWN)) {
-                lasty=y;
-                y -= 1;
+                lasty=y/8;
                 bittenRec.x = bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    y -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -355,48 +356,12 @@ int main(int argc, char *argv[]){
                 if (audio)          PlayMusicStream(bgm);
             }
             */
-            tilex = (map->width/2)-(x/32)-4; // dont ask me wtf this has to be subtracted by 4 idk
-            tiley = (map->height/2)-(y/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            tilex = (map->width/2)-((x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            tiley = (map->height/2)-((y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             //TraceLog(LOG_INFO,"tilex: %i", tilex);
             //TraceLog(LOG_INFO,"tiley: %i", tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
-            int collision=checkCollision(map, tilex, tiley);
-            if (collision==2) {
-                battle=true;
-                enemy = "Generator";
-                enemyHP=0;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
-                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                UnloadMusicStream(bgm);
-                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                if (audio)          PlayMusicStream(bgm);
-                #ifdef DISCORD
-                char buf[20];
-                sprintf(buf, "battling %s", enemy);
-                updateDiscordPresence(buf);
-                #endif
-            }//*/
-            //TraceLog(LOG_INFO, "collision: %i", collision);
-            collision=checkCollision(map, tilex+1, tiley);
-            if (collision==2) {
-                battle=true;
-                enemy = "Generator";
-                enemyHP=0;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
-                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
-                UnloadMusicStream(bgm);
-                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                if (audio)          PlayMusicStream(bgm);
-                #ifdef DISCORD
-                char buf[20];
-                sprintf(buf, "battling %s", enemy);
-                updateDiscordPresence(buf);
-                #endif
-            }
-            //TraceLog(LOG_INFO, "collision: %i", collision);
-            collision=checkCollision(map, tilex, tiley-1);
+            collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 battle=true;
                 enemy = "Generator";
