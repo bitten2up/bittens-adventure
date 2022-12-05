@@ -355,11 +355,11 @@ int main(int argc, char *argv[]){
                 if (audio)          PlayMusicStream(bgm);
             }
             */
-            tilex = (map->width/2)-(x/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
-            tiley = (map->height/2)-(y/32)-4; // dont ask me wtf this has to be subtracted by 4 idk
-            TraceLog(LOG_INFO,"tilex: %i", tilex);
-            TraceLog(LOG_INFO,"tiley: %i", tiley);
-            TraceLog(LOG_INFO, "collision: %i", collision);
+            tilex = (map->width/2)-(x/32)-4; // dont ask me wtf this has to be subtracted by 4 idk
+            tiley = (map->height/2)-(y/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            //TraceLog(LOG_INFO,"tilex: %i", tilex);
+            //TraceLog(LOG_INFO,"tiley: %i", tiley);
+            //TraceLog(LOG_INFO, "collision: %i", collision);
             int collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 battle=true;
@@ -377,6 +377,42 @@ int main(int argc, char *argv[]){
                 updateDiscordPresence(buf);
                 #endif
             }//*/
+            //TraceLog(LOG_INFO, "collision: %i", collision);
+            collision=checkCollision(map, tilex+1, tiley);
+            if (collision==2) {
+                battle=true;
+                enemy = "Generator";
+                enemyHP=0;
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                UnloadMusicStream(bgm);
+                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
+                if (audio)          PlayMusicStream(bgm);
+                #ifdef DISCORD
+                char buf[20];
+                sprintf(buf, "battling %s", enemy);
+                updateDiscordPresence(buf);
+                #endif
+            }
+            //TraceLog(LOG_INFO, "collision: %i", collision);
+            collision=checkCollision(map, tilex, tiley-1);
+            if (collision==2) {
+                battle=true;
+                enemy = "Generator";
+                enemyHP=0;
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
+                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                UnloadMusicStream(bgm);
+                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
+                if (audio)          PlayMusicStream(bgm);
+                #ifdef DISCORD
+                char buf[20];
+                sprintf(buf, "battling %s", enemy);
+                updateDiscordPresence(buf);
+                #endif
+            }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
                 SaveStorageValue(SAVEDY, y);
@@ -397,7 +433,7 @@ int main(int argc, char *argv[]){
                 DrawTMX(map, x, y, WHITE);
                 DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
                 char xandy[20];
-                snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", x, y);
+                snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);
                 DrawText(xandy, 20,10,20, BLACK);
             }
             DrawFPS(10, 10);
