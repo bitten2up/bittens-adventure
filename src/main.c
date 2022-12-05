@@ -282,8 +282,8 @@ int main(int argc, char *argv[]){
             if (IsKeyDown(KEY_RIGHT)){
                 lastx=x;
                 x -= 32;
-                int tilex = (map->width/2)-(x/32)-3;
-                int tiley = (map->height/2)-(y/32)-4;
+                int tilex = (map->width/2)-(x/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+                int tiley = (map->height/2)-(y/32)-4; // dont ask me wtf this has to be subtracted by 4 idk
                 bittenRec.x = 3*bitten.width/4;
                 ticker+=1;
                 int collision=checkCollision(map, tilex, tiley);
