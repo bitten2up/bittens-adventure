@@ -328,7 +328,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         # Required for physac examples
         LDLIBS += -static -lpthread
         ifeq ($(DISCORDRPC),TRUE)
-            LDLIBS += -ldiscord-rpc
+            LDLIBS += -ldiscord-rpc -lstdc++
         endif
     endif
     ifeq ($(PLATFORM_OS),LINUX)

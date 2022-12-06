@@ -30,6 +30,12 @@ typedef enum {
     BACKGROUND_LAYER    = 1,
     CHESTS_LAYER        = 2
 } BittenLayers;
-    
+
+
+////////////////////////////////////////////////////////////
+// Structs, defined here for ease of use
+////////////////////////////////////////////////////////////
+
+
 //#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag, also from my testing you need to compile it twice, once with CC=gcc then with CC=g++ due to a linking error and not being cpp compatible
 #endif
