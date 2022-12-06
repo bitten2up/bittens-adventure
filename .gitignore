@@ -2,3 +2,5 @@
 dev.*
 *.sav
 *.sav*
+emsdk
+raylib
