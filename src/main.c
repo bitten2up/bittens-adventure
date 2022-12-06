@@ -44,7 +44,9 @@ SOFTWARE.
 #include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
 #include "raylib-tmx.h"
-
+#if defined(PLATFORM_WEB)
+    #include <emscripten/emscripten.h>
+#endif
 
 ////////////////////////////////////////////////////////////
 // ENGINE HEADERS

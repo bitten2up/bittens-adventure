@@ -57,7 +57,7 @@ BUILD_WEB_ASYNCIFY    ?= TRUE
 BUILD_WEB_SHELL       ?= minshell.html
 BUILD_WEB_HEAP_SIZE   ?= 134217728
 BUILD_WEB_RESOURCES   ?= TRUE
-BUILD_WEB_RESOURCES_PATH  ?= resources
+BUILD_WEB_RESOURCES_PATH  ?= assets
 
 # Use cross-compiler for PLATFORM_RPI
 ifeq ($(PLATFORM),PLATFORM_RPI)
@@ -164,7 +164,7 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     # HTML5 emscripten compiler
     # WARNING: To compile to HTML5, code must be redesigned
     # to use emscripten.h and emscripten_set_main_loop()
-    CC = emcc
+    CC ?= emcc
 endif
 
 # Define default make program: MAKE
@@ -290,7 +290,7 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     # --memory-init-file 0       # to avoid an external memory initialization code file (.mem)
     # --preload-file resources   # specify a resources folder for data compilation
     # --source-map-base          # allow debugging in browser with source map
-    LDFLAGS += -s USE_GLFW=3 -s TOTAL_MEMORY=$(BUILD_WEB_HEAP_SIZE) -s FORCE_FILESYSTEM=1
+    LDFLAGS += -s USE_GLFW=3 -s TOTAL_MEMORY=$(BUILD_WEB_HEAP_SIZE) -s FORCE_FILESYSTEM=1 -ltmx -lxml2
     
     # Build using asyncify
     ifeq ($(BUILD_WEB_ASYNCIFY),TRUE)
