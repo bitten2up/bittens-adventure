@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ raylib-rewrite-because-yes ]
+    branches: [ next, master ]
   pull_request:
-    branches: [ raylib-rewrite-because-yes ]
+    branches: [ next, master ]
 
 jobs:
   build:
