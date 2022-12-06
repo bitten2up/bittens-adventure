@@ -18,7 +18,7 @@ jobs:
     - name: install Raylib
       run: cd emsdk; source ./emsdk_env.sh; cd ..; git clone https://github.com/raysan5/raylib; cd raylib/src; emcc -c rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rshapes.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtextures.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rtext.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2; emcc -c utils.c -Os -Wall -DPLATFORM_WEB; emcc -c raudio.c -Os -Wall -DPLATFORM_WEB; emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o;
     - name: Compile
-      run: cd emsdk; source ./emsdk_env.sh; cd ..; cd src; emcc -o bitten.html web-test.c -Os --preload-file ../assets -Wall ../raylib/src/libraylib.a -I../include/emuscripten -I../raylib/src/ -L../lib/emuscripten -L../raylib/src/libraylib.a -s USE_GLFW=3 -s ASYNCIFY --shell-file ../raylib/src/shell.html -DPLATFORM_WEB;
+      run: cd emsdk; source ./emsdk_env.sh; cd ..; cd src; make PLATFORM=PLATFORM_WEB CC=emcc PATH=$PATH RAYLIB_PATH=./raylib -B;
     - uses: actions/upload-artifact@v2
       with:
         name: ubuntu

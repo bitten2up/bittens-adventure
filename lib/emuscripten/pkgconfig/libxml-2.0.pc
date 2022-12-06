@@ -1,0 +1,13 @@
+prefix=/home/runner/work/tmx/tmx/tmx_1.2.0-html5
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+modules=0
+
+Name: libXML
+Version: 2.9.9
+Description: libXML library version2.
+Requires:
+Libs: -L${libdir} -lxml2
+Libs.private:      -lm  
+Cflags: -I${includedir}/libxml2 
