@@ -20,7 +20,7 @@ jobs:
     - name: Compile
       run: cd emsdk; source ./emsdk_env.sh; cd ..; make PLATFORM=PLATFORM_WEB CC=emcc PATH=$PATH RAYLIB_PATH=./raylib -B;
     - name: setup publishing to github pages
-      run: mkdir website; cp bittens-adventure.html website/index.html; cp bitten-adventure.js website/bitten.js; cp bittens-adventure.wasm website/bitten.wasm; cp bittens-adventure.data website/bitten.data; echo "adventure.bitten2up.dev" > website/CNAME
+      run: mkdir website; cp bittens-adventure.html website/index.html; cp bittens-adventure.js website/bittens-adventure.js; cp bittens-adventure.wasm website/bittens-adventure.wasm; cp bittens-adventure.data website/bittens-adventure.data; echo "adventure.bitten2up.dev" > website/CNAME
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
       env:
