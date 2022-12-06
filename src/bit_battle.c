@@ -130,7 +130,7 @@ void ftoa(float n, char* res, int afterpoint)
 double frame=0;
 bool battleAnimation=true;
 static void battleIntro();
-bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
+bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy)
 {
     SCREENWIDTH;
     SCREENHEIGHT;
@@ -141,13 +141,13 @@ bool bit_BattleDraw(float* playerHPw, char** enemyw, float* enemyHPw)
     }
     diagDraw(true);
     // draw the text, to be implmented into diagDraw
-    if (enemyHPw==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
+    if (enemy->hp==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/4*2.5, 10, WHITE);
-    DrawText(*enemyw, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
+    DrawText(enemy->name, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
     char working[5];
     ftoa(*playerHPw, working, 4);
     DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/4*2.6, 10, WHITE);
-    ftoa(*enemyHPw, working, 4);
+    ftoa(enemy->hp, working, 4);
     DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.6, 10, WHITE);
     return true;
 }

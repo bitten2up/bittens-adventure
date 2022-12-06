@@ -203,8 +203,11 @@ int main(int argc, char *argv[]){
     // define some vars
     bool title=true;
     bool battle=false;
+    /*
     char* enemy;
     float enemyHP;
+    */
+    bit_enemy enemy;
     float playerHP = 200;
     int ticker = 0;
     int frame = 4;
@@ -274,7 +277,7 @@ int main(int argc, char *argv[]){
             }
         }
         else if (battle){
-            if (bit_battleInput(&battle, &enemyHP)){
+            if (bit_battleInput(&battle, &enemy.hp)){
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 x=(lastx*8);
@@ -352,9 +355,10 @@ int main(int argc, char *argv[]){
             collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 battle=true;
-                enemy = "chest monster";
-                enemyHP=0;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy, enemyHP);
+                strcpy(enemy.name, "chest monster");
+                //enemy = "chest monster";
+                enemy.hp=0;
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", &enemy);
                 bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
                 bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
@@ -371,7 +375,7 @@ int main(int argc, char *argv[]){
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             else if (battle) {
-                if (bit_BattleDraw(&playerHP, &enemy, &enemyHP)){
+                if (bit_BattleDraw(&playerHP, &enemy)){
                     DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
                     DrawTextureRec(enemySprite, enemyRec, enemyPos, WHITE);
                 }

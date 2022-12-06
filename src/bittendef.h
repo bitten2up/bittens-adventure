@@ -36,6 +36,14 @@ typedef enum {
 // Structs, defined here for ease of use
 ////////////////////////////////////////////////////////////
 
+struct _bit_enemy {
+    char name[20];
+    float hp;
+};
+
+typedef struct _bit_enemy bit_enemy;
+
+//#define bit_enemy struct bit_enemy
 
 //#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag, also from my testing you need to compile it twice, once with CC=gcc then with CC=g++ due to a linking error and not being cpp compatible
 #endif
