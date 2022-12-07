@@ -38,6 +38,7 @@ SOFTWARE.
 // STD and Raylib
 ////////////////////////////////////////////////////////////
 #include <stdio.h>
+#include <stdbool.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
@@ -162,7 +163,11 @@ int main(int argc, char *argv[]){
     if (startup==0)   { return 1; }
     else if (startup==2)    { patch(0); }
     // init the window
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, GAME_NAME);
+    bit_settings settings;
+    settings.width=SCREENWIDTH;
+    settings.height=SCREENHEIGHT;
+    settings.audio=true;
+    InitWindow(settings.width, settings.height, GAME_NAME);
     InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(20);
@@ -181,8 +186,8 @@ int main(int argc, char *argv[]){
     bittenRec.height = bitten.height/4;
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/3;
-    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
+    bittenPos.x = settings.width/2 - bittenRec.width/3;
+    bittenPos.y = settings.height/2 - bittenRec.height;
     bittenRec.x = 4*bitten.width/4;
     bittenRec.y = bitten.height/4;
     // Enemy sprite loading
@@ -193,8 +198,8 @@ int main(int argc, char *argv[]){
     enemyRec.width = enemySprite.width/2;
     enemyRec.height = enemySprite.height/4;
     Vector2 enemyPos;
-    enemyPos.x = SCREENWIDTH/2 + SCREENWIDTH/3 - enemyRec.width/2;
-    enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
+    enemyPos.x = settings.width/2 + settings.width/3 - enemyRec.width/2;
+    enemyPos.y = settings.height/2 - enemyRec.height;
     enemyRec.x = 2*enemySprite.width/4;
     enemyRec.y = 3*enemySprite.height/4;
     // setup music
@@ -214,10 +219,9 @@ int main(int argc, char *argv[]){
     int x = 0;
     int y = 0;
     //load save file, should be in a function but eh dont got time
-    bool audio = true;
     #ifndef PLATFORM_WEB
     if (LoadStorageValue(MUSIC)==0){ // for somereason writing a bool set to true saves as a 0
-        audio=false;
+        settings.audio=false;
         PauseMusicStream(bgm);
     }
     if (LoadStorageValue(SAVEDX))       x=LoadStorageValue(SAVEDX);
@@ -252,34 +256,38 @@ int main(int argc, char *argv[]){
         if (title){
             if (IsKeyReleased(KEY_TAB))     patch(0);
             if (IsKeyReleased(KEY_ENTER)) title=false;
-            if (IsKeyReleased(KEY_M) & audio) {
+            if (IsKeyReleased(KEY_M) & settings.audio) {
                 StopMusicStream(bgm);
-                audio=false;
+                settings.audio=false;
                 #ifndef PLATFORM_WEB
                 SaveStorageValue(MUSIC, 0);
                 #endif
             }
             else if (IsKeyReleased(KEY_M)){
                 PlayMusicStream(bgm);
-                audio=true;
+                settings.audio=true;
                 SaveStorageValue(MUSIC, 1);
             }
             if (IsKeyPressed(KEY_F)){
                 int display = GetCurrentMonitor();
                 if (!IsWindowFullscreen()){
                     SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
+                    settings.height=GetMonitorHeight(display);
+                    settings.width=GetMonitorWidth(display);
                     ToggleFullscreen();
                 }
                 else {
                     ToggleFullscreen();
-                    SetWindowSize(SCREENWIDTH, SCREENHEIGHT);
+                    settings.width=SCREENWIDTH;
+                    settings.height=SCREENHEIGHT;
+                    SetWindowSize(settings.width, settings.height);
                 }
             }
         }
         else if (battle){
             if (bit_battleInput(&battle, &enemy.hp)){
-                bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
-                bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
+                bittenPos.x = settings.width/2 - bittenRec.width;
+                bittenPos.y = settings.height/2 - bittenRec.height;
                 x=(lastx*8);
                 y=(lasty*8);
                 #ifdef DISCORD
@@ -359,11 +367,11 @@ int main(int argc, char *argv[]){
                 //enemy = "chest monster";
                 enemy.hp=0;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", &enemy);
-                bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-                bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+                bittenPos.x = settings.width/4- bittenRec.width/2;
+                bittenPos.x = settings.height/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                if (audio)          PlayMusicStream(bgm);
+                if (settings.audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);

@@ -13,7 +13,7 @@
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
-
+//#include <stdbool.h>
 ////////////////////////////////////////////////////////////
 // Game storage
 ////////////////////////////////////////////////////////////
@@ -37,6 +37,7 @@ typedef enum {
 ////////////////////////////////////////////////////////////
 typedef struct _bit_enemy bit_enemy;
 typedef struct _bit_player bit_player;
+typedef struct _bit_settings bit_settings; // to be implemented
 
 struct _bit_enemy {
     char name[20];
@@ -49,7 +50,11 @@ struct _bit_player {
     char pronouns[10];
 };
 
-
+struct _bit_settings {
+    int width;
+    int height;
+    bool audio;
+};
 
 //#define bit_enemy struct bit_enemy
 
