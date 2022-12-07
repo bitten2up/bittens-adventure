@@ -35,13 +35,22 @@ typedef enum {
 ////////////////////////////////////////////////////////////
 // Structs, defined here for ease of use
 ////////////////////////////////////////////////////////////
+typedef struct _bit_enemy bit_enemy;
+typedef struct _bit_player bit_player;
 
 struct _bit_enemy {
     char name[20];
     float hp;
 };
 
-typedef struct _bit_enemy bit_enemy;
+struct _bit_player {
+    int health;
+    char name[20];
+    char pronouns[10];
+    
+};
+
+
 
 //#define bit_enemy struct bit_enemy
 
