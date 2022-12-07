@@ -47,7 +47,6 @@ struct _bit_player {
     int health;
     char name[20];
     char pronouns[10];
-    
 };
 
 
