@@ -33,7 +33,7 @@ PROJECT_NAME          ?= bittens-adventure
 PROJECT_VERSION       ?= 0.2
 PROJECT_BUILD_PATH    ?= ./src
 
-RAYLIB_PATH           ?= ../../raylib
+RAYLIB_PATH           ?= ../raylib
 
 # Locations of raylib.h and libraylib.a/libraylib.so
 # NOTE: Those variables are only used for PLATFORM_OS: LINUX, BSD
@@ -290,7 +290,7 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     # --memory-init-file 0       # to avoid an external memory initialization code file (.mem)
     # --preload-file resources   # specify a resources folder for data compilation
     # --source-map-base          # allow debugging in browser with source map
-    LDFLAGS += -s USE_GLFW=3 -s TOTAL_MEMORY=$(BUILD_WEB_HEAP_SIZE) -s FORCE_FILESYSTEM=1 -ltmx -lxml2
+    LDFLAGS += -s USE_GLFW=3 -s TOTAL_MEMORY=$(BUILD_WEB_HEAP_SIZE) -s FORCE_FILESYSTEM=1 -ltmx -lxml2 -Llib/emuscripten -s WASM=0 -Os
     
     # Build using asyncify
     ifeq ($(BUILD_WEB_ASYNCIFY),TRUE)

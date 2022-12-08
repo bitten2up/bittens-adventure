@@ -229,8 +229,12 @@ int main(int argc, char *argv[]){
     #endif
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
+    #ifdef PLATFORM_WEB
+    tmx_map* map = LoadTMX("assets/bit_towntest.tmx");
+    #endif
+    #ifndef PLATFORM_WEB
     tmx_map* map = LoadTMX("assets/maps/bit_towntest.tmx");
-    
+    #endif
     
     // last x and y to go back to
     int lastx=x;
@@ -239,8 +243,8 @@ int main(int argc, char *argv[]){
     int tilex;
     int tiley;
     //bool collision = false;
-    int collision=checkCollision(map, (x/32+map->width)/2, (y/32+map->width)/2);
-    TraceLog(LOG_INFO, "%i", collision);
+    int collision;//checkCollision(map, (x/32+map->width)/2, (y/32+map->width)/2);
+    //TraceLog(LOG_INFO, "%i", collision);
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
     TraceLog(LOG_INFO, "Discord RPC activating");

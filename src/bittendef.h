@@ -9,7 +9,12 @@
 #define debug
 //#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
 // files
+#ifndef PLATFORM_WEB
 #define SETTINGS_FILE "bitten.sav"
+#endif
+#ifdef PLATFORM_WEB
+#define SETTINGS_FILE "assets/bitten.sav"
+#endif
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
