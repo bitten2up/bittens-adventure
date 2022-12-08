@@ -4,3 +4,7 @@ dev.*
 *.sav*
 emsdk
 raylib
+.vscode
+.idea
+bittens-adventure.apk
+bittens-adventure.iml
