@@ -50,13 +50,11 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 // Drawing
 ////////////////////////////////////////////////////////////
-void diagDraw(bool diagDrawrect)
+void diagDraw(bool diagDrawrect, bit_settings* settings)
 {
-    SCREENWIDTH;
-    SCREENHEIGHT;
     // draw rectangle if defined
     if (diagDrawrect)
     {
-       DrawRectangle(0, SCREENHEIGHT-200, SCREENWIDTH, SCREENHEIGHT-60, BLACK);
+       DrawRectangle(0, settings->height-(settings->height/3), settings->width, settings->height-(settings->height/3), BLACK);
     }
 }

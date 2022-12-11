@@ -3,6 +3,7 @@
 */
 #ifndef bittendef
 #define bittendef
+#include <stdbool.h>
 // set the title of the game
 #define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
@@ -59,6 +60,8 @@ struct _bit_settings {
     int width;
     int height;
     bool audio;
+    bool modded;
+    bool silent; // dont show modded text durring gameplay
 };
 
 //#define bit_enemy struct bit_enemy

@@ -25,5 +25,5 @@ SOFTWARE.
 #ifndef BIT_DIAG_H
 #define BIT_DIAG_H
 #include <stdbool.h>
-void diagDraw(bool diagDrawrect);
+void diagDraw(bool diagDrawrect, bit_settings* settings);
 #endif

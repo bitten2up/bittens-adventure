@@ -9,3 +9,6 @@ raylib
 bittens-adventure.apk
 bittens-adventure.iml
 assets/window-export.png
+settings.cfg
+.vscode/settings.json
+patch.dll

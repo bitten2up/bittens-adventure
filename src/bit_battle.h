@@ -23,7 +23,7 @@ SOFTWARE.
 */
 #ifndef BIT_BATTLE_H
 #define BIT_BATTLE_H
-bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy);
+bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings);
 bool bit_battleInput(bool *battleEnabled, float* health);
 void bit_BattleTest();
 #endif

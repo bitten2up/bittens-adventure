@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1"
+    "cmake.sourceDirectory": "${workspaceFolder}/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1",
+    "files.associations": {
+        "stdbool.h": "c"
+    }
 }

@@ -45,7 +45,7 @@ SOFTWARE.
 #include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
 #include "raylib-tmx.h"
-#if defined(PLATFORM_WEB)
+#ifdef PLATFORM_WEB
     #include <emscripten/emscripten.h>
 #endif
 
@@ -158,15 +158,18 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
-    // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
-    int startup = cmdlineParams(argc, argv);
-    if (startup==0)   { return 1; }
-    else if (startup==2)    { patch(0); }
-    // init the window
+    // apply default settings
     bit_settings settings;
     settings.width=SCREENWIDTH;
     settings.height=SCREENHEIGHT;
     settings.audio=true;
+    settings.modded=false;
+    settings.silent=false;
+    // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
+    int startup = cmdlineParams(argc, argv);
+    if (startup==0)   { return 1; }
+    else if (startup==2)    { patch(0, &settings); settings.modded=true;}
+    // init the window
     InitWindow(settings.width, settings.height, GAME_NAME);
     InitAudioDevice();
     #ifdef debugsprites
@@ -247,46 +250,19 @@ int main(int argc, char *argv[]){
     //TraceLog(LOG_INFO, "%i", collision);
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
-    TraceLog(LOG_INFO, "Discord RPC activating");
+    TraceLog(LOG_DEBUG, "Discord RPC activating");
     discordInit();
-    TraceLog(LOG_INFO, "Discord RPC activated");
+    TraceLog(LOG_DEBUG, "Discord RPC activated");
     updateDiscordPresence("Discord rpc testing");
-    TraceLog(LOG_INFO, "Discord RPC status set");
+    TraceLog(LOG_DEBUG, "Discord RPC status set");
     #endif
     // game loop
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
         if (title){
-            if (IsKeyReleased(KEY_TAB))     patch(0);
+            if (IsKeyReleased(KEY_TAB))     {patch(1, &settings); SetWindowSize(settings.width, settings.height); settings.modded=true;}
             if (IsKeyReleased(KEY_ENTER)) title=false;
-            if (IsKeyReleased(KEY_M) & settings.audio) {
-                StopMusicStream(bgm);
-                settings.audio=false;
-                #ifndef PLATFORM_WEB
-                SaveStorageValue(MUSIC, 0);
-                #endif
-            }
-            else if (IsKeyReleased(KEY_M)){
-                PlayMusicStream(bgm);
-                settings.audio=true;
-                SaveStorageValue(MUSIC, 1);
-            }
-            if (IsKeyPressed(KEY_F)){
-                int display = GetCurrentMonitor();
-                if (!IsWindowFullscreen()){
-                    SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
-                    settings.height=GetMonitorHeight(display);
-                    settings.width=GetMonitorWidth(display);
-                    ToggleFullscreen();
-                }
-                else {
-                    ToggleFullscreen();
-                    settings.width=SCREENWIDTH;
-                    settings.height=SCREENHEIGHT;
-                    SetWindowSize(settings.width, settings.height);
-                }
-            }
         }
         else if (battle){
             if (bit_battleInput(&battle, &enemy.hp)){
@@ -370,7 +346,7 @@ int main(int argc, char *argv[]){
                 strcpy(enemy.name, "chest monster");
                 //enemy = "chest monster";
                 enemy.hp=0;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", &enemy);
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s hp: %i", enemy.name);
                 bittenPos.x = settings.width/4- bittenRec.width/2;
                 bittenPos.x = settings.height/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
@@ -382,12 +358,43 @@ int main(int argc, char *argv[]){
                 SaveStorageValue(SAVEDY, y);
             }
         }
+        if (IsKeyReleased(KEY_M) & settings.audio) {
+            StopMusicStream(bgm);
+            settings.audio=false;
+            #ifndef PLATFORM_WEB
+            SaveStorageValue(MUSIC, 0);
+            #endif
+        }
+        else if (IsKeyReleased(KEY_M)){
+            PlayMusicStream(bgm);
+            settings.audio=true;
+            SaveStorageValue(MUSIC, 1);
+        }
+        if (IsKeyPressed(KEY_F)){
+            int display = GetCurrentMonitor();
+            if (!IsWindowFullscreen()){
+                SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display)); // todo fix teleportation that happens here
+                settings.height=GetMonitorHeight(display);
+                settings.width=GetMonitorWidth(display);
+                ToggleFullscreen();
+                bittenPos.x = settings.width/2 - bittenRec.width/3;
+                bittenPos.y = settings.height/2 - bittenRec.height;
+            }
+            else {
+                ToggleFullscreen();
+                settings.width=SCREENWIDTH;
+                settings.height=SCREENHEIGHT;
+                SetWindowSize(settings.width, settings.height);
+                bittenPos.x = settings.width/2 - bittenRec.width/3;
+                bittenPos.y = settings.height/2 - bittenRec.height;
+            }
+        }
         
         BeginDrawing();
             ClearBackground(WHITE);
             if (title) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             else if (battle) {
-                if (bit_BattleDraw(&playerHP, &enemy)){
+                if (bit_BattleDraw(&playerHP, &enemy, &settings)){
                     DrawTextureRec(bitten,bittenRec,bittenPos,WHITE);
                     DrawTextureRec(enemySprite, enemyRec, enemyPos, WHITE);
                 }
@@ -400,6 +407,7 @@ int main(int argc, char *argv[]){
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);
                 DrawText(xandy, 20,10,20, BLACK);
             }
+            if (settings.modded && title | !settings.silent)         DrawText("modded", 10, settings.height-20, 15, RED);
             DrawFPS(10, 10);
         EndDrawing();
     }

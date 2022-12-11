@@ -127,38 +127,36 @@ void ftoa(float n, char* res, int afterpoint)
 ////////////////////////////////////////////////////////////
 // battle display
 ////////////////////////////////////////////////////////////
-double frame=0;
+int frame=0;
 bool battleAnimation=true;
 static void battleIntro();
-bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy)
+bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
 {
-    SCREENWIDTH;
-    SCREENHEIGHT;
     if (battleAnimation)
     {
-        battleIntro();
+        battleIntro(settings);
         return false;
     }
-    diagDraw(true);
+    diagDraw(true, settings);
     // draw the text, to be implmented into diagDraw
     if (enemy->hp==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
-    DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/4*2.5, 10, WHITE);
-    DrawText(enemy->name, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.5, 10, WHITE);
+    DrawText("Bitten", settings->width/4, settings->height/4*2.5, 10, WHITE);
+    DrawText(enemy->name, settings->width/4*3, settings->height/4*2.5, 10, WHITE);
     char working[5];
     ftoa(*playerHPw, working, 4);
-    DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/4*2.6, 10, WHITE);
+    DrawText(working, settings->width/4, settings->height/4*2.6, 10, WHITE);
     ftoa(enemy->hp, working, 4);
-    DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/4*2.6, 10, WHITE);
+    DrawText(working, settings->width/4*3, settings->height/4*2.6, 10, WHITE);
     return true;
 }
 
-static void battleIntro()
+static void battleIntro(bit_settings* settings)
 {
-    float wframe=frame-10;
-	if (frame>=10)  DrawRectangle(0, wframe*50, SCREENWIDTH, SCREENHEIGHT, BLACK);
-    else DrawRectangle(0, SCREENHEIGHT-frame*50, SCREENWIDTH, frame*50, BLACK);
-	frame+=0.25;
-	if (frame==15)
+    float wframe=(frame-(settings->height))*3;
+	if (wframe>=0)  DrawRectangle(0, wframe, settings->width, settings->height, BLACK);
+    else DrawRectangle(0, settings->height-wframe, settings->width, wframe+settings->height, BLACK);
+	frame+=1;
+	if (wframe>=settings->height - settings->height/3)
 	{
 	    battleAnimation=false;
 	}
@@ -194,7 +192,7 @@ bool bit_battleInput(bool* battleEnabled, float* health)
 
 void bit_BattleTest()
 {/*
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "bittens adventure BATTLE TEST");
+    InitWindow(settings->width, settings->height, "bittens adventure BATTLE TEST");
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
     SetTargetFPS(30);
@@ -209,15 +207,15 @@ void bit_BattleTest()
     bittenRec.height = bitten.height/3;
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = SCREENWIDTH/2 - bittenRec.width/2;
-    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
+    bittenPos.x = settings->width/2 - bittenRec.width/2;
+    bittenPos.y = settings->height/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/3;
     // ah this is defined when we go in battle, but rn i dont want to add this in the function
     enemy = "Dummy";
     enemyHP=0;
-    bittenPos.x = SCREENWIDTH/4- bittenRec.width/2;
-    bittenPos.x = SCREENHEIGHT/4 - bittenRec.height/2;
+    bittenPos.x = settings->width/4- bittenRec.width/2;
+    bittenPos.x = settings->height/4 - bittenRec.height/2;
     while (!WindowShouldClose())
     {
         // to be replaced with a function, but for now its ok
