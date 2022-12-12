@@ -90,7 +90,6 @@ static void updateDiscordPresence(char* message)
     discordPresence.endTimestamp = seconds+818;
     discordPresence.largeImageKey = "window";
     discordPresence.largeImageText = "bittens-adventure";
-    discordPresence.joinSecret = "MTI4NzM0OjFpMmhuZToxMjMxMjM= ";
     Discord_UpdatePresence(&discordPresence);
 }
 
