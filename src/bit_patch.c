@@ -39,18 +39,14 @@ SOFTWARE.
 #include <windows.h>
 #include <winbase.h>
 #include <windef.h>
-typedef UINT (CALLBACK* BITPATCH)(bit_settings* settings);
+typedef void (CALLBACK* BITPATCH)(bit_settings* settings);
 BITPATCH bitPatch;
 DWORD dwParam1;
 UINT  uParam2, uReturnVal;
 #endif
 /* Declare imported function so that we can actually use it. */
-int patch(int consent, bit_settings* settings)
+void *patch(bit_settings* settings)
 {
-    if (consent!=1){
-        printf("dll patching option supplied, this could be dangerous due to the fact that it can do anything it wants to. use with causion\nclose this window now to cancel loading it otherwise press enter\n");
-        system("pause");
-    }
     #ifdef _WIN32
     int status = 0;
     HINSTANCE bitLibrary = LoadLibrary("patch.dll");
@@ -63,13 +59,13 @@ int patch(int consent, bit_settings* settings)
         }
         else
         {
-            printf("\n%i\n", bitPatch(settings));
+            bitPatch(settings);
         }
         FreeLibrary(bitLibrary);
     }
     else {
         printf("Failed to load patch.dll");
+        return;
     }
-    return status;
     #endif
 }

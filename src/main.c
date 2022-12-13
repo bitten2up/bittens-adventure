@@ -39,9 +39,13 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdarg.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <pthread.h>
 #include <raylib.h>
 #define RAYLIB_TMX_IMPLEMENTATION
 #include "raylib-tmx.h"
@@ -157,6 +161,7 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
+    pthread_t patching; // for patching
     // apply default settings
     bit_settings settings;
     settings.width=SCREENWIDTH;
@@ -167,7 +172,7 @@ int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { patch(0, &settings); settings.modded=true;}
+    else if (startup==2)    { pthread_create(&patching, NULL, patch, &settings);}
     // init the window
     InitWindow(settings.width, settings.height, GAME_NAME);
     InitAudioDevice();
@@ -260,7 +265,7 @@ int main(int argc, char *argv[]){
     {
         UpdateMusicStream(bgm);
         if (title){
-            if (IsKeyReleased(KEY_TAB))     {patch(1, &settings); SetWindowSize(settings.width, settings.height); settings.modded=true;}
+            if (IsKeyReleased(KEY_TAB))     {pthread_create(&patching, NULL, patch, &settings); settings.modded=true;}
             if (IsKeyReleased(KEY_ENTER)) title=false;
         }
         else if (battle){
