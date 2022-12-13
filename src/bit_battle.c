@@ -129,6 +129,7 @@ void ftoa(float n, char* res, int afterpoint)
 ////////////////////////////////////////////////////////////
 int frame=0;
 bool battleAnimation=true;
+bool grow=true;
 static void battleIntro();
 bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
 {
@@ -149,17 +150,21 @@ bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
     DrawText(working, settings->width/4*3, settings->height/4*2.6, 10, WHITE);
     return true;
 }
-
+// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 static void battleIntro(bit_settings* settings)
 {
-    float wframe=(frame-(settings->height))*3;
-	if (wframe>=0)  DrawRectangle(0, wframe, settings->width, settings->height, BLACK);
-    else DrawRectangle(0, settings->height-wframe, settings->width, wframe+settings->height, BLACK);
-	frame+=1;
-	if (wframe>=settings->height - settings->height/3)
+    const float wframe=((frame*5));
+    if (wframe==(settings->height)){
+        grow=false;
+    }
+
+	if (wframe==settings->height/3 && !grow)
 	{
 	    battleAnimation=false;
+        grow=true;
 	}
+    if (grow)                        {DrawRectangle(0, settings->height-wframe, settings->width, settings->height, BLACK);frame+=1;}
+    else                             {DrawRectangle(0, settings->height-wframe, settings->width, settings->height, BLACK);frame-=1;}
 	return;
 }
 
