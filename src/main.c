@@ -272,8 +272,8 @@ int main(int argc, char *argv[]){
             if (bit_battleInput(&battle, &enemy.hp)){
                 bittenPos.x = settings.width/2 - bittenRec.width;
                 bittenPos.y = settings.height/2 - bittenRec.height;
-                x=(lastx*8);
-                y=(lasty*8);
+                x=(lastx);
+                y=(lasty);
                 #ifdef DISCORD
                 updateDiscordPresence("Overworld");
                 #endif
@@ -287,7 +287,6 @@ int main(int argc, char *argv[]){
         
         else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)){
-                lastx=x/8;
                 bittenRec.x = 3*bitten.width/4;
                 ticker+=1;
                 //TraceLog(LOG_INFO, "collision: %i", collision);
@@ -295,6 +294,7 @@ int main(int argc, char *argv[]){
                 //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
+                    lastx=x;
                     x -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -302,12 +302,11 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_LEFT)){
-                lastx=x/8;
-                
                 bittenRec.x = 2*bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    lastx=x;
                     x += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -315,11 +314,11 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_UP)){
-                lasty=y/8;
                 bittenRec.x = 2*bitten.width/2;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    lasty=y;
                     y += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -327,11 +326,11 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_DOWN)) {
-                lasty=y/8;
                 bittenRec.x = bitten.width/4;
                 ticker+=1;
                 if (ticker==5)
                 {
+                    lasty=y;
                     y -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
