@@ -67,4 +67,5 @@ void* patch(bit_settings* settings)
         return;
     }
     #endif
+    return;
 }
