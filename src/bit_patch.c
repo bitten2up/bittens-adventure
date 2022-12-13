@@ -45,10 +45,9 @@ DWORD dwParam1;
 UINT  uParam2, uReturnVal;
 #endif
 /* Declare imported function so that we can actually use it. */
-void *patch(bit_settings* settings)
+void* patch(bit_settings* settings)
 {
     #ifdef _WIN32
-    int status = 0;
     HINSTANCE bitLibrary = LoadLibrary("patch.dll");
     if (bitLibrary != NULL)
     {

@@ -196,7 +196,7 @@ ifeq ($(DISCORDRPC),TRUE)
     CFLAGS += -DDISCORD
 endif
 ifeq ($(BUILD_MODE),DEBUG)
-    CFLAGS += -g3 -D_DEBUG
+    CFLAGS += -g -O0 -D_DEBUG# --enable-checking
 else
     ifeq ($(PLATFORM),PLATFORM_WEB)
         ifeq ($(BUILD_WEB_ASYNCIFY),TRUE)

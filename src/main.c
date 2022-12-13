@@ -172,7 +172,7 @@ int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { pthread_create(&patching, NULL, patch, &settings);}
+    else if (startup==2)    { settings.modded=true; pthread_create(&patching, NULL, patch, &settings);}
     // init the window
     InitWindow(settings.width, settings.height, GAME_NAME);
     InitAudioDevice();
@@ -265,7 +265,7 @@ int main(int argc, char *argv[]){
     {
         UpdateMusicStream(bgm);
         if (title){
-            if (IsKeyReleased(KEY_TAB))     {pthread_create(&patching, NULL, patch, &settings); settings.modded=true;}
+            if (IsKeyReleased(KEY_TAB))     {settings.modded=true; pthread_create(&patching, NULL, patch, &settings);}
             if (IsKeyReleased(KEY_ENTER)) title=false;
         }
         else if (battle){
@@ -392,6 +392,9 @@ int main(int argc, char *argv[]){
                 bittenPos.x = settings.width/2 - bittenRec.width/3;
                 bittenPos.y = settings.height/2 - bittenRec.height;
             }
+        }
+        if (!IsWindowFullscreen()){
+            SetWindowSize(settings.width, settings.height);
         }
         
         BeginDrawing();
