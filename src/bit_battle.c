@@ -153,7 +153,7 @@ bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 static void battleIntro(bit_settings* settings)
 {
-    const float wframe=((frame*5));
+    const int wframe=((frame*5));
     if (wframe==(settings->height)){
         grow=false;
     }
