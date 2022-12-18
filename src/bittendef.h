@@ -4,6 +4,7 @@
 #ifndef bittendef
 #define bittendef
 #include <stdbool.h>
+#include "raylib.h"
 // set the title of the game
 #define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
@@ -21,7 +22,7 @@
 #define SCREENHEIGHT 450
 //#include <stdbool.h>
 ////////////////////////////////////////////////////////////
-// Game storage
+// Game storage enum
 ////////////////////////////////////////////////////////////
 typedef enum {
     MUSIC    = 0,
@@ -30,7 +31,7 @@ typedef enum {
 } SaveData;
 
 ////////////////////////////////////////////////////////////
-// tmx layers with names
+// tmx layers with names emum
 ////////////////////////////////////////////////////////////
 typedef enum {
     BACKGROUND_LAYER    = 1,
@@ -39,24 +40,45 @@ typedef enum {
 
 
 ////////////////////////////////////////////////////////////
-// Structs, defined here for ease of use
+// Structs and enums, defined here for ease of use
 ////////////////////////////////////////////////////////////
+typedef enum   _bit_state bit_state;
+typedef struct _bit_sprite bit_sprite;
 typedef struct _bit_enemy bit_enemy;
 typedef struct _bit_player bit_player;
 typedef struct _bit_settings bit_settings; // to be implemented
+typedef struct _bit_game bit_game; // everything for the game
 
-struct _bit_enemy {
-    char name[20];
-    float hp;
+enum _bit_state {
+    title,
+    overworld,
+    battle,
 };
 
-struct _bit_player {
-    int health;
+struct _bit_sprite
+{
+    Texture2D img;
+    Rectangle rec;
+    Vector2 pos;
+};
+
+struct _bit_enemy
+{
+    bit_sprite sprite;
+    char name[20];
+    float health;
+};
+
+struct _bit_player
+{
+    bit_sprite sprite;
     char name[20];
     char pronouns[10];
+    float health;
 };
 
-struct _bit_settings {
+struct _bit_settings
+{
     int width;
     int height;
     bool audio;
@@ -64,7 +86,75 @@ struct _bit_settings {
     bool silent; // dont show modded text durring gameplay
 };
 
+struct _bit_game
+{
+    bit_settings settings;
+    bit_player player;
+    bit_enemy enemy;
+    bit_state state;
+};
+
 //#define bit_enemy struct bit_enemy
 
 //#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag, also from my testing you need to compile it twice, once with CC=gcc then with CC=g++ due to a linking error and not being cpp compatible
+
+// called from main.c
+#ifdef DEFINE_MAIN
+/*
+ player defines
+*/
+// player sprite
+    #define bitten game.player.sprite.img
+// player rectangle aka what we see of the sprite
+    #define bittenRec game.player.sprite.rec
+// position of player
+    #define bittenPos game.player.sprite.pos
+
+/*
+* enemy defines
+*/
+// enemy sprite
+    #define enemySprite game.enemy.sprite.img
+// enemy rectangle aka what we see of the sprite
+    #define enemyRec game.enemy.sprite.rec
+// position of enemy
+    #define enemyPos game.enemy.sprite.pos
+
+/*
+* gamestate defines
+*/
+    #define state game.state
+    #define isTitle state==title
+    #define isBattle state==battle
+    #define isOverworld state==overworld
+#else
+// not main.c
+/*
+ player defines
+*/
+// player sprite
+    #define bitten game->player.sprite.img
+// player rectangle aka what we see of the sprite
+    #define bittenRec game->player.sprite.rec
+// position of player
+    #define bittenPos game->player.sprite.pos
+
+/*
+* enemy defines
+*/
+// enemy sprite
+    #define enemySprite game->enemy.sprite.img
+// enemy rectangle aka what we see of the sprite
+    #define enemyRec game->enemy.sprite.rec
+// position of enemy
+    #define enemyPos game->enemy.sprite.pos
+
+/*
+* gamestate defines
+*/
+    #define state game->state
+    #define isTitle state==title
+    #define isBattle state==battle
+    #define isOverworld state==overworld
+#endif
 #endif

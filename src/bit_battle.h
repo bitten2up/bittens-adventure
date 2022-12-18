@@ -24,6 +24,6 @@ SOFTWARE.
 #ifndef BIT_BATTLE_H
 #define BIT_BATTLE_H
 bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings);
-bool bit_battleInput(bool *battleEnabled, float* health);
+bool bit_battleInput(bit_game* game);
 void bit_BattleTest();
 #endif

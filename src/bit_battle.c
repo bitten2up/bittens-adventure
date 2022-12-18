@@ -75,7 +75,7 @@ void reverse(char* str, int len)
         j--;
     }
 }
- 
+
 // Converts a given integer x to string str[].
 // d is the number of digits required in the output.
 // If d is more than the number of digits in x,
@@ -87,38 +87,38 @@ int intToStr(int x, char str[], int d)
         str[i++] = (x % 10) + '0';
         x = x / 10;
     }
- 
+
     // If number of digits required is more, then
     // add 0s at the beginning
     while (i < d)
         str[i++] = '0';
- 
+
     reverse(str, i);
     str[i] = '\0';
     return i;
 }
- 
+
 // Converts a floating-point/double number to a string.
 void ftoa(float n, char* res, int afterpoint)
 {
     // Extract integer part
     int ipart = (int)n;
- 
+
     // Extract floating part
     float fpart = n - (float)ipart;
- 
+
     // convert integer part to string
     int i = intToStr(ipart, res, 0);
- 
+
     // check for display option after point
     if (afterpoint != 0) {
         res[i] = '.'; // add dot
- 
+
         // Get the value of fraction part upto given no.
         // of points after dot. The third parameter
         // is needed to handle cases like 233.007
         fpart = fpart * pow(10, afterpoint);
- 
+
         intToStr((int)fpart, res + i + 1, afterpoint);
     }
 
@@ -140,16 +140,17 @@ bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
     }
     diagDraw(true, settings);
     // draw the text, to be implmented into diagDraw
-    if (enemy->hp==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
+    if (enemy->health==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", settings->width/4, settings->height/4*2.5, 10, WHITE);
     DrawText(enemy->name, settings->width/4*3, settings->height/4*2.5, 10, WHITE);
     char working[5];
     ftoa(*playerHPw, working, 4);
     DrawText(working, settings->width/4, settings->height/4*2.6, 10, WHITE);
-    ftoa(enemy->hp, working, 4);
+    ftoa(enemy->health, working, 4);
     DrawText(working, settings->width/4*3, settings->height/4*2.6, 10, WHITE);
     return true;
 }
+
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 static void battleIntro(bit_settings* settings)
 {
@@ -171,18 +172,22 @@ static void battleIntro(bit_settings* settings)
 ////////////////////////////////////////////////////////////
 // battle input
 ////////////////////////////////////////////////////////////
+#define playerHealth game->player.health
+#define enemyHealth game->enemy.health
+#define state game->state
 
-bool bit_battleInput(bool* battleEnabled, float* health)
+bool bit_battleInput(bit_game* game)
 {
-    if (IsKeyReleased(KEY_X) && *health==0)
+
+    if (IsKeyReleased(KEY_X) && enemyHealth==0)
     {
-        *battleEnabled=false;
+        state=overworld;
         battleAnimation=true;
         frame=0;
         return true; // we don't want to run the rest of the code
     }
     else if (IsKeyReleased(KEY_X)) {
-        *health-=10;
+        enemyHealth-=10;
         return false;
     }
     return false;

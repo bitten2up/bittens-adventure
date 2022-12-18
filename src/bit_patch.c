@@ -29,25 +29,29 @@ SOFTWARE.
 // How I would recomend you to use                        //
 // this is to load other dlls                             //
 ////////////////////////////////////////////////////////////
+// TODO: FIX WINDOWS.H RECTANGLE AND RAYLIB.H RECTANGLE
+// FROM CONFLECTING
+////////////////////////////////////////////////////////////
+
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include "bit_patch.h"
 //#include "raylib.h"
-#ifdef _WIN32
+#ifdef _WIN324
 #include <windows.h>
 #include <winbase.h>
 #include <windef.h>
-typedef void (CALLBACK* BITPATCH)(bit_settings* settings);
+typedef void (CALLBACK* BITPATCH)(bit_gamestate* game);
 BITPATCH bitPatch;
 DWORD dwParam1;
 UINT  uParam2, uReturnVal;
 #endif
 /* Declare imported function so that we can actually use it. */
-void* patch(bit_settings* settings)
+void patch(bit_game* game)
 {
-    #ifdef _WIN32
+    #ifdef _WIN324
     HINSTANCE bitLibrary = LoadLibrary("patch.dll");
     if (bitLibrary != NULL)
     {
@@ -58,7 +62,7 @@ void* patch(bit_settings* settings)
         }
         else
         {
-            bitPatch(settings);
+            bitPatch(game);
         }
         FreeLibrary(bitLibrary);
     }
