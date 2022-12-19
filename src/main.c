@@ -353,7 +353,6 @@ int main(int argc, char *argv[]){
             collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 state=battle;
-                battleAni=intro;
                 strcpy(game.enemy.name, "chest monster");
                 //enemy = "chest monster";
                 game.enemy.health=100;

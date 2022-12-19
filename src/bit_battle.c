@@ -135,17 +135,16 @@ static void battleIntro();
 static void battleAttack();
 bool bit_BattleDraw(bit_game* game)
 {
-    TraceLog(LOG_INFO, "value of battleani: %i", battleAni);
     if (battleAni==intro)
     {
         battleIntro(game);
         return false;
     }
-    else if ((battleAni==playerAttack) | (battleAni==enemyAttack)) // tmp
+    diagDraw(true, &game->settings);
+    if ((battleAni==playerAttack) | (battleAni==enemyAttack)) // tmp
     {
         battleAttack(game);
     }
-    diagDraw(true, &game->settings);
     // draw the text, to be implmented into diagDraw
     if (enemyHealth==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", game->settings.width/4, game->settings.height/3*2.5, 10, WHITE);
@@ -184,21 +183,24 @@ static void battleIntro(bit_game* game)
 
 static void battleAttack(bit_game* game)
 {
-    const int wframe=((frame*5));
-    if (wframe==(game->settings.height)){
-        grow=false;
+    // tmp player attack animation aka a fucking knife
+    if (battleAni==playerAttack) {
+        const int wframe=((frame*5));
+        TraceLog(LOG_INFO, "%i", wframe);
+        TraceLog(LOG_INFO, "%i", game->settings.width/3);
+        if (wframe>=(game->settings.width/5)){
+            grow=false;
+            enemyHealth-=10;
+        }
+	    if (wframe==0 && !grow)
+	    {
+	        battleAni=waitInput;
+            grow=true;
+            frame=0;
+	    }
+        if (grow)                        {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, GRAY);frame+=1;}
+        else                             {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, RED);frame-=1;}
     }
-
-	if (wframe==game->settings.height/3 && !grow)
-	{
-	    battleAni=waitInput;
-        grow=true;
-        frame=0;
-        enemyHealth-=10;
-	}
-   // battleAni=waitInput;
-    if (grow)                        {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame+=1;}
-    else                             {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame-=1;}
 	return;
 }
 ////////////////////////////////////////////////////////////
@@ -212,10 +214,10 @@ bool bit_battleInput(bit_game* game)
     {
         state=overworld;
         battleAni=intro;
-        frame=0;
         return true; // we don't want to run the rest of the code
     }
     else if (IsKeyReleased(KEY_X)) {
+        grow=true;
         battleAni=playerAttack;
         return false;
     }
