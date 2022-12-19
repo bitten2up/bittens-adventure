@@ -146,7 +146,7 @@ bool bit_BattleDraw(bit_game* game)
         battleAttack(game);
     }
     // draw the text, to be implmented into diagDraw
-    if (enemyHealth==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
+    if (enemyHealth<=0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", game->settings.width/4, game->settings.height/3*2.5, 10, WHITE);
     DrawText(game->enemy.name, game->settings.width/4*3, game->settings.height/3*2.5, 10, WHITE);
     char working[5];
