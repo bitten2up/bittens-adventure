@@ -55,6 +55,7 @@ enum _bit_battleAni {
     waitInput,
     playerAttack,
     enemyAttack,
+    gameover,
 };
 
 enum _bit_state {
@@ -144,6 +145,7 @@ battle animation defines
     #define isTitle state==title
     #define isBattle state==battle
     #define isOverworld state==overworld
+    #define isGameover state==gameover
 #else
 // not main.c
 /*
@@ -177,6 +179,7 @@ battle animation defines
 */
     #define state game->state
     #define isTitle state==title
+    #define isGameover state==gameover
     #define isBattle state==battle
     #define isOverworld state==overworld
 #endif

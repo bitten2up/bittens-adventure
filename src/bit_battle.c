@@ -165,12 +165,13 @@ static void battleIntro(bit_game* game)
         grow=false;
     }
 
-	if (wframe==game->settings.height/3 && !grow)
+	if (wframe<=game->settings.height/3 && !grow)
 	{
 	    battleAni=waitInput;
         grow=true;
         frame=0;
 	}
+    if (bittenHealth==0)        {state=gameover;    return true;}
    // battleAni=waitInput;
     if (grow)                        {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame+=1;}
     else                             {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame-=1;}
@@ -192,12 +193,28 @@ static void battleAttack(bit_game* game)
         }
 	    if (wframe==0 && !grow)
 	    {
-	        battleAni=waitInput;
+	        battleAni=enemyAttack;
             grow=true;
             frame=0;
 	    }
         if (grow)                        {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, GRAY);frame+=1;}
         else                             {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, RED);frame-=1;}
+    }
+    // tmp enemy attack animation
+    if (battleAni==enemyAttack) {
+        const int wframe=((frame*5));
+        if (wframe>=(game->settings.width/5)){
+            grow=false;
+            bittenHealth-=10;
+        }
+	    if (wframe==0 && !grow)
+	    {
+	        battleAni=waitInput;
+            grow=true;
+            frame=0;
+	    }
+        if (grow)                        {DrawRectangle(0, 0, wframe, game->settings.height, GRAY);frame+=1;}
+        else                             {DrawRectangle(0, 0, wframe, game->settings.height, RED);frame-=1;}
     }
 	return;
 }
@@ -207,7 +224,7 @@ static void battleAttack(bit_game* game)
 
 bool bit_battleInput(bit_game* game)
 {
-
+    if (bittenHealth==0)        {state=gameover; battleAni=intro; return true;} // tmp until x any y cords are in in bit_game
     if (IsKeyReleased(KEY_X) && enemyHealth==0)
     {
         state=overworld;

@@ -223,7 +223,6 @@ int main(int argc, char *argv[]){
     float enemyhealth;
     bit_enemy enemy;
     */
-    float playerhealth = 200;
     int ticker = 0;
     int frame = 4;
     int x = 0;
@@ -267,13 +266,14 @@ int main(int argc, char *argv[]){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
-        if (isTitle){
+        if ((isTitle) | (isGameover)){
             if (IsKeyReleased(KEY_TAB))     {
                 game.settings.modded=true;
                 pthread_create(&patching, NULL, patch, &game.settings);
             }
 
             if (IsKeyReleased(KEY_ENTER)) {
+                bittenHealth=10;
                 state=overworld;
 
             }
@@ -407,6 +407,7 @@ int main(int argc, char *argv[]){
         BeginDrawing();
             ClearBackground(WHITE);
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
+            if (isGameover) DrawText("GAMEOVER", 190, 200, 20, BLACK);
             else if (isBattle) {
                 if (bit_BattleDraw(&game)){
                     DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
