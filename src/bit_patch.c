@@ -39,6 +39,7 @@ SOFTWARE.
 #include <sys/stat.h>
 
 //#include "raylib.h"
+#include "bit_patch.h"
 
 #if defined(_WIN324)
 // To avoid conflicting windows.h symbols with raylib, some flags are defined
@@ -118,7 +119,6 @@ typedef struct tagBITMAPINFOHEADER {
 #include <winbase.h>
 #include <windef.h>
 #undef PlaySound
-#include "bit_patch.h"
 typedef void (CALLBACK* BITPATCH)(bit_game* game);
 BITPATCH bitPatch;
 DWORD dwParam1;

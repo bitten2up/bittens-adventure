@@ -42,12 +42,20 @@ typedef enum {
 ////////////////////////////////////////////////////////////
 // Structs and enums, defined here for ease of use
 ////////////////////////////////////////////////////////////
+typedef enum   _bit_battleAni bit_battleAni; // what state are we in animation for battle
 typedef enum   _bit_state bit_state;
 typedef struct _bit_sprite bit_sprite;
 typedef struct _bit_enemy bit_enemy;
 typedef struct _bit_player bit_player;
-typedef struct _bit_settings bit_settings; // to be implemented
-typedef struct _bit_game bit_game; // everything for the game
+typedef struct _bit_settings bit_settings;
+typedef struct _bit_game bit_game; // contains everything for the game
+
+enum _bit_battleAni {
+    intro,
+    waitInput,
+    playerAttack,
+    enemyAttack,
+};
 
 enum _bit_state {
     title,
@@ -92,6 +100,7 @@ struct _bit_game
     bit_player player;
     bit_enemy enemy;
     bit_state state;
+    bit_battleAni battleAni;
 };
 
 //#define bit_enemy struct bit_enemy
@@ -109,6 +118,8 @@ struct _bit_game
     #define bittenRec game.player.sprite.rec
 // position of player
     #define bittenPos game.player.sprite.pos
+// player health
+    #define bittenHealth game.player.health
 
 /*
 * enemy defines
@@ -119,6 +130,12 @@ struct _bit_game
     #define enemyRec game.enemy.sprite.rec
 // position of enemy
     #define enemyPos game.enemy.sprite.pos
+// enemy health
+    #define enemyHealth game.enemy.health
+/*
+battle animation defines
+*/
+    #define battleAni game.battleAni
 
 /*
 * gamestate defines
@@ -138,7 +155,8 @@ struct _bit_game
     #define bittenRec game->player.sprite.rec
 // position of player
     #define bittenPos game->player.sprite.pos
-
+// player health
+    #define bittenHealth game->player.health
 /*
 * enemy defines
 */
@@ -148,7 +166,12 @@ struct _bit_game
     #define enemyRec game->enemy.sprite.rec
 // position of enemy
     #define enemyPos game->enemy.sprite.pos
-
+// enemy health
+    #define enemyHealth game->enemy.health
+/*
+battle animation defines
+*/
+    #define battleAni game->battleAni
 /*
 * gamestate defines
 */

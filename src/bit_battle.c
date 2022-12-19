@@ -52,7 +52,9 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 // Engine headers
 ////////////////////////////////////////////////////////////
-
+#ifdef DEFINE_MAIN
+#undef DEFINE_MAIN
+#endif
 #include "bittendef.h"
 #include "bit_battle.h"
 #include "bit_diag.h"
@@ -128,53 +130,49 @@ void ftoa(float n, char* res, int afterpoint)
 // battle display
 ////////////////////////////////////////////////////////////
 int frame=0;
-bool battleAnimation=true;
 bool grow=true;
 static void battleIntro();
-bool bit_BattleDraw(float* playerHPw, bit_enemy* enemy, bit_settings* settings)
+bool bit_BattleDraw(bit_game* game)
 {
-    if (battleAnimation)
+    if (battleAni==intro)
     {
-        battleIntro(settings);
+        battleIntro(game);
         return false;
     }
-    diagDraw(true, settings);
+    diagDraw(true, &game->settings);
     // draw the text, to be implmented into diagDraw
-    if (enemy->health==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
-    DrawText("Bitten", settings->width/4, settings->height/4*2.5, 10, WHITE);
-    DrawText(enemy->name, settings->width/4*3, settings->height/4*2.5, 10, WHITE);
+    if (enemyHealth==0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
+    DrawText("Bitten", game->settings.width/4, game->settings.height/4*2.5, 10, WHITE);
+    DrawText(game->enemy.name, game->settings.width/4*3, game->settings.height/4*2.5, 10, WHITE);
     char working[5];
-    ftoa(*playerHPw, working, 4);
-    DrawText(working, settings->width/4, settings->height/4*2.6, 10, WHITE);
-    ftoa(enemy->health, working, 4);
-    DrawText(working, settings->width/4*3, settings->height/4*2.6, 10, WHITE);
+    ftoa(bittenHealth, working, 4);
+    DrawText(working, game->settings.width/4, game->settings.height/4*2.6, 10, WHITE);
+    ftoa(enemyHealth, working, 4);
+    DrawText(working, game->settings.width/4*3, game->settings.height/4*2.6, 10, WHITE);
     return true;
 }
 
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-static void battleIntro(bit_settings* settings)
+static void battleIntro(bit_game* game)
 {
     const int wframe=((frame*5));
-    if (wframe==(settings->height)){
+    if (wframe==(game->settings.height)){
         grow=false;
     }
 
-	if (wframe==settings->height/3 && !grow)
+	if (wframe==game->settings.height/3 && !grow)
 	{
-	    battleAnimation=false;
+	    battleAni=waitInput;
         grow=true;
 	}
-    if (grow)                        {DrawRectangle(0, settings->height-wframe, settings->width, settings->height, BLACK);frame+=1;}
-    else                             {DrawRectangle(0, settings->height-wframe, settings->width, settings->height, BLACK);frame-=1;}
+    else                             {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame-=1;}
+    if (grow)                        {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame+=1;}
 	return;
 }
 
 ////////////////////////////////////////////////////////////
 // battle input
 ////////////////////////////////////////////////////////////
-#define playerHealth game->player.health
-#define enemyHealth game->enemy.health
-#define state game->state
 
 bool bit_battleInput(bit_game* game)
 {
@@ -182,7 +180,7 @@ bool bit_battleInput(bit_game* game)
     if (IsKeyReleased(KEY_X) && enemyHealth==0)
     {
         state=overworld;
-        battleAnimation=true;
+        battleAni=intro;
         frame=0;
         return true; // we don't want to run the rest of the code
     }
@@ -202,7 +200,7 @@ bool bit_battleInput(bit_game* game)
 
 void bit_BattleTest()
 {/*
-    InitWindow(settings->width, settings->height, "bittens adventure BATTLE TEST");
+    InitWindow(game->settings.width, game->settings.height, "bittens adventure BATTLE TEST");
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
     SetTargetFPS(30);
@@ -217,15 +215,15 @@ void bit_BattleTest()
     bittenRec.height = bitten.height/3;
     // position of player
     Vector2 bittenPos;
-    bittenPos.x = settings->width/2 - bittenRec.width/2;
-    bittenPos.y = settings->height/2 - bittenRec.height;
+    bittenPos.x = game->settings.width/2 - bittenRec.width/2;
+    bittenPos.y = game->settings.height/2 - bittenRec.height;
     bittenRec.x = 2*bitten.width/2;
     bittenRec.y = 3*bitten.height/3;
     // ah this is defined when we go in battle, but rn i dont want to add this in the function
     enemy = "Dummy";
     enemyHP=0;
-    bittenPos.x = settings->width/4- bittenRec.width/2;
-    bittenPos.x = settings->height/4 - bittenRec.height/2;
+    bittenPos.x = game->settings.width/4- bittenRec.width/2;
+    bittenPos.x = game->settings.height/4 - bittenRec.height/2;
     while (!WindowShouldClose())
     {
         // to be replaced with a function, but for now its ok

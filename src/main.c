@@ -406,7 +406,7 @@ int main(int argc, char *argv[]){
             ClearBackground(WHITE);
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             else if (isBattle) {
-                if (bit_BattleDraw(&playerhealth, &game.enemy, &game.settings)){
+                if (bit_BattleDraw(&game)){
                     DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
                     DrawTextureRec(enemySprite, enemyRec, enemyPos, WHITE);
                 }
