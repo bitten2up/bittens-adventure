@@ -44,6 +44,7 @@ typedef enum {
 ////////////////////////////////////////////////////////////
 typedef enum   _bit_battleAni bit_battleAni; // what state are we in animation for battle
 typedef enum   _bit_state bit_state;
+typedef enum   _bit_direction bit_direction;
 typedef struct _bit_sprite bit_sprite;
 typedef struct _bit_enemy bit_enemy;
 typedef struct _bit_player bit_player;
@@ -63,12 +64,20 @@ enum _bit_state {
     overworld,
     battle,
 };
+enum _bit_direction{
+    blank,
+    down,
+    left,
+    right,
+    up,
+};
 
 struct _bit_sprite
 {
     Texture2D img;
     Rectangle rec;
     Vector2 pos;
+    bit_direction direction;
 };
 
 struct _bit_enemy
@@ -119,6 +128,8 @@ struct _bit_game
     #define bittenRec game.player.sprite.rec
 // position of player
     #define bittenPos game.player.sprite.pos
+// direction of player
+    #define bittenDirection game.player.sprite.direction
 // player health
     #define bittenHealth game.player.health
 

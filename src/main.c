@@ -202,6 +202,7 @@ int main(int argc, char *argv[]){
     bittenPos.y = game.settings.height/2 - bittenRec.height;
     bittenRec.x = 4*bitten.width/4;
     bittenRec.y = bitten.height/4;
+    bittenDirection = up;
     // Enemy sprite loading
     #define enemySprite game.enemy.sprite.img
     enemySprite = LoadTexture("assets/enemy.png");
@@ -279,9 +280,12 @@ int main(int argc, char *argv[]){
             }
         }
         else if (isBattle){
+            bittenRec.x = bittenDirection*bitten.width/4;
+            bittenRec.y = bitten.height/4;
+            bittenPos.x = game.settings.width/4 - bittenRec.width;
+            bittenPos.y = game.settings.height/2 - bittenRec.height;
             if (bit_battleInput(&game)){
-                bittenPos.x = game.settings.width/2 - bittenRec.width;
-                bittenPos.y = game.settings.height/2 - bittenRec.height;
+
                 x=(lastx);
                 y=(lasty);
                 #ifdef DISCORD
@@ -297,7 +301,7 @@ int main(int argc, char *argv[]){
 
         else if (isOverworld){
             if (IsKeyDown(KEY_RIGHT)){
-                bittenRec.x = 3*bitten.width/4;
+                bittenDirection=right;
                 ticker+=1;
                 //TraceLog(LOG_INFO, "collision: %i", collision);
                 //TraceLog(LOG_INFO,"tilex: %i", tilex);
@@ -312,7 +316,7 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_LEFT)){
-                bittenRec.x = 2*bitten.width/4;
+                bittenDirection=left;
                 ticker+=1;
                 if (ticker==5)
                 {
@@ -324,7 +328,7 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_UP)){
-                bittenRec.x = 2*bitten.width/2;
+                bittenDirection=up;
                 ticker+=1;
                 if (ticker==5)
                 {
@@ -336,7 +340,7 @@ int main(int argc, char *argv[]){
                 }
             }
             if (IsKeyDown(KEY_DOWN)) {
-                bittenRec.x = bitten.width/4;
+                bittenDirection=down;
                 ticker+=1;
                 if (ticker==5)
                 {
@@ -347,7 +351,6 @@ int main(int argc, char *argv[]){
                     ticker=0;
                 }
             }
-
             tilex = (map->width/2)-((x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             tiley = (map->height/2)-((y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             collision=checkCollision(map, tilex, tiley);
@@ -357,12 +360,11 @@ int main(int argc, char *argv[]){
                 //enemy = "chest monster";
                 game.enemy.health=100;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
-                bittenPos.x = game.settings.width/4- bittenRec.width/2;
-                bittenPos.x = game.settings.height/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
-                TraceLog(LOG_INFO, "value of battleani: %i", battleAni);
+                bitten.width=bitten.width*2;
+                bitten.height=bitten.height*2;
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
@@ -405,6 +407,8 @@ int main(int argc, char *argv[]){
         if (!IsWindowFullscreen()){
             SetWindowSize(game.settings.width, game.settings.height);
         }
+        bittenRec.x = bittenDirection*bitten.width/4;
+        bittenRec.y = bitten.height/4;
 
         BeginDrawing();
             ClearBackground(WHITE);
