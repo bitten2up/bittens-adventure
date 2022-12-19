@@ -200,7 +200,6 @@ int main(int argc, char *argv[]){
     // position of player
     bittenPos.x = game.settings.width/2 - bittenRec.width;
     bittenPos.y = game.settings.height/2 - bittenRec.height;
-    // what do we show
     bittenRec.x = 4*bitten.width/4;
     bittenRec.y = bitten.height/4;
     // Enemy sprite loading
@@ -382,6 +381,7 @@ int main(int argc, char *argv[]){
             game.settings.audio=true;
             SaveStorageValue(MUSIC, 1);
         }
+        /*
         if (IsKeyPressed(KEY_F)){
             int display = GetCurrentMonitor();
             if (!IsWindowFullscreen()){
@@ -389,7 +389,7 @@ int main(int argc, char *argv[]){
                 game.settings.height=GetMonitorHeight(display);
                 game.settings.width=GetMonitorWidth(display);
                 ToggleFullscreen();
-                bittenPos.x = game.settings.width/2 - bittenRec.width/3;
+                bittenPos.x = game.settings.width/2 - bittenRec.width;
                 bittenPos.y = game.settings.height/2 - bittenRec.height;
             }
             else {
@@ -397,10 +397,11 @@ int main(int argc, char *argv[]){
                 game.settings.width=SCREENWIDTH;
                 game.settings.height=SCREENHEIGHT;
                 SetWindowSize(game.settings.width, game.settings.height);
-                bittenPos.x = game.settings.width/2 - bittenRec.width/3;
+                bittenPos.x = game.settings.width/2 - bittenRec.width;
                 bittenPos.y = game.settings.height/2 - bittenRec.height;
             }
         }
+        */
         if (!IsWindowFullscreen()){
             SetWindowSize(game.settings.width, game.settings.height);
         }
