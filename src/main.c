@@ -198,8 +198,9 @@ int main(int argc, char *argv[]){
     bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
     // position of player
-    bittenPos.x = game.settings.width/2 - bittenRec.width/3;
+    bittenPos.x = game.settings.width/2 - bittenRec.width;
     bittenPos.y = game.settings.height/2 - bittenRec.height;
+    // what do we show
     bittenRec.x = 4*bitten.width/4;
     bittenRec.y = bitten.height/4;
     // Enemy sprite loading
