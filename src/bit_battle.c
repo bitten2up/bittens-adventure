@@ -171,7 +171,6 @@ static void battleIntro(bit_game* game)
         grow=true;
         frame=0;
 	}
-    if (bittenHealth==0)        {state=gameover;    return true;}
    // battleAni=waitInput;
     if (grow)                        {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame+=1;}
     else                             {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame-=1;}
