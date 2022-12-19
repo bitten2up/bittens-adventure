@@ -186,8 +186,6 @@ static void battleAttack(bit_game* game)
     // tmp player attack animation aka a fucking knife
     if (battleAni==playerAttack) {
         const int wframe=((frame*5));
-        TraceLog(LOG_INFO, "%i", wframe);
-        TraceLog(LOG_INFO, "%i", game->settings.width/3);
         if (wframe>=(game->settings.width/5)){
             grow=false;
             enemyHealth-=10;
