@@ -174,6 +174,7 @@ int main(int argc, char *argv[]){
     game.settings.modded=false;
     game.settings.silent=false;
     state=title;
+    battleAni=intro;
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
@@ -352,15 +353,17 @@ int main(int argc, char *argv[]){
             collision=checkCollision(map, tilex, tiley);
             if (collision==2) {
                 state=battle;
+                battleAni=intro;
                 strcpy(game.enemy.name, "chest monster");
                 //enemy = "chest monster";
-                game.enemy.health=0;
+                game.enemy.health=100;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
                 bittenPos.x = game.settings.width/4- bittenRec.width/2;
                 bittenPos.x = game.settings.height/4 - bittenRec.height/2;
                 UnloadMusicStream(bgm);
-                bgm=LoadMusicStream("assets/M_Introhealth.mp3");
+                bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
+                TraceLog(LOG_INFO, "value of battleani: %i", battleAni);
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
