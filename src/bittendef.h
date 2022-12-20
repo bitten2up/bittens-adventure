@@ -111,6 +111,7 @@ struct _bit_game
     bit_enemy enemy;
     bit_state state;
     bit_battleAni battleAni;
+    int map;
 };
 
 //#define bit_enemy struct bit_enemy

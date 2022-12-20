@@ -180,6 +180,7 @@ int main(int argc, char *argv[]){
     if (startup==0)   { return 1; }
     else if (startup==2)    { game.settings.modded=true; pthread_create(&patching, NULL, patch, &game);}
     // init the window
+    SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(game.settings.width, game.settings.height, GAME_NAME);
     InitAudioDevice();
     #ifdef debugsprites
@@ -274,7 +275,7 @@ int main(int argc, char *argv[]){
             }
 
             if (IsKeyReleased(KEY_ENTER)) {
-                bittenHealth=10;
+                bittenHealth=100;
                 state=overworld;
 
             }
@@ -285,7 +286,7 @@ int main(int argc, char *argv[]){
             bittenPos.x = game.settings.width/4 - bittenRec.width;
             bittenPos.y = game.settings.height/2 - bittenRec.height;
             if (bit_battleInput(&game)){
-
+                disableCollision(map, tilex, tiley);
                 x=(lastx);
                 y=(lasty);
                 #ifdef DISCORD
@@ -358,7 +359,7 @@ int main(int argc, char *argv[]){
                 state=battle;
                 strcpy(game.enemy.name, "chest monster");
                 //enemy = "chest monster";
-                game.enemy.health=100;
+                game.enemy.health=10;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
