@@ -35,7 +35,7 @@ typedef enum {
 ////////////////////////////////////////////////////////////
 typedef enum {
     BACKGROUND_LAYER    = 1,
-    CHESTS_LAYER        = 2
+    CHESTS_LAYER        = 3
 } BittenLayers;
 
 
