@@ -291,17 +291,17 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     # --preload-file resources   # specify a resources folder for data compilation
     # --source-map-base          # allow debugging in browser with source map
     LDFLAGS += -s USE_GLFW=3 -s TOTAL_MEMORY=$(BUILD_WEB_HEAP_SIZE) -s FORCE_FILESYSTEM=1 -ltmx -lxml2 -Llib/emuscripten -s WASM=0 -Os
-    
+
     # Build using asyncify
     ifeq ($(BUILD_WEB_ASYNCIFY),TRUE)
         LDFLAGS += -s ASYNCIFY
     endif
-    
+
     # Add resources building if required
     ifeq ($(BUILD_WEB_RESOURCES),TRUE)
         LDFLAGS += --preload-file $(BUILD_WEB_RESOURCES_PATH)
     endif
-    
+
     # Add debug mode flags if required
     ifeq ($(BUILD_MODE),DEBUG)
         LDFLAGS += -s ASSERTIONS=1 --profiling
@@ -324,7 +324,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # Libraries for Windows desktop compilation
         # NOTE: WinMM library required to set high-res timer resolution
-        LDLIBS = -lraylib -ltmx -lxml2 -lopengl32 -lgdi32 -lwinmm -lz -L/c/raylib/raylib/src
+        LDLIBS = -lraylib -ltmx -lxml2 -lopengl32 -lgdi32 -lwinmm -lz -ldl -L/c/raylib/raylib/src
         # Required for physac examples
         LDLIBS += -static -lpthread
         ifeq ($(DISCORDRPC),TRUE)

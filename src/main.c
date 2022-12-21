@@ -363,7 +363,7 @@ int main(int argc, char *argv[]){
                 game.enemy.health=10;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
                 bittenPos.x = game.settings.width/4 - bittenRec.width;
-                bittenPos.y = game.settings.height-(game.settings.height/3) - bittenRec.height;
+                bittenPos.y = game.settings.height-(game.settings.height/2);
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
@@ -443,5 +443,6 @@ int main(int argc, char *argv[]){
     UnloadTMX(map);
     UnloadTexture(bitten);
     CloseWindow();
+    TraceLog(LOG_INFO, "print memory leaks");
     return 0;
 }

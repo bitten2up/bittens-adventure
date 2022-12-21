@@ -230,7 +230,7 @@ bool bit_BattleDraw(bit_game* game)
         battleAttack(game);
     }
     // draw the text, to be implmented into diagDraw
-    if (enemyHealth<=0)     DrawText("Well That was easy", 190, 200, 20, BLACK);
+    if (enemyHealth<=0 && battleAni==waitInput)     DrawText("Well That was easy", 190, 200, 20, BLACK);
     DrawText("Bitten", game->settings.width/4, game->settings.height/3*2.5, 10, WHITE);
     DrawText(game->enemy.name, game->settings.width/4*3, game->settings.height/3*2.5, 10, WHITE);
     char working[5];
@@ -269,35 +269,49 @@ static void battleAttack(bit_game* game)
 {
     // tmp player attack animation aka a fucking knife
     if (battleAni==playerAttack) {
-        const int wframe=((frame*5));
-        if (wframe>=(game->settings.width/5)){
-            grow=false;
-            enemyHealth-=10;
+        if (bittenHealth>0){
+            const int wframe=((frame*5));
+            if (wframe>=(game->settings.width/5)){
+                grow=false;
+                enemyHealth-=10;
+            }
+	        if (wframe==0 && !grow)
+	        {
+	            battleAni=enemyAttack;
+                grow=true;
+                frame=0;
+	        }
+            if (grow)                        {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, GRAY);frame+=1;}
+            else                             {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, RED);frame-=1;}
         }
-	    if (wframe==0 && !grow)
-	    {
-	        battleAni=enemyAttack;
+        else {
+            battleAni=waitInput;
             grow=true;
             frame=0;
-	    }
-        if (grow)                        {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, GRAY);frame+=1;}
-        else                             {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, RED);frame-=1;}
+        }
     }
     // tmp enemy attack animation
     if (battleAni==enemyAttack) {
-        const int wframe=((frame*5));
-        if (wframe>=(game->settings.width/5)){
-            grow=false;
-            bittenHealth-=10;
+        if (enemyHealth>0){
+            const int wframe=((frame*5));
+            if (wframe>=(game->settings.width/5)){
+                grow=false;
+                bittenHealth-=10;
+            }
+	        if (wframe==0 && !grow)
+	        {
+	            battleAni=waitInput;
+                grow=true;
+                frame=0;
+	        }
+            if (grow)                        {DrawRectangle(0, 0, wframe, game->settings.height, GRAY);frame+=1;}
+            else                             {DrawRectangle(0, 0, wframe, game->settings.height, RED);frame-=1;}
         }
-	    if (wframe==0 && !grow)
-	    {
-	        battleAni=waitInput;
+        else {
+            battleAni=waitInput;
             grow=true;
             frame=0;
-	    }
-        if (grow)                        {DrawRectangle(0, 0, wframe, game->settings.height, GRAY);frame+=1;}
-        else                             {DrawRectangle(0, 0, wframe, game->settings.height, RED);frame-=1;}
+        }
     }
 	return;
 }
@@ -308,13 +322,13 @@ static void battleAttack(bit_game* game)
 bool bit_battleInput(bit_game* game)
 {
     if (bittenHealth==0)        {state=gameover; battleAni=intro; return true;} // tmp until x any y cords are in in bit_game
-    if (IsKeyReleased(KEY_X) && enemyHealth==0)
+    if (IsKeyReleased(KEY_X) && enemyHealth==0 && battleAni==waitInput)
     {
         state=overworld;
         battleAni=intro;
         return true; // we don't want to run the rest of the code
     }
-    else if (IsKeyReleased(KEY_X)) {
+    else if (IsKeyReleased(KEY_X) && battleAni==waitInput) {
         grow=true;
         battleAni=playerAttack;
         return false;

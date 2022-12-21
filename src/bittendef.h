@@ -9,6 +9,11 @@
 #define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
 #define debug
+#ifdef WIN32
+#define PATCH_DLL "patch.dll"
+#else
+#define PATCH_DLL "libbit-patch.so"
+#endif
 //#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
 // files
 #ifndef PLATFORM_WEB
