@@ -31,11 +31,32 @@ int32_t checkCollision(tmx_map* map, int x, int y)
     if (chests->type==L_OBJGR)
     {
         tmx_object* test= chests->content.objgr->head;
+        // go through the entire list of possible objects
+        bool found=false;
         while (test!=NULL)
         {
-            test->visible=0;
+            // make this work with tilex and tiley
+            int tilex = ((test->x)/32);
+            int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
+            if ((y==tiley) && (x==tilex))
+            {
+                TraceLog(LOG_INFO, "GOTTEM");
+                found=true;
+                break;
+            }
+            else
+            {
+                //TraceLog(LOG_INFO, "tiley didn't work, y: %i, tiley: %i", y, tiley);
+            }
+
+            // go to next object
             test=test->next;
         }
+
+        if (found){
+            return test->content.gid;
+        }
+        return 0;
 
     }
     // simple layers are pritty easy
@@ -47,7 +68,5 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 }
 int disableCollision(tmx_map* map, int x, int y)
 {
-    tmx_tile* tile=map->tiles[y * map->width + x];
-    tile->user_data.integer=1;
     return 0;
 }

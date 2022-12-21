@@ -356,7 +356,7 @@ int main(int argc, char *argv[]){
             tiley = (map->height/2)-((y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             collision=checkCollision(map, tilex, tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
-            if (collision==7) {
+            if (collision==2) {
                 state=battle;
                 strcpy(game.enemy.name, "chest monster");
                 //enemy = "chest monster";
