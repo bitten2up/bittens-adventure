@@ -33,12 +33,13 @@ int32_t checkCollision(tmx_map* map, int x, int y)
         tmx_object* test= chests->content.objgr->head;
         // go through the entire list of possible objects
         bool found=false;
+        int counter=0;
         while (test!=NULL)
         {
             // make this work with tilex and tiley
-            int tilex = ((test->x)/32);
+            int tilex = ((test->x)/32)+counter;
             int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
-            if ((y==tiley) && (x==tilex))
+            if ((x==tilex) && (y==tiley))
             {
                 TraceLog(LOG_INFO, "GOTTEM");
                 found=true;
@@ -46,9 +47,9 @@ int32_t checkCollision(tmx_map* map, int x, int y)
             }
             else
             {
-                //TraceLog(LOG_INFO, "tiley didn't work, y: %i, tiley: %i", y, tiley);
+                //TraceLog(LOG_INFO, "tilex didn't work, x: %i, tilex: %i", x, tilex);
             }
-
+            if (counter==0)     {counter++;}
             // go to next object
             test=test->next;
         }
@@ -66,7 +67,42 @@ int32_t checkCollision(tmx_map* map, int x, int y)
     }
 
 }
-int disableCollision(tmx_map* map, int x, int y)
+int32_t disableCollision(tmx_map* map, int x, int y)
 {
-    return 0;
+    // setup layers
+    tmx_layer* chests = tmx_find_layer_by_id(map, CHESTS_LAYER); // chests
+    if (chests->type==L_OBJGR)
+    {
+        tmx_object* test= chests->content.objgr->head;
+        // go through the entire list of possible objects
+        bool found=false;
+        int counter;
+        while (test!=NULL)
+        {
+            // make this work with tilex and tiley
+            int tilex = ((test->x)/32)+counter;
+            int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
+            if ((y==tiley) && (x==tilex))
+            {
+                TraceLog(LOG_INFO, "GOTTEM");
+                found=true;
+                break;
+            }
+            // go to next object
+            test=test->next;
+            if (counter==0)     {counter++;}
+        }
+
+        if (found){
+            test->content.gid=3;
+            return 0;
+        }
+        return 1;
+
+    }
+    // simple layers are pritty easy
+    else if (chests->type==L_LAYER)
+    {
+        return 1;
+    }
 }

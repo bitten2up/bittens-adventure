@@ -281,14 +281,14 @@ int main(int argc, char *argv[]){
             }
         }
         else if (isBattle){
-            bittenRec.x = bittenDirection*bitten.width/4;
-            bittenRec.y = bitten.height/4;
-            bittenPos.x = game.settings.width/4 - bittenRec.width;
-            bittenPos.y = game.settings.height/2 - bittenRec.height;
             if (bit_battleInput(&game)){
-                disableCollision(map, tilex, tiley);
-                x=(lastx);
-                y=(lasty);
+                if (disableCollision(map, tilex, tiley)==1)
+                {
+                    x=(lastx);
+                    y=(lasty);
+                }
+                bittenPos.x = game.settings.width/2 - bittenRec.width;
+                bittenPos.y = game.settings.height/2 - bittenRec.height;
                 #ifdef DISCORD
                 updateDiscordPresence("Overworld");
                 #endif
@@ -362,11 +362,11 @@ int main(int argc, char *argv[]){
                 //enemy = "chest monster";
                 game.enemy.health=10;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
+                bittenPos.x = game.settings.width/4 - bittenRec.width;
+                bittenPos.y = game.settings.height-(game.settings.height/3) - bittenRec.height;
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
-                bitten.width=bitten.width*2;
-                bitten.height=bitten.height*2;
             }
             if (IsKeyReleased(KEY_TAB)){
                 SaveStorageValue(SAVEDX, x);
