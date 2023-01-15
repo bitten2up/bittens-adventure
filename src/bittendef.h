@@ -4,6 +4,8 @@
 #ifndef bittendef
 #define bittendef
 #include <stdbool.h>
+#include <stdint.h>
+#include <stddef.h>
 #include "raylib.h"
 // set the title of the game
 #define GAME_NAME "bittens adventure"
@@ -43,39 +45,36 @@ typedef enum {
     CHESTS_LAYER        = 3
 } BittenLayers;
 
-
 ////////////////////////////////////////////////////////////
 // Structs and enums, defined here for ease of use
 ////////////////////////////////////////////////////////////
-typedef enum   _bit_battleAni bit_battleAni; // what state are we in animation for battle
-typedef enum   _bit_state bit_state;
-typedef enum   _bit_direction bit_direction;
+
 typedef struct _bit_sprite bit_sprite;
 typedef struct _bit_enemy bit_enemy;
 typedef struct _bit_player bit_player;
 typedef struct _bit_settings bit_settings;
 typedef struct _bit_game bit_game; // contains everything for the game
 
-enum _bit_battleAni {
+typedef enum {
     intro,
     waitInput,
     playerAttack,
     enemyAttack,
     gameover,
-};
+} bit_battleAni;
 
-enum _bit_state {
+typedef enum {
     title,
     overworld,
     battle,
-};
-enum _bit_direction{
+} bit_state;
+typedef enum {
     blank,
     down,
     left,
     right,
     up,
-};
+} bit_direction;
 
 struct _bit_sprite
 {
@@ -98,6 +97,8 @@ struct _bit_player
     char name[20];
     char pronouns[10];
     float health;
+    int16_t x;
+    int16_t y;
 };
 
 struct _bit_settings
@@ -121,7 +122,7 @@ struct _bit_game
 
 //#define bit_enemy struct bit_enemy
 
-//#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag, also from my testing you need to compile it twice, once with CC=gcc then with CC=g++ due to a linking error and not being cpp compatible
+//#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag
 
 // called from main.c
 #ifdef DEFINE_MAIN

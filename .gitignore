@@ -8,7 +8,10 @@
 /.idea
 /bittens-adventure.apk
 /bittens-adventure.iml
+/bittens-adventure.exe
+/bittens-adventure
 /assets/window-export.png
-/settings.cfg
 /.vscode/settings.json
 *patch.dll
+/target
+/Cargo.toml

@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2022 bitten2up
+Copyright (c) 2023 bitten2up
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -153,10 +153,11 @@ static void discordInit()
 #define DEFINE_MAIN              // we are the main function, so we dont want defines for pointers
 #include "bittendef.h"           // defines for the engine
 #include "bit_cmdlineParams.h"   // command line functionality
-#include "bit_loadfile.h"        // file loading functionality
+//#include "bit_loadfile.h"        // file loading functionality
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
 #include "bit_collision.h"       // colision handling
+#include "rust/bit_save.h"       // saving
 
 
 ////////////////////////////////////////////////////////////
@@ -231,12 +232,7 @@ int main(int argc, char *argv[]){
     int y = 0;
     //load save file, should be in a function but eh dont got time
     #ifndef PLATFORM_WEB
-    if (LoadStorageValue(MUSIC)==0){ // for somereason writing a bool set to true saves as a 0
-        game.settings.audio=false;
-        PauseMusicStream(bgm);
-    }
-    if (LoadStorageValue(SAVEDX))       x=LoadStorageValue(SAVEDX);
-    if (LoadStorageValue(SAVEDY))       y=LoadStorageValue(SAVEDY);
+    loadGame(&game);
     #endif
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
@@ -248,8 +244,8 @@ int main(int argc, char *argv[]){
     #endif
 
     // last x and y to go back to
-    int lastx=x;
-    int lasty=y;
+    int lastx=game.player.x;
+    int lasty=game.player.y;
     // tile x and y
     int tilex;
     int tiley;
@@ -377,13 +373,15 @@ int main(int argc, char *argv[]){
             StopMusicStream(bgm);
             game.settings.audio=false;
             #ifndef PLATFORM_WEB
-            SaveStorageValue(MUSIC, 0);
+            //SaveStorageValue(MUSIC, 0);
+            saveGame(&game);
             #endif
         }
         else if (IsKeyReleased(KEY_M)){
             PlayMusicStream(bgm);
             game.settings.audio=true;
-            SaveStorageValue(MUSIC, 1);
+            //SaveStorageValue(MUSIC, 1);
+            saveGame(&game);
         }
         /*
         if (IsKeyPressed(KEY_F)){
@@ -434,6 +432,7 @@ int main(int argc, char *argv[]){
             DrawFPS(10, 10);
         EndDrawing();
     }
+    saveGame(&game);
     #ifdef DISCORD
     Discord_Shutdown();
     #endif
