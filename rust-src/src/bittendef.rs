@@ -5597,6 +5597,7 @@ pub struct _bit_game {
     pub state: bit_state,
     pub battleAni: bit_battleAni,
     pub map: ::std::os::raw::c_int,
+    pub invalidSave: bool,
 }
 #[test]
 fn bindgen_test_layout__bit_game() {
@@ -5604,7 +5605,7 @@ fn bindgen_test_layout__bit_game() {
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::std::mem::size_of::<_bit_game>(),
-        184usize,
+        188usize,
         concat!("Size of: ", stringify!(_bit_game))
     );
     assert_eq!(
@@ -5670,6 +5671,16 @@ fn bindgen_test_layout__bit_game() {
             stringify!(_bit_game),
             "::",
             stringify!(map)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).invalidSave) as usize - ptr as usize },
+        184usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_bit_game),
+            "::",
+            stringify!(invalidSave)
         )
     );
 }

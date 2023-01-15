@@ -89,6 +89,9 @@ pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
         reset_save();
         save_data = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
     }
+    else if save_data.version > 0x01 {
+        unsafe {(*game_state).invalidSave=true;}
+    }
     unsafe {
         (*game_state).player.x = save_data.xpos;
         (*game_state).player.y = save_data.ypos;

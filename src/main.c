@@ -153,7 +153,7 @@ static void discordInit()
 #define DEFINE_MAIN              // we are the main function, so we dont want defines for pointers
 #include "bittendef.h"           // defines for the engine
 #include "bit_cmdlineParams.h"   // command line functionality
-//#include "bit_loadfile.h"        // file loading functionality
+//#include "bit_loadfile.h"        // file loading functionality replaced by bit_save.h
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
 #include "bit_collision.h"       // colision handling
@@ -174,6 +174,7 @@ int main(int argc, char *argv[]){
     game.settings.audio=true;
     game.settings.modded=false;
     game.settings.silent=false;
+    game.invalidSave=false;
     state=title;
     battleAni=intro;
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
@@ -260,6 +261,24 @@ int main(int argc, char *argv[]){
     updateDiscordPresence("Discord rpc testing");
     TraceLog(LOG_DEBUG, "Discord RPC status set");
     #endif
+    // see if the game has an invalid save file
+    if (game.invalidSave==true) {
+        while (!WindowShouldClose) {
+            BeginDrawing();
+                if (isTitle) DrawText("Error invalid save file, file from newer version", 190, 200, 20, BLACK);
+            EndDrawing();
+        }
+        #ifdef DISCORD
+        Discord_Shutdown();
+        #endif
+        UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
+        CloseAudioDevice();
+        //free_layers(chests);
+        UnloadTMX(map);
+        UnloadTexture(bitten);
+        CloseWindow();
+        return 1;
+    }
     // game loop
     while (!WindowShouldClose())
     {

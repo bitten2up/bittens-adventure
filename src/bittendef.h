@@ -118,6 +118,7 @@ struct _bit_game
     bit_state state;
     bit_battleAni battleAni;
     int map;
+    bool invalidSave;
 };
 
 //#define bit_enemy struct bit_enemy
