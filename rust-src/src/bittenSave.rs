@@ -32,12 +32,13 @@
 //  done in rust to keep shit safe
 /////////////////////////////////////////////////////////
 
+#![allow(dead_code)]
 mod bittendef;
 
 
 // i will define this here instead of using bindgen
 // so then i have control over it
-
+use std::path::Path;
 extern crate savefile;
 use savefile::prelude::*;
 
@@ -63,6 +64,7 @@ fn save_data(save_data: &bitSave) {
 // sadly didn't work
 // const  default_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
 fn reset_save() {
+    println!("reset save");
     let tmp_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
     save_data(&tmp_save);
     //free(tmp_save);
@@ -70,10 +72,11 @@ fn reset_save() {
 
 #[no_mangle]
 pub extern "C" fn saveGame(game_state: *mut bittendef::bit_game){
+    println!("savegame");
     // create a temperay save to pass to save_data
     unsafe
     {
-        let tmp_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: (*game_state).player.x, ypos: (*game_state).player.y, music: true }; // get our savedata
+        let tmp_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: (*game_state).player.x, ypos: (*game_state).player.y, music: (*game_state).settings.audio }; // get our savedata
         save_data(&tmp_save);
         //free(tmp_save);
     }
@@ -83,6 +86,17 @@ fn load_data() -> bitSave {
 }
 #[no_mangle]
 pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
+    println!("load game");
+    if !Path::new("./bitten.sav").exists() {
+        reset_save();
+        let mut save_data = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
+        unsafe {
+            (*game_state).player.x = save_data.xpos;
+            (*game_state).player.y = save_data.ypos;
+            (*game_state).settings.audio = save_data.music;
+        }
+        return;
+    }
     let mut save_data = load_data();
     if save_data.header != [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f] {
         // our saved data is corrupt
@@ -96,6 +110,7 @@ pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
         (*game_state).player.x = save_data.xpos;
         (*game_state).player.y = save_data.ypos;
         (*game_state).settings.audio = save_data.music;
+        println!("{}", (*game_state).settings.audio);
     }
     //free(save_data)
 }
