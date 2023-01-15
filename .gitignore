@@ -14,4 +14,5 @@
 /.vscode/settings.json
 *patch.dll
 /target
-/Cargo.toml
+/Cargo.lock
+rust-src/src/bittendef.rs
