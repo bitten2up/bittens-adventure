@@ -3,7 +3,7 @@
 the game bitten's adventure that I am currently working on
 
 ## building
-you will need to install [raylib](https://github.com/raysan5/raylib/)
+you will need to install [raylib](https://github.com/raysan5/raylib/) and rust
 ```bash
 make
 ```
