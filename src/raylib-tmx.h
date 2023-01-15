@@ -125,12 +125,11 @@ void* MemReallocTMX(void* address, size_t len) {
  */
 tmx_map* LoadTMX(const char* fileName) {
     // Register the TMX callbacks.
-    TraceLog(LOG_INFO, "ALOC MEM");
     tmx_alloc_func = MemReallocTMX;
     tmx_free_func = MemFree;
     tmx_img_load_func = LoadTMXImage;
 	tmx_img_free_func = UnloadTMXImage;
-    TraceLog(LOG_INFO, "load tmx with tmx_load");
+
     // Load the TMX file.
     tmx_map* map = tmx_load(fileName);
     if (!map) {
