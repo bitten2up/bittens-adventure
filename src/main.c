@@ -219,10 +219,12 @@ int main(int argc, char *argv[]){
     enemyPos.y = game.settings.height/2 - enemyRec.height;
     enemyRec.x = 2*enemySprite.width/4;
     enemyRec.y = 3*enemySprite.height/4;
+    //load save file, should be in a function but eh dont got time
+    loadGame(&game);
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
     PlayMusicStream(bgm);
-    if (game.settings.audio)                StopMusicStream(bgm);
+    if (!game.settings.audio)                StopMusicStream(bgm);
     /*
     char* enemy;
     float enemyhealth;
@@ -232,8 +234,6 @@ int main(int argc, char *argv[]){
     int frame = 4;
     int x = 0;
     int y = 0;
-    //load save file, should be in a function but eh dont got time
-    loadGame(&game);
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
