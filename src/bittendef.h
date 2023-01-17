@@ -124,7 +124,7 @@ struct _bit_game
 //#define bit_enemy struct bit_enemy
 
 //#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag
-
+// ease of use macros
 // called from main.c
 #ifdef DEFINE_MAIN
 /*

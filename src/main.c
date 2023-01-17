@@ -221,8 +221,8 @@ int main(int argc, char *argv[]){
     enemyRec.y = 3*enemySprite.height/4;
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
-    if (game.settings.audio)          PlayMusicStream(bgm);
-    else                              PauseMusicStream(bgm);
+    PlayMusicStream(bgm);
+    if (game.settings.audio)                StopMusicStream(bgm);
     /*
     char* enemy;
     float enemyhealth;
