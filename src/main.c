@@ -221,7 +221,8 @@ int main(int argc, char *argv[]){
     enemyRec.y = 3*enemySprite.height/4;
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
-    PlayMusicStream(bgm);
+    if (game.settings.audio)          PlayMusicStream(bgm);
+    else                              PauseMusicStream(bgm);
     /*
     char* enemy;
     float enemyhealth;
@@ -232,9 +233,7 @@ int main(int argc, char *argv[]){
     int x = 0;
     int y = 0;
     //load save file, should be in a function but eh dont got time
-    #ifndef PLATFORM_WEB
     loadGame(&game);
-    #endif
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
@@ -384,11 +383,12 @@ int main(int argc, char *argv[]){
                 if (game.settings.audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
-                SaveStorageValue(SAVEDX, x);
-                SaveStorageValue(SAVEDY, y);
+                // SaveStorageValue(SAVEDX, x);
+                // SaveStorageValue(SAVEDY, y);
+                saveGame(&game);
             }
         }
-        if (IsKeyReleased(KEY_M) & game.settings.audio) {
+        if (IsKeyReleased(KEY_M) && game.settings.audio) {
             StopMusicStream(bgm);
             game.settings.audio=false;
             #ifndef PLATFORM_WEB

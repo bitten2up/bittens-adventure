@@ -3,222 +3,532 @@
 pub const __bool_true_false_are_defined: u32 = 1;
 pub const true_: u32 = 1;
 pub const false_: u32 = 0;
-pub const _STDINT_H: u32 = 1;
-pub const _FEATURES_H: u32 = 1;
-pub const _DEFAULT_SOURCE: u32 = 1;
-pub const __GLIBC_USE_ISOC2X: u32 = 0;
-pub const __USE_ISOC11: u32 = 1;
-pub const __USE_ISOC99: u32 = 1;
-pub const __USE_ISOC95: u32 = 1;
-pub const __USE_POSIX_IMPLICITLY: u32 = 1;
-pub const _POSIX_SOURCE: u32 = 1;
-pub const _POSIX_C_SOURCE: u32 = 200809;
-pub const __USE_POSIX: u32 = 1;
-pub const __USE_POSIX2: u32 = 1;
-pub const __USE_POSIX199309: u32 = 1;
-pub const __USE_POSIX199506: u32 = 1;
-pub const __USE_XOPEN2K: u32 = 1;
-pub const __USE_XOPEN2K8: u32 = 1;
-pub const _ATFILE_SOURCE: u32 = 1;
-pub const __WORDSIZE: u32 = 64;
-pub const __WORDSIZE_TIME64_COMPAT32: u32 = 1;
-pub const __SYSCALL_WORDSIZE: u32 = 64;
-pub const __TIMESIZE: u32 = 64;
-pub const __USE_MISC: u32 = 1;
-pub const __USE_ATFILE: u32 = 1;
-pub const __USE_FORTIFY_LEVEL: u32 = 0;
-pub const __GLIBC_USE_DEPRECATED_GETS: u32 = 0;
-pub const __GLIBC_USE_DEPRECATED_SCANF: u32 = 0;
-pub const _STDC_PREDEF_H: u32 = 1;
-pub const __STDC_IEC_559__: u32 = 1;
-pub const __STDC_IEC_60559_BFP__: u32 = 201404;
-pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
-pub const __STDC_IEC_60559_COMPLEX__: u32 = 201404;
-pub const __STDC_ISO_10646__: u32 = 201706;
-pub const __GNU_LIBRARY__: u32 = 6;
-pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 36;
-pub const _SYS_CDEFS_H: u32 = 1;
-pub const __glibc_c99_flexarr_available: u32 = 1;
-pub const __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI: u32 = 0;
-pub const __HAVE_GENERIC_SELECTION: u32 = 1;
-pub const __GLIBC_USE_LIB_EXT2: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_BFP_EXT: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_BFP_EXT_C2X: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_EXT: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_FUNCS_EXT: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_FUNCS_EXT_C2X: u32 = 0;
-pub const __GLIBC_USE_IEC_60559_TYPES_EXT: u32 = 0;
-pub const _BITS_TYPES_H: u32 = 1;
-pub const _BITS_TYPESIZES_H: u32 = 1;
-pub const __OFF_T_MATCHES_OFF64_T: u32 = 1;
-pub const __INO_T_MATCHES_INO64_T: u32 = 1;
-pub const __RLIM_T_MATCHES_RLIM64_T: u32 = 1;
-pub const __STATFS_MATCHES_STATFS64: u32 = 1;
-pub const __KERNEL_OLD_TIMEVAL_MATCHES_TIMEVAL64: u32 = 1;
-pub const __FD_SETSIZE: u32 = 1024;
-pub const _BITS_TIME64_H: u32 = 1;
-pub const _BITS_WCHAR_H: u32 = 1;
-pub const _BITS_STDINT_INTN_H: u32 = 1;
-pub const _BITS_STDINT_UINTN_H: u32 = 1;
+pub const __MINGW64_VERSION_MAJOR: u32 = 11;
+pub const __MINGW64_VERSION_MINOR: u32 = 0;
+pub const __MINGW64_VERSION_BUGFIX: u32 = 0;
+pub const __MINGW64_VERSION_RC: u32 = 0;
+pub const __MINGW64_VERSION_STATE: &[u8; 6usize] = b"alpha\0";
+pub const __MINGW32_MAJOR_VERSION: u32 = 3;
+pub const __MINGW32_MINOR_VERSION: u32 = 11;
+pub const _M_AMD64: u32 = 100;
+pub const _M_X64: u32 = 100;
+pub const __: u32 = 1;
+pub const __MINGW_USE_UNDERSCORE_PREFIX: u32 = 0;
+pub const __MINGW_HAVE_ANSI_C99_PRINTF: u32 = 1;
+pub const __MINGW_HAVE_WIDE_C99_PRINTF: u32 = 1;
+pub const __MINGW_HAVE_ANSI_C99_SCANF: u32 = 1;
+pub const __MINGW_HAVE_WIDE_C99_SCANF: u32 = 1;
+pub const __MINGW_SEC_WARN_STR : & [u8 ; 92usize] = b"This function or variable may be unsafe, use _CRT_SECURE_NO_WARNINGS to disable deprecation\0" ;
+pub const __MINGW_MSVC2005_DEPREC_STR : & [u8 ; 117usize] = b"This POSIX function is deprecated beginning in Visual C++ 2005, use _CRT_NONSTDC_NO_DEPRECATE to disable deprecation\0" ;
+pub const __MINGW_FORTIFY_LEVEL: u32 = 0;
+pub const __MINGW_FORTIFY_VA_ARG: u32 = 0;
+pub const _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES: u32 = 0;
+pub const _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES_MEMORY: u32 = 0;
+pub const _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES: u32 = 0;
+pub const _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT: u32 = 0;
+pub const _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_MEMORY: u32 = 0;
+pub const __USE_CRTIMP: u32 = 1;
+pub const USE___UUIDOF: u32 = 0;
+pub const __CRT__NO_INLINE: u32 = 1;
+pub const __MSVCRT_VERSION__: u32 = 1792;
+pub const _WIN32_WINNT: u32 = 1539;
+pub const MINGW_HAS_SECURE_API: u32 = 1;
+pub const __STDC_SECURE_LIB__: u32 = 200411;
+pub const __GOT_SECURE_LIB__: u32 = 200411;
+pub const MINGW_HAS_DDK_H: u32 = 1;
+pub const _CRT_PACKING: u32 = 8;
+pub const _SECURECRT_FILL_BUFFER_PATTERN: u32 = 253;
+pub const _ARGMAX: u32 = 100;
+pub const __USE_MINGW_ANSI_STDIO: u32 = 1;
 pub const INT8_MIN: i32 = -128;
 pub const INT16_MIN: i32 = -32768;
 pub const INT32_MIN: i32 = -2147483648;
+pub const INT64_MIN: i64 = -9223372036854775808;
 pub const INT8_MAX: u32 = 127;
 pub const INT16_MAX: u32 = 32767;
 pub const INT32_MAX: u32 = 2147483647;
+pub const INT64_MAX: u64 = 9223372036854775807;
 pub const UINT8_MAX: u32 = 255;
 pub const UINT16_MAX: u32 = 65535;
 pub const UINT32_MAX: u32 = 4294967295;
+pub const UINT64_MAX: i32 = -1;
 pub const INT_LEAST8_MIN: i32 = -128;
 pub const INT_LEAST16_MIN: i32 = -32768;
 pub const INT_LEAST32_MIN: i32 = -2147483648;
+pub const INT_LEAST64_MIN: i64 = -9223372036854775808;
 pub const INT_LEAST8_MAX: u32 = 127;
 pub const INT_LEAST16_MAX: u32 = 32767;
 pub const INT_LEAST32_MAX: u32 = 2147483647;
+pub const INT_LEAST64_MAX: u64 = 9223372036854775807;
 pub const UINT_LEAST8_MAX: u32 = 255;
 pub const UINT_LEAST16_MAX: u32 = 65535;
 pub const UINT_LEAST32_MAX: u32 = 4294967295;
+pub const UINT_LEAST64_MAX: i32 = -1;
 pub const INT_FAST8_MIN: i32 = -128;
-pub const INT_FAST16_MIN: i64 = -9223372036854775808;
-pub const INT_FAST32_MIN: i64 = -9223372036854775808;
+pub const INT_FAST16_MIN: i32 = -32768;
+pub const INT_FAST32_MIN: i32 = -2147483648;
+pub const INT_FAST64_MIN: i64 = -9223372036854775808;
 pub const INT_FAST8_MAX: u32 = 127;
-pub const INT_FAST16_MAX: u64 = 9223372036854775807;
-pub const INT_FAST32_MAX: u64 = 9223372036854775807;
+pub const INT_FAST16_MAX: u32 = 32767;
+pub const INT_FAST32_MAX: u32 = 2147483647;
+pub const INT_FAST64_MAX: u64 = 9223372036854775807;
 pub const UINT_FAST8_MAX: u32 = 255;
-pub const UINT_FAST16_MAX: i32 = -1;
-pub const UINT_FAST32_MAX: i32 = -1;
+pub const UINT_FAST16_MAX: u32 = 65535;
+pub const UINT_FAST32_MAX: u32 = 4294967295;
+pub const UINT_FAST64_MAX: i32 = -1;
 pub const INTPTR_MIN: i64 = -9223372036854775808;
 pub const INTPTR_MAX: u64 = 9223372036854775807;
 pub const UINTPTR_MAX: i32 = -1;
+pub const INTMAX_MIN: i64 = -9223372036854775808;
+pub const INTMAX_MAX: u64 = 9223372036854775807;
+pub const UINTMAX_MAX: i32 = -1;
 pub const PTRDIFF_MIN: i64 = -9223372036854775808;
 pub const PTRDIFF_MAX: u64 = 9223372036854775807;
 pub const SIG_ATOMIC_MIN: i32 = -2147483648;
 pub const SIG_ATOMIC_MAX: u32 = 2147483647;
 pub const SIZE_MAX: i32 = -1;
+pub const WCHAR_MIN: u32 = 0;
+pub const WCHAR_MAX: u32 = 65535;
 pub const WINT_MIN: u32 = 0;
-pub const WINT_MAX: u32 = 4294967295;
-pub const __GNUC_VA_LIST: u32 = 1;
+pub const WINT_MAX: u32 = 65535;
 pub const RAYLIB_VERSION: &[u8; 8usize] = b"4.5-dev\0";
 pub const PI: f64 = 3.141592653589793;
 pub const DEG2RAD: f64 = 0.017453292519943295;
 pub const RAD2DEG: f64 = 57.29577951308232;
 pub const GAME_NAME: &[u8; 18usize] = b"bittens adventure\0";
-pub const PATCH_DLL: &[u8; 16usize] = b"libbit-patch.so\0";
+pub const PATCH_DLL: &[u8; 10usize] = b"patch.dll\0";
 pub const SETTINGS_FILE: &[u8; 11usize] = b"bitten.sav\0";
 pub const SCREENWIDTH: u32 = 800;
 pub const SCREENHEIGHT: u32 = 450;
-pub type __u_char = ::std::os::raw::c_uchar;
-pub type __u_short = ::std::os::raw::c_ushort;
-pub type __u_int = ::std::os::raw::c_uint;
-pub type __u_long = ::std::os::raw::c_ulong;
-pub type __int8_t = ::std::os::raw::c_schar;
-pub type __uint8_t = ::std::os::raw::c_uchar;
-pub type __int16_t = ::std::os::raw::c_short;
-pub type __uint16_t = ::std::os::raw::c_ushort;
-pub type __int32_t = ::std::os::raw::c_int;
-pub type __uint32_t = ::std::os::raw::c_uint;
-pub type __int64_t = ::std::os::raw::c_long;
-pub type __uint64_t = ::std::os::raw::c_ulong;
-pub type __int_least8_t = __int8_t;
-pub type __uint_least8_t = __uint8_t;
-pub type __int_least16_t = __int16_t;
-pub type __uint_least16_t = __uint16_t;
-pub type __int_least32_t = __int32_t;
-pub type __uint_least32_t = __uint32_t;
-pub type __int_least64_t = __int64_t;
-pub type __uint_least64_t = __uint64_t;
-pub type __quad_t = ::std::os::raw::c_long;
-pub type __u_quad_t = ::std::os::raw::c_ulong;
-pub type __intmax_t = ::std::os::raw::c_long;
-pub type __uintmax_t = ::std::os::raw::c_ulong;
-pub type __dev_t = ::std::os::raw::c_ulong;
-pub type __uid_t = ::std::os::raw::c_uint;
-pub type __gid_t = ::std::os::raw::c_uint;
-pub type __ino_t = ::std::os::raw::c_ulong;
-pub type __ino64_t = ::std::os::raw::c_ulong;
-pub type __mode_t = ::std::os::raw::c_uint;
-pub type __nlink_t = ::std::os::raw::c_ulong;
-pub type __off_t = ::std::os::raw::c_long;
-pub type __off64_t = ::std::os::raw::c_long;
-pub type __pid_t = ::std::os::raw::c_int;
+pub type __gnuc_va_list = __builtin_va_list;
+pub type va_list = __gnuc_va_list;
+extern "C" {
+    pub fn __mingw_get_crt_info() -> *const ::std::os::raw::c_char;
+}
+pub type rsize_t = usize;
+pub type wchar_t = ::std::os::raw::c_ushort;
+pub type wint_t = ::std::os::raw::c_ushort;
+pub type wctype_t = ::std::os::raw::c_ushort;
+pub type errno_t = ::std::os::raw::c_int;
+pub type __time32_t = ::std::os::raw::c_long;
+pub type __time64_t = ::std::os::raw::c_longlong;
+pub type time_t = __time64_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct __fsid_t {
-    pub __val: [::std::os::raw::c_int; 2usize],
+pub struct threadmbcinfostruct {
+    _unused: [u8; 0],
+}
+pub type pthreadlocinfo = *mut threadlocaleinfostruct;
+pub type pthreadmbcinfo = *mut threadmbcinfostruct;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __lc_time_data {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct localeinfo_struct {
+    pub locinfo: pthreadlocinfo,
+    pub mbcinfo: pthreadmbcinfo,
 }
 #[test]
-fn bindgen_test_layout___fsid_t() {
-    const UNINIT: ::std::mem::MaybeUninit<__fsid_t> = ::std::mem::MaybeUninit::uninit();
+fn bindgen_test_layout_localeinfo_struct() {
+    const UNINIT: ::std::mem::MaybeUninit<localeinfo_struct> = ::std::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
-        ::std::mem::size_of::<__fsid_t>(),
+        ::std::mem::size_of::<localeinfo_struct>(),
+        16usize,
+        concat!("Size of: ", stringify!(localeinfo_struct))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<localeinfo_struct>(),
         8usize,
-        concat!("Size of: ", stringify!(__fsid_t))
+        concat!("Alignment of ", stringify!(localeinfo_struct))
     );
     assert_eq!(
-        ::std::mem::align_of::<__fsid_t>(),
-        4usize,
-        concat!("Alignment of ", stringify!(__fsid_t))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).__val) as usize - ptr as usize },
+        unsafe { ::std::ptr::addr_of!((*ptr).locinfo) as usize - ptr as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(__fsid_t),
+            stringify!(localeinfo_struct),
             "::",
-            stringify!(__val)
+            stringify!(locinfo)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).mbcinfo) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(localeinfo_struct),
+            "::",
+            stringify!(mbcinfo)
         )
     );
 }
-pub type __clock_t = ::std::os::raw::c_long;
-pub type __rlim_t = ::std::os::raw::c_ulong;
-pub type __rlim64_t = ::std::os::raw::c_ulong;
-pub type __id_t = ::std::os::raw::c_uint;
-pub type __time_t = ::std::os::raw::c_long;
-pub type __useconds_t = ::std::os::raw::c_uint;
-pub type __suseconds_t = ::std::os::raw::c_long;
-pub type __suseconds64_t = ::std::os::raw::c_long;
-pub type __daddr_t = ::std::os::raw::c_int;
-pub type __key_t = ::std::os::raw::c_int;
-pub type __clockid_t = ::std::os::raw::c_int;
-pub type __timer_t = *mut ::std::os::raw::c_void;
-pub type __blksize_t = ::std::os::raw::c_long;
-pub type __blkcnt_t = ::std::os::raw::c_long;
-pub type __blkcnt64_t = ::std::os::raw::c_long;
-pub type __fsblkcnt_t = ::std::os::raw::c_ulong;
-pub type __fsblkcnt64_t = ::std::os::raw::c_ulong;
-pub type __fsfilcnt_t = ::std::os::raw::c_ulong;
-pub type __fsfilcnt64_t = ::std::os::raw::c_ulong;
-pub type __fsword_t = ::std::os::raw::c_long;
-pub type __ssize_t = ::std::os::raw::c_long;
-pub type __syscall_slong_t = ::std::os::raw::c_long;
-pub type __syscall_ulong_t = ::std::os::raw::c_ulong;
-pub type __loff_t = __off64_t;
-pub type __caddr_t = *mut ::std::os::raw::c_char;
-pub type __intptr_t = ::std::os::raw::c_long;
-pub type __socklen_t = ::std::os::raw::c_uint;
-pub type __sig_atomic_t = ::std::os::raw::c_int;
-pub type int_least8_t = __int_least8_t;
-pub type int_least16_t = __int_least16_t;
-pub type int_least32_t = __int_least32_t;
-pub type int_least64_t = __int_least64_t;
-pub type uint_least8_t = __uint_least8_t;
-pub type uint_least16_t = __uint_least16_t;
-pub type uint_least32_t = __uint_least32_t;
-pub type uint_least64_t = __uint_least64_t;
+pub type _locale_tstruct = localeinfo_struct;
+pub type _locale_t = *mut localeinfo_struct;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct tagLC_ID {
+    pub wLanguage: ::std::os::raw::c_ushort,
+    pub wCountry: ::std::os::raw::c_ushort,
+    pub wCodePage: ::std::os::raw::c_ushort,
+}
+#[test]
+fn bindgen_test_layout_tagLC_ID() {
+    const UNINIT: ::std::mem::MaybeUninit<tagLC_ID> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<tagLC_ID>(),
+        6usize,
+        concat!("Size of: ", stringify!(tagLC_ID))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<tagLC_ID>(),
+        2usize,
+        concat!("Alignment of ", stringify!(tagLC_ID))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wLanguage) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tagLC_ID),
+            "::",
+            stringify!(wLanguage)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wCountry) as usize - ptr as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tagLC_ID),
+            "::",
+            stringify!(wCountry)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wCodePage) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tagLC_ID),
+            "::",
+            stringify!(wCodePage)
+        )
+    );
+}
+pub type LC_ID = tagLC_ID;
+pub type LPLC_ID = *mut tagLC_ID;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct threadlocaleinfostruct {
+    pub refcount: ::std::os::raw::c_int,
+    pub lc_codepage: ::std::os::raw::c_uint,
+    pub lc_collate_cp: ::std::os::raw::c_uint,
+    pub lc_handle: [::std::os::raw::c_ulong; 6usize],
+    pub lc_id: [LC_ID; 6usize],
+    pub lc_category: [threadlocaleinfostruct__bindgen_ty_1; 6usize],
+    pub lc_clike: ::std::os::raw::c_int,
+    pub mb_cur_max: ::std::os::raw::c_int,
+    pub lconv_intl_refcount: *mut ::std::os::raw::c_int,
+    pub lconv_num_refcount: *mut ::std::os::raw::c_int,
+    pub lconv_mon_refcount: *mut ::std::os::raw::c_int,
+    pub lconv: *mut lconv,
+    pub ctype1_refcount: *mut ::std::os::raw::c_int,
+    pub ctype1: *mut ::std::os::raw::c_ushort,
+    pub pctype: *const ::std::os::raw::c_ushort,
+    pub pclmap: *const ::std::os::raw::c_uchar,
+    pub pcumap: *const ::std::os::raw::c_uchar,
+    pub lc_time_curr: *mut __lc_time_data,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct threadlocaleinfostruct__bindgen_ty_1 {
+    pub locale: *mut ::std::os::raw::c_char,
+    pub wlocale: *mut wchar_t,
+    pub refcount: *mut ::std::os::raw::c_int,
+    pub wrefcount: *mut ::std::os::raw::c_int,
+}
+#[test]
+fn bindgen_test_layout_threadlocaleinfostruct__bindgen_ty_1() {
+    const UNINIT: ::std::mem::MaybeUninit<threadlocaleinfostruct__bindgen_ty_1> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<threadlocaleinfostruct__bindgen_ty_1>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<threadlocaleinfostruct__bindgen_ty_1>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).locale) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1),
+            "::",
+            stringify!(locale)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wlocale) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1),
+            "::",
+            stringify!(wlocale)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refcount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1),
+            "::",
+            stringify!(refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wrefcount) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct__bindgen_ty_1),
+            "::",
+            stringify!(wrefcount)
+        )
+    );
+}
+#[test]
+fn bindgen_test_layout_threadlocaleinfostruct() {
+    const UNINIT: ::std::mem::MaybeUninit<threadlocaleinfostruct> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<threadlocaleinfostruct>(),
+        352usize,
+        concat!("Size of: ", stringify!(threadlocaleinfostruct))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<threadlocaleinfostruct>(),
+        8usize,
+        concat!("Alignment of ", stringify!(threadlocaleinfostruct))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refcount) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_codepage) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_codepage)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_collate_cp) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_collate_cp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_handle) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_handle)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_id) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_category) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_category)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_clike) as usize - ptr as usize },
+        264usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_clike)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).mb_cur_max) as usize - ptr as usize },
+        268usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(mb_cur_max)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lconv_intl_refcount) as usize - ptr as usize },
+        272usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lconv_intl_refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lconv_num_refcount) as usize - ptr as usize },
+        280usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lconv_num_refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lconv_mon_refcount) as usize - ptr as usize },
+        288usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lconv_mon_refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lconv) as usize - ptr as usize },
+        296usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lconv)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ctype1_refcount) as usize - ptr as usize },
+        304usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(ctype1_refcount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ctype1) as usize - ptr as usize },
+        312usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(ctype1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pctype) as usize - ptr as usize },
+        320usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(pctype)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pclmap) as usize - ptr as usize },
+        328usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(pclmap)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pcumap) as usize - ptr as usize },
+        336usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(pcumap)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lc_time_curr) as usize - ptr as usize },
+        344usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(threadlocaleinfostruct),
+            "::",
+            stringify!(lc_time_curr)
+        )
+    );
+}
+pub type threadlocinfo = threadlocaleinfostruct;
+pub type int_least8_t = ::std::os::raw::c_schar;
+pub type uint_least8_t = ::std::os::raw::c_uchar;
+pub type int_least16_t = ::std::os::raw::c_short;
+pub type uint_least16_t = ::std::os::raw::c_ushort;
+pub type int_least32_t = ::std::os::raw::c_int;
+pub type uint_least32_t = ::std::os::raw::c_uint;
+pub type int_least64_t = ::std::os::raw::c_longlong;
+pub type uint_least64_t = ::std::os::raw::c_ulonglong;
 pub type int_fast8_t = ::std::os::raw::c_schar;
-pub type int_fast16_t = ::std::os::raw::c_long;
-pub type int_fast32_t = ::std::os::raw::c_long;
-pub type int_fast64_t = ::std::os::raw::c_long;
 pub type uint_fast8_t = ::std::os::raw::c_uchar;
-pub type uint_fast16_t = ::std::os::raw::c_ulong;
-pub type uint_fast32_t = ::std::os::raw::c_ulong;
-pub type uint_fast64_t = ::std::os::raw::c_ulong;
-pub type intmax_t = __intmax_t;
-pub type uintmax_t = __uintmax_t;
-pub type wchar_t = ::std::os::raw::c_int;
+pub type int_fast16_t = ::std::os::raw::c_short;
+pub type uint_fast16_t = ::std::os::raw::c_ushort;
+pub type int_fast32_t = ::std::os::raw::c_int;
+pub type uint_fast32_t = ::std::os::raw::c_uint;
+pub type int_fast64_t = ::std::os::raw::c_longlong;
+pub type uint_fast64_t = ::std::os::raw::c_ulonglong;
+pub type intmax_t = ::std::os::raw::c_longlong;
+pub type uintmax_t = ::std::os::raw::c_ulonglong;
 #[repr(C)]
 #[repr(align(16))]
 #[derive(Debug, Copy, Clone)]
@@ -262,8 +572,6 @@ fn bindgen_test_layout_max_align_t() {
         )
     );
 }
-pub type va_list = __builtin_va_list;
-pub type __gnuc_va_list = __builtin_va_list;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct Vector2 {
@@ -2935,7 +3243,7 @@ pub type TraceLogCallback = ::std::option::Option<
     unsafe extern "C" fn(
         logLevel: ::std::os::raw::c_int,
         text: *const ::std::os::raw::c_char,
-        args: *mut __va_list_tag,
+        args: va_list,
     ),
 >;
 pub type LoadFileDataCallback = ::std::option::Option<
@@ -5684,67 +5992,9 @@ fn bindgen_test_layout__bit_game() {
         )
     );
 }
-pub type __builtin_va_list = [__va_list_tag; 1usize];
+pub type __builtin_va_list = *mut ::std::os::raw::c_char;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct __va_list_tag {
-    pub gp_offset: ::std::os::raw::c_uint,
-    pub fp_offset: ::std::os::raw::c_uint,
-    pub overflow_arg_area: *mut ::std::os::raw::c_void,
-    pub reg_save_area: *mut ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout___va_list_tag() {
-    const UNINIT: ::std::mem::MaybeUninit<__va_list_tag> = ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<__va_list_tag>(),
-        24usize,
-        concat!("Size of: ", stringify!(__va_list_tag))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<__va_list_tag>(),
-        8usize,
-        concat!("Alignment of ", stringify!(__va_list_tag))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).gp_offset) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__va_list_tag),
-            "::",
-            stringify!(gp_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).fp_offset) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__va_list_tag),
-            "::",
-            stringify!(fp_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).overflow_arg_area) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__va_list_tag),
-            "::",
-            stringify!(overflow_arg_area)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reg_save_area) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__va_list_tag),
-            "::",
-            stringify!(reg_save_area)
-        )
-    );
+pub struct lconv {
+    pub _address: u8,
 }
