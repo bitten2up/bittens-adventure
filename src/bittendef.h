@@ -27,6 +27,8 @@
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
+
+#define BIT_VERSION 0x01
 //#include <stdbool.h>
 ////////////////////////////////////////////////////////////
 // Game storage enum
@@ -120,6 +122,7 @@ struct _bit_game
     bit_battleAni battleAni;
     int map;
     bool invalidSave;
+    int version;
 };
 
 //#define bit_enemy struct bit_enemy

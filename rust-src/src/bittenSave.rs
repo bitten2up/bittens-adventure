@@ -87,6 +87,7 @@ fn load_data() -> bitSave {
 #[no_mangle]
 pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
     println!("load game");
+    // file doesnt exist
     if !Path::new("./bitten.sav").exists() {
         reset_save();
         let mut save_data = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
@@ -106,11 +107,12 @@ pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
     else if save_data.version > 0x01 {
         unsafe {(*game_state).invalidSave=true;}
     }
+    // dealing with raw pointers YAY
     unsafe {
         (*game_state).player.x = save_data.xpos;
         (*game_state).player.y = save_data.ypos;
         (*game_state).settings.audio = save_data.music;
-        println!("{}", (*game_state).settings.audio);
+        println!("{}", (*game_state).player.x);
     }
     //free(save_data)
 }

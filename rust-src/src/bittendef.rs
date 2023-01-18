@@ -108,6 +108,7 @@ pub const PATCH_DLL: &[u8; 16usize] = b"libbit-patch.so\0";
 pub const SETTINGS_FILE: &[u8; 11usize] = b"bitten.sav\0";
 pub const SCREENWIDTH: u32 = 800;
 pub const SCREENHEIGHT: u32 = 450;
+pub const BIT_VERSION: u32 = 1;
 pub type __u_char = ::std::os::raw::c_uchar;
 pub type __u_short = ::std::os::raw::c_ushort;
 pub type __u_int = ::std::os::raw::c_uint;
@@ -5598,6 +5599,7 @@ pub struct _bit_game {
     pub battleAni: bit_battleAni,
     pub map: ::std::os::raw::c_int,
     pub invalidSave: bool,
+    pub version: ::std::os::raw::c_int,
 }
 #[test]
 fn bindgen_test_layout__bit_game() {
@@ -5605,7 +5607,7 @@ fn bindgen_test_layout__bit_game() {
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::std::mem::size_of::<_bit_game>(),
-        188usize,
+        192usize,
         concat!("Size of: ", stringify!(_bit_game))
     );
     assert_eq!(
@@ -5681,6 +5683,16 @@ fn bindgen_test_layout__bit_game() {
             stringify!(_bit_game),
             "::",
             stringify!(invalidSave)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).version) as usize - ptr as usize },
+        188usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_bit_game),
+            "::",
+            stringify!(version)
         )
     );
 }

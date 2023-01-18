@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
     game.settings.modded=false;
     game.settings.silent=false;
     game.invalidSave=false;
+    game.version=BIT_VERSION;
     state=title;
     battleAni=intro;
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
@@ -232,8 +233,8 @@ int main(int argc, char *argv[]){
     */
     int ticker = 0;
     int frame = 4;
-    int x = 0;
-    int y = 0;
+    int x = game.player.x;
+    int y = game.player.y;
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
