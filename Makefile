@@ -430,8 +430,8 @@ endif
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target Also build rust-src
 all:
-	#bindgen src/bittendef.h -o rust-src/src/bittendef.rs
-	#$(CARGO) $(CARGO_PARAMS)
+	bindgen src/bittendef.h -o rust-src/src/bittendef.rs
+	$(CARGO) $(CARGO_PARAMS)
 	$(MAKE) $(MAKEFILE_PARAMS)
 
 # Project target defined by PROJECT_NAME
