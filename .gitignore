@@ -8,8 +8,8 @@
 /.idea
 /bittens-adventure.apk
 /bittens-adventure.iml
-/bittens-adventure.exe
-/bittens-adventure
+/bin/bittens-adventure.exe
+/bin/bittens-adventure
 /assets/window-export.png
 /.vscode/settings.json
 *patch.dll
