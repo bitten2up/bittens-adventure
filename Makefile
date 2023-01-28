@@ -406,7 +406,6 @@ endif
 PROJECT_SOURCE_FILES ?= \
     src/main.c \
     src/bit_cmdlineParams.c \
-    src/bit_loadfile.c \
     src/bit_battle.c \
     src/bit_diag.c  \
     src/bit_patch.c \

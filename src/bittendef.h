@@ -1,8 +1,8 @@
 /**
 * this file toggles debugging and release flags for the game
 */
-#ifndef bittendef
-#define bittendef
+#ifndef BITTENDEF_H
+#define BITTENDEF_H
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -16,20 +16,23 @@
 #else
 #define PATCH_DLL "libbit-patch.so"
 #endif
-//#define debugsprites // cuts fps to 15fps, sense i animate at 15fps then add extra frames
+//#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag
+
 // files
 #ifndef PLATFORM_WEB
-#define SETTINGS_FILE "bitten.sav"
+#define SAVE_FILE "bitten.sav"
 #endif
 #ifdef PLATFORM_WEB
-#define SETTINGS_FILE "assets/bitten.sav"
+#define SAVE_FILE "assets/bitten.sav"
 #endif
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
 
+////////////////////////////////////////////////////////////
+// game version
+////////////////////////////////////////////////////////////
 #define BIT_VERSION 0x01
-//#include <stdbool.h>
 ////////////////////////////////////////////////////////////
 // Game storage enum
 ////////////////////////////////////////////////////////////
@@ -122,12 +125,9 @@ struct _bit_game
     bit_battleAni battleAni;
     int map;
     bool invalidSave;
-    int version;
 };
 
-//#define bit_enemy struct bit_enemy
 
-//#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag
 // ease of use macros
 // called from main.c
 #ifdef DEFINE_MAIN

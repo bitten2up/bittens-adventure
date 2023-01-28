@@ -97,7 +97,7 @@ pub const DEG2RAD: f64 = 0.017453292519943295;
 pub const RAD2DEG: f64 = 57.29577951308232;
 pub const GAME_NAME: &[u8; 18usize] = b"bittens adventure\0";
 pub const PATCH_DLL: &[u8; 10usize] = b"patch.dll\0";
-pub const SETTINGS_FILE: &[u8; 11usize] = b"bitten.sav\0";
+pub const SAVE_FILE: &[u8; 11usize] = b"bitten.sav\0";
 pub const SCREENWIDTH: u32 = 800;
 pub const SCREENHEIGHT: u32 = 450;
 pub const BIT_VERSION: u32 = 1;
@@ -5907,7 +5907,6 @@ pub struct _bit_game {
     pub battleAni: bit_battleAni,
     pub map: ::std::os::raw::c_int,
     pub invalidSave: bool,
-    pub version: ::std::os::raw::c_int,
 }
 #[test]
 fn bindgen_test_layout__bit_game() {
@@ -5915,7 +5914,7 @@ fn bindgen_test_layout__bit_game() {
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::std::mem::size_of::<_bit_game>(),
-        192usize,
+        188usize,
         concat!("Size of: ", stringify!(_bit_game))
     );
     assert_eq!(
@@ -5991,16 +5990,6 @@ fn bindgen_test_layout__bit_game() {
             stringify!(_bit_game),
             "::",
             stringify!(invalidSave)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).version) as usize - ptr as usize },
-        188usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(_bit_game),
-            "::",
-            stringify!(version)
         )
     );
 }

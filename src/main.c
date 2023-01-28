@@ -153,7 +153,6 @@ static void discordInit()
 #define DEFINE_MAIN              // we are the main function, so we dont want defines for pointers
 #include "bittendef.h"           // defines for the engine
 #include "bit_cmdlineParams.h"   // command line functionality
-//#include "bit_loadfile.h"        // file loading functionality replaced by bit_save.h
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
 #include "bit_collision.h"       // colision handling
@@ -171,11 +170,9 @@ int main(int argc, char *argv[]){
     // apply default settings
     game.settings.width=SCREENWIDTH;
     game.settings.height=SCREENHEIGHT;
-    game.settings.audio=true;
     game.settings.modded=false;
     game.settings.silent=false;
     game.invalidSave=false;
-    game.version=BIT_VERSION;
     state=title;
     battleAni=intro;
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
@@ -226,15 +223,14 @@ int main(int argc, char *argv[]){
     Music bgm = LoadMusicStream("assets/bitten.wav");
     PlayMusicStream(bgm);
     if (!game.settings.audio)                StopMusicStream(bgm);
-    /*
-    char* enemy;
-    float enemyhealth;
-    bit_enemy enemy;
-    */
     int ticker = 0;
     int frame = 4;
-    int x = game.player.x;
-    int y = game.player.y;
+    // last x and y to go back to
+    int lastx=game.player.x;
+    int lasty=game.player.y;
+    // tile x and y
+    int tilex;
+    int tiley;
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
@@ -243,16 +239,8 @@ int main(int argc, char *argv[]){
     #ifndef PLATFORM_WEB
     tmx_map* map = LoadTMX("assets/maps/bit_towntest.tmx");
     #endif
-
-    // last x and y to go back to
-    int lastx=game.player.x;
-    int lasty=game.player.y;
-    // tile x and y
-    int tilex;
-    int tiley;
-    //bool collision = false;
-    int collision;//checkCollision(map, (x/32+map->width)/2, (y/32+map->width)/2);
-    //TraceLog(LOG_INFO, "%i", collision);
+    // declare collision type
+    int collision;
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
     TraceLog(LOG_DEBUG, "Discord RPC activating");
@@ -299,8 +287,8 @@ int main(int argc, char *argv[]){
             if (bit_battleInput(&game)){
                 if (disableCollision(map, tilex, tiley)==1)
                 {
-                    x=(lastx);
-                    y=(lasty);
+                    game.player.x=(lastx);
+                    game.player.y=(lasty);
                 }
                 bittenPos.x = game.settings.width/2 - bittenRec.width;
                 bittenPos.y = game.settings.height/2 - bittenRec.height;
@@ -324,8 +312,8 @@ int main(int argc, char *argv[]){
                 //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
-                    lastx=x;
-                    x -= 8;
+                    lastx=game.player.x;
+                    game.player.x -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -336,8 +324,8 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lastx=x;
-                    x += 8;
+                    lastx=game.player.x;
+                    game.player.x += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -348,8 +336,8 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=y;
-                    y += 8;
+                    lasty=game.player.y;
+                    game.player.y += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -360,15 +348,15 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=y;
-                    y -= 8;
+                    lasty=game.player.y;
+                    game.player.y -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
             }
-            tilex = (map->width/2)-((x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
-            tiley = (map->height/2)-((y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            tilex = (map->width/2)-((game.player.x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            tiley = (map->height/2)-((game.player.y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
             collision=checkCollision(map, tilex, tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
             if (collision==2) {
@@ -403,7 +391,7 @@ int main(int argc, char *argv[]){
             //SaveStorageValue(MUSIC, 1);
             saveGame(&game);
         }
-        /*
+        #ifdef BROKENCODETBH
         if (IsKeyPressed(KEY_F)){
             int display = GetCurrentMonitor();
             if (!IsWindowFullscreen()){
@@ -423,7 +411,7 @@ int main(int argc, char *argv[]){
                 bittenPos.y = game.settings.height/2 - bittenRec.height;
             }
         }
-        */
+        #endif
         if (!IsWindowFullscreen()){
             SetWindowSize(game.settings.width, game.settings.height);
         }
@@ -442,7 +430,7 @@ int main(int argc, char *argv[]){
             }
             else if (isOverworld)
             {
-                DrawTMX(map, x, y, WHITE);
+                DrawTMX(map, game.player.x, game.player.y, WHITE);
                 DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
                 char xandy[20];
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);

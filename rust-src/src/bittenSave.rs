@@ -29,7 +29,7 @@
 /////////////////////////////////////////////////////////
 //  saving functionality
 /////////////////////////////////////////////////////////
-//  done in rust to keep shit safe
+//  done in rust to keep shit safe (kinda)
 /////////////////////////////////////////////////////////
 
 #![allow(dead_code)]
@@ -49,8 +49,8 @@ extern crate savefile_derive;
 pub struct bitSave {
     // first 7 bytes is the header, used to make sure that we are using the right type of file
     header:     [i8;8],
-    // the next byte is the version
-    version:    i8,
+    // the next 4 bytes is the version
+    version:    u32,
     // the next 2 bytes is our x position
     xpos:       i16,
     // the next 2 bytes is our y position
@@ -58,61 +58,58 @@ pub struct bitSave {
     // the next bit is to see if music is enabled
     music:      bool,
 }
-fn save_data(save_data: &bitSave) {
-    save_file("bitten.sav", 0, save_data).unwrap();
-}
-// sadly didn't work
-// const  default_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
-fn reset_save() {
+
+fn reset_save() -> bitSave {
     println!("reset save");
-    let tmp_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
-    save_data(&tmp_save);
-    //free(tmp_save);
+    return bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: bittendef::BIT_VERSION, xpos: 0, ypos: 0, music: true };
 }
+
 
 #[no_mangle]
 pub extern "C" fn saveGame(game_state: *mut bittendef::bit_game){
     println!("savegame");
-    // create a temperay save to pass to save_data
     unsafe
     {
-        let tmp_save = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: (*game_state).player.x, ypos: (*game_state).player.y, music: (*game_state).settings.audio }; // get our savedata
-        save_data(&tmp_save);
-        //free(tmp_save);
+        save_data(bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f],
+            version: bittendef::BIT_VERSION,
+            xpos: (*game_state).player.x,
+            ypos: (*game_state).player.y,
+            music: (*game_state).settings.audio});
     }
 }
-fn load_data() -> bitSave {
-    load_file("bitten.sav", 0).unwrap()
+
+fn save_data(save_data: bitSave) {
+    save_file("bitten.sav", 0, &save_data).unwrap();
 }
+
 #[no_mangle]
 pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
     println!("load game");
-    // file doesnt exist
-    if !Path::new("./bitten.sav").exists() {
-        reset_save();
-        let mut save_data = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
-        unsafe {
-            (*game_state).player.x = save_data.xpos;
-            (*game_state).player.y = save_data.ypos;
-            (*game_state).settings.audio = save_data.music;
-        }
-        return;
-    }
-    let mut save_data = load_data();
+    let mut save_data;
+    save_data = load_data();
     if save_data.header != [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f] {
-        // our saved data is corrupt
-        reset_save();
-        save_data = bitSave { header: [0x42, 0x49, 0x54, 0x53, 0x41, 0x56, 0x00, 0x7f], version: 0x01, xpos: 0, ypos: 0, music: true };
+        save_data = reset_save();
     }
-    else if save_data.version > 0x01 {
+    updateState(game_state, save_data);
+}
+fn load_data() -> bitSave {
+    // prevent crash by seeing if file is real
+    if Path::new("./bitten.sav").exists() {
+        return load_file("bitten.sav", 0).unwrap();
+    }
+    else {
+        return reset_save();
+    }
+}
+// safe wrapper for writing saves to game_state
+fn updateState(game_state: *mut bittendef::bit_game, save_data: bitSave) {
+    // see if our version is higher than the current version
+    if save_data.version > bittendef::BIT_VERSION {
         unsafe {(*game_state).invalidSave=true;}
     }
-    // dealing with raw pointers YAY
     unsafe {
         (*game_state).player.x = save_data.xpos;
         (*game_state).player.y = save_data.ypos;
         (*game_state).settings.audio = save_data.music;
-        println!("{}", (*game_state).player.x);
     }
-    //free(save_data)
 }
