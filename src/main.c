@@ -436,7 +436,7 @@ int main(int argc, char *argv[]){
 
         BeginDrawing();
         BeginMode2D(camera);
-            ClearBackground(WHITE);
+            ClearBackground(BLACK);
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (isGameover) DrawText("GAMEOVER", 190, 200, 20, BLACK);
             else if (isBattle) {
