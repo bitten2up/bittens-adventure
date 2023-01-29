@@ -240,10 +240,10 @@ int main(int argc, char *argv[]){
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
-    tmx_map* map = LoadTMX("assets/bit_towntest.tmx");
+    game.map = LoadTMX("assets/bit_towntest.tmx");
     #endif
     #ifndef PLATFORM_WEB
-    tmx_map* map = LoadTMX("assets/maps/bit_towntest.tmx");
+    game.map = LoadTMX("assets/maps/bit_towntest.tmx");
     #endif
     // declare collision type
     int collision;
@@ -269,7 +269,7 @@ int main(int argc, char *argv[]){
         UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
         CloseAudioDevice();
         //free_layers(chests);
-        UnloadTMX(map);
+        UnloadTMX(game.map);
         UnloadTexture(bitten);
         CloseWindow();
         return 1;
@@ -278,7 +278,7 @@ int main(int argc, char *argv[]){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
-        camera.zoom = (float)game.settings.width/SCREENWIDTH;
+        camera.zoom = game.settings.width/SCREENWIDTH;
         if ((isTitle) | (isGameover)){
             if (IsKeyReleased(KEY_TAB) && !game.settings.modded)     {
                 game.settings.modded=true;
@@ -293,11 +293,7 @@ int main(int argc, char *argv[]){
         }
         else if (isBattle){
             if (bit_battleInput(&game)){
-                if (disableCollision(map, tilex, tiley)==1)
-                {
-                    game.player.x=(lastx);
-                    game.player.y=(lasty);
-                }
+                disableCollision(game.map, tilex, tiley);
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 #ifdef DISCORD
@@ -363,10 +359,10 @@ int main(int argc, char *argv[]){
                     ticker=0;
                 }
             }
-            TraceLog(LOG_INFO, "width :%i\n height: %i" , map->width, map->height);
-            tilex = (map->width/2)-((game.player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
-            tiley = (map->height/2)-((game.player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
-            collision=checkCollision(map, tilex, tiley);
+            TraceLog(LOG_INFO, "width :%i\n height: %i" , game.map->width, game.map->height);
+            tilex = (game.map->width/2)-((game.player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
+            tiley = (game.map->height/2)-((game.player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
+            collision=checkCollision(game.map, tilex, tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
             if (collision==2) {
                 state=battle;
@@ -379,6 +375,23 @@ int main(int argc, char *argv[]){
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
+                switch (bittenDirection)
+                {
+                case up:
+                    undoTile(&game,tilex,tiley+1);
+                    break;
+                case down:
+                    undoTile(&game,tilex,tiley-1);
+                    break;
+                case left:
+                    undoTile(&game,tilex+1,tiley);
+                    break;
+                case right:
+                    undoTile(&game,tilex-1,tiley);
+                    break;
+                default:
+                    break;
+                }
             }
             if (IsKeyReleased(KEY_TAB)){
                 saveGame(&game);
@@ -396,8 +409,6 @@ int main(int argc, char *argv[]){
             game.settings.audio=true;
             saveGame(&game);
         }
-        #define BROKENCODETBH
-        #ifdef BROKENCODETBH
         if (IsKeyPressed(KEY_F)){
             int display = GetCurrentMonitor();
             if (!IsWindowFullscreen()){
@@ -417,7 +428,6 @@ int main(int argc, char *argv[]){
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
             }
         }
-        #endif
         if (!IsWindowFullscreen()){
             SetWindowSize(game.settings.width, game.settings.height);
         }
@@ -437,7 +447,7 @@ int main(int argc, char *argv[]){
             }
             else if (isOverworld)
             {
-                DrawTMX(map, game.player.x, game.player.y, WHITE);
+                DrawTMX(game.map, game.player.x, game.player.y, WHITE);
                 DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
                 char xandy[20];
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);
@@ -455,7 +465,7 @@ int main(int argc, char *argv[]){
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
     CloseAudioDevice();
     //free_layers(chests);
-    UnloadTMX(map);
+    UnloadTMX(game.map);
     UnloadTexture(bitten);
     CloseWindow();
     TraceLog(LOG_INFO, "print memory leaks");

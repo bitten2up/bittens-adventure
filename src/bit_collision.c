@@ -18,11 +18,16 @@
 #include "bittendef.h"           // defines for the engine
 #include "bit_collision.h"       // colision handling
 
+///////
+// quick tilepos to pos conversion function
+///////
+void undoTile(bit_game *game, int tilex, int tiley);
+
 int32_t checkCollision(tmx_map* map, int x, int y)
 {
     // setup layers
     tmx_layer* chests = tmx_find_layer_by_id(map, CHESTS_LAYER); // chests
-    //TraceLog(LOG_INFO, "value of tile: %i", chests->content.gids[y * map->width + x]);
+    //TraceLog(LOG_INFO, "value of tile: %i", chests->content.gids[y * game->map->width + x]);
     //if (tile->user_data.integer){
     //    return 0;
     //}
@@ -105,4 +110,10 @@ int32_t disableCollision(tmx_map* map, int x, int y)
     {
         return 1;
     }
+}
+
+
+void undoTile(bit_game* game, int tilex, int tiley) {
+    game->player.x = -(32*(tilex - (game->map->width/2) + 3));
+    game->player.y = -(32*(tiley - (game->map->height/2) + 3) + 14);
 }

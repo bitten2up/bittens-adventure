@@ -42,7 +42,7 @@ void reverse(char* str, int len)
         j--;
     }
 }
- 
+
 // Converts a given integer x to string str[].
 // d is the number of digits required in the output.
 // If d is more than the number of digits in x,
@@ -54,38 +54,38 @@ int intToStr(int x, char str[], int d)
         str[i++] = (x % 10) + '0';
         x = x / 10;
     }
- 
+
     // If number of digits required is more, then
     // add 0s at the beginning
     while (i < d)
         str[i++] = '0';
- 
+
     reverse(str, i);
     str[i] = '\0';
     return i;
 }
- 
+
 // Converts a floating-point/double number to a string.
 void ftoa(float n, char* res, int afterpoint)
 {
     // Extract integer part
     int ipart = (int)n;
- 
+
     // Extract floating part
     float fpart = n - (float)ipart;
- 
+
     // convert integer part to string
     int i = intToStr(ipart, res, 0);
- 
+
     // check for display option after point
     if (afterpoint != 0) {
         res[i] = '.'; // add dot
- 
+
         // Get the value of fraction part upto given no.
         // of points after dot. The third parameter
         // is needed to handle cases like 233.007
         fpart = fpart * pow(10, afterpoint);
- 
+
         intToStr((int)fpart, res + i + 1, afterpoint);
     }
 }
@@ -137,7 +137,7 @@ int main(int argc, char **argv){
         PauseMusicStream(bgm);
     }
     //free music somewhere here
-    
+
     // setup map
     //TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     //tmx_map* map = LoadTMX("assets/maps/bit_test.tmx");
@@ -145,7 +145,7 @@ int main(int argc, char **argv){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
-        
+
         if (title){
             if (IsKeyReleased(KEY_ENTER)) title=false;
             if (IsKeyReleased(KEY_M) & audio) {
@@ -162,7 +162,7 @@ int main(int argc, char **argv){
         else if (battle){
             if (IsKeyReleased(KEY_X))   battle=false; //will be updated later
         }
-        
+
         else if (!battle & !title){
             if (IsKeyDown(KEY_RIGHT)) bittenPos.x += 2;
             if (IsKeyDown(KEY_LEFT)) bittenPos.x -= 2;
@@ -202,12 +202,12 @@ int main(int argc, char **argv){
         EndDrawing();
     }
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
-    CloseAudioDevice(); 
-    //UnloadTMX(map);
+    CloseAudioDevice();
+    //UnloadTmx(game.map);
     UnloadTexture(bitten);
     CloseWindow();
     return 0;
-    
+
 }
 bool SaveStorageValue(unsigned int position, int value)
 {

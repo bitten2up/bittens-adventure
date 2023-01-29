@@ -95,6 +95,10 @@ pub const RAYLIB_VERSION: &[u8; 8usize] = b"4.5-dev\0";
 pub const PI: f64 = 3.141592653589793;
 pub const DEG2RAD: f64 = 0.017453292519943295;
 pub const RAD2DEG: f64 = 57.29577951308232;
+pub const TMX_FLIPPED_HORIZONTALLY: u32 = 2147483648;
+pub const TMX_FLIPPED_VERTICALLY: u32 = 1073741824;
+pub const TMX_FLIPPED_DIAGONALLY: u32 = 536870912;
+pub const TMX_FLIP_BITS_REMOVAL: u32 = 536870911;
 pub const GAME_NAME: &[u8; 18usize] = b"bittens adventure\0";
 pub const PATCH_DLL: &[u8; 10usize] = b"patch.dll\0";
 pub const SAVE_FILE: &[u8; 11usize] = b"bitten.sav\0";
@@ -5595,6 +5599,2003 @@ extern "C" {
 extern "C" {
     pub fn DetachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback);
 }
+extern "C" {
+    pub static mut tmx_alloc_func: ::std::option::Option<
+        unsafe extern "C" fn(
+            address: *mut ::std::os::raw::c_void,
+            len: usize,
+        ) -> *mut ::std::os::raw::c_void,
+    >;
+}
+extern "C" {
+    pub static mut tmx_free_func:
+        ::std::option::Option<unsafe extern "C" fn(address: *mut ::std::os::raw::c_void)>;
+}
+extern "C" {
+    pub static mut tmx_img_load_func: ::std::option::Option<
+        unsafe extern "C" fn(path: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_void,
+    >;
+}
+extern "C" {
+    pub static mut tmx_img_free_func:
+        ::std::option::Option<unsafe extern "C" fn(address: *mut ::std::os::raw::c_void)>;
+}
+pub const tmx_map_orient_O_NONE: tmx_map_orient = 0;
+pub const tmx_map_orient_O_ORT: tmx_map_orient = 1;
+pub const tmx_map_orient_O_ISO: tmx_map_orient = 2;
+pub const tmx_map_orient_O_STA: tmx_map_orient = 3;
+pub const tmx_map_orient_O_HEX: tmx_map_orient = 4;
+pub type tmx_map_orient = ::std::os::raw::c_uint;
+pub const tmx_map_renderorder_R_NONE: tmx_map_renderorder = 0;
+pub const tmx_map_renderorder_R_RIGHTDOWN: tmx_map_renderorder = 1;
+pub const tmx_map_renderorder_R_RIGHTUP: tmx_map_renderorder = 2;
+pub const tmx_map_renderorder_R_LEFTDOWN: tmx_map_renderorder = 3;
+pub const tmx_map_renderorder_R_LEFTUP: tmx_map_renderorder = 4;
+pub type tmx_map_renderorder = ::std::os::raw::c_uint;
+pub const tmx_stagger_index_SI_NONE: tmx_stagger_index = 0;
+pub const tmx_stagger_index_SI_EVEN: tmx_stagger_index = 1;
+pub const tmx_stagger_index_SI_ODD: tmx_stagger_index = 2;
+pub type tmx_stagger_index = ::std::os::raw::c_uint;
+pub const tmx_stagger_axis_SA_NONE: tmx_stagger_axis = 0;
+pub const tmx_stagger_axis_SA_X: tmx_stagger_axis = 1;
+pub const tmx_stagger_axis_SA_Y: tmx_stagger_axis = 2;
+pub type tmx_stagger_axis = ::std::os::raw::c_uint;
+pub const tmx_layer_type_L_NONE: tmx_layer_type = 0;
+pub const tmx_layer_type_L_LAYER: tmx_layer_type = 1;
+pub const tmx_layer_type_L_OBJGR: tmx_layer_type = 2;
+pub const tmx_layer_type_L_IMAGE: tmx_layer_type = 3;
+pub const tmx_layer_type_L_GROUP: tmx_layer_type = 4;
+pub type tmx_layer_type = ::std::os::raw::c_uint;
+pub const tmx_objgr_draworder_G_NONE: tmx_objgr_draworder = 0;
+pub const tmx_objgr_draworder_G_INDEX: tmx_objgr_draworder = 1;
+pub const tmx_objgr_draworder_G_TOPDOWN: tmx_objgr_draworder = 2;
+pub type tmx_objgr_draworder = ::std::os::raw::c_uint;
+pub const tmx_obj_type_OT_NONE: tmx_obj_type = 0;
+pub const tmx_obj_type_OT_SQUARE: tmx_obj_type = 1;
+pub const tmx_obj_type_OT_POLYGON: tmx_obj_type = 2;
+pub const tmx_obj_type_OT_POLYLINE: tmx_obj_type = 3;
+pub const tmx_obj_type_OT_ELLIPSE: tmx_obj_type = 4;
+pub const tmx_obj_type_OT_TILE: tmx_obj_type = 5;
+pub const tmx_obj_type_OT_TEXT: tmx_obj_type = 6;
+pub const tmx_obj_type_OT_POINT: tmx_obj_type = 7;
+pub type tmx_obj_type = ::std::os::raw::c_uint;
+pub const tmx_property_type_PT_NONE: tmx_property_type = 0;
+pub const tmx_property_type_PT_INT: tmx_property_type = 1;
+pub const tmx_property_type_PT_FLOAT: tmx_property_type = 2;
+pub const tmx_property_type_PT_BOOL: tmx_property_type = 3;
+pub const tmx_property_type_PT_STRING: tmx_property_type = 4;
+pub const tmx_property_type_PT_COLOR: tmx_property_type = 5;
+pub const tmx_property_type_PT_FILE: tmx_property_type = 6;
+pub type tmx_property_type = ::std::os::raw::c_uint;
+pub const tmx_horizontal_align_HA_NONE: tmx_horizontal_align = 0;
+pub const tmx_horizontal_align_HA_LEFT: tmx_horizontal_align = 1;
+pub const tmx_horizontal_align_HA_CENTER: tmx_horizontal_align = 2;
+pub const tmx_horizontal_align_HA_RIGHT: tmx_horizontal_align = 3;
+pub type tmx_horizontal_align = ::std::os::raw::c_uint;
+pub const tmx_vertical_align_VA_NONE: tmx_vertical_align = 0;
+pub const tmx_vertical_align_VA_TOP: tmx_vertical_align = 1;
+pub const tmx_vertical_align_VA_CENTER: tmx_vertical_align = 2;
+pub const tmx_vertical_align_VA_BOTTOM: tmx_vertical_align = 3;
+pub type tmx_vertical_align = ::std::os::raw::c_uint;
+pub type tmx_property = _tmx_prop;
+pub type tmx_image = _tmx_img;
+pub type tmx_anim_frame = _tmx_frame;
+pub type tmx_tile = _tmx_tile;
+pub type tmx_tileset = _tmx_ts;
+pub type tmx_tileset_list = _tmx_ts_list;
+pub type tmx_shape = _tmx_shape;
+pub type tmx_text = _tmx_text;
+pub type tmx_object = _tmx_obj;
+pub type tmx_object_group = _tmx_objgr;
+pub type tmx_template = _tmx_templ;
+pub type tmx_layer = _tmx_layer;
+pub type tmx_map = _tmx_map;
+pub type tmx_properties = ::std::os::raw::c_void;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union tmx_user_data {
+    pub integer: ::std::os::raw::c_int,
+    pub decimal: f32,
+    pub pointer: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_tmx_user_data() {
+    const UNINIT: ::std::mem::MaybeUninit<tmx_user_data> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<tmx_user_data>(),
+        8usize,
+        concat!("Size of: ", stringify!(tmx_user_data))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<tmx_user_data>(),
+        8usize,
+        concat!("Alignment of ", stringify!(tmx_user_data))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).integer) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_user_data),
+            "::",
+            stringify!(integer)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).decimal) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_user_data),
+            "::",
+            stringify!(decimal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pointer) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_user_data),
+            "::",
+            stringify!(pointer)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union tmx_property_value {
+    pub integer: ::std::os::raw::c_int,
+    pub boolean: ::std::os::raw::c_int,
+    pub decimal: f32,
+    pub string: *mut ::std::os::raw::c_char,
+    pub file: *mut ::std::os::raw::c_char,
+    pub color: u32,
+}
+#[test]
+fn bindgen_test_layout_tmx_property_value() {
+    const UNINIT: ::std::mem::MaybeUninit<tmx_property_value> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<tmx_property_value>(),
+        8usize,
+        concat!("Size of: ", stringify!(tmx_property_value))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<tmx_property_value>(),
+        8usize,
+        concat!("Alignment of ", stringify!(tmx_property_value))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).integer) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(integer)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).boolean) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(boolean)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).decimal) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(decimal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).string) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(string)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).file) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(file)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).color) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_property_value),
+            "::",
+            stringify!(color)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_prop {
+    pub name: *mut ::std::os::raw::c_char,
+    pub type_: tmx_property_type,
+    pub value: tmx_property_value,
+}
+#[test]
+fn bindgen_test_layout__tmx_prop() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_prop> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_prop>(),
+        24usize,
+        concat!("Size of: ", stringify!(_tmx_prop))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_prop>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_prop))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_prop),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_prop),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).value) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_prop),
+            "::",
+            stringify!(value)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_img {
+    pub source: *mut ::std::os::raw::c_char,
+    pub trans: ::std::os::raw::c_uint,
+    pub uses_trans: ::std::os::raw::c_int,
+    pub width: ::std::os::raw::c_ulong,
+    pub height: ::std::os::raw::c_ulong,
+    pub resource_image: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout__tmx_img() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_img> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_img>(),
+        32usize,
+        concat!("Size of: ", stringify!(_tmx_img))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_img>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_img))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).source) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(source)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).trans) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(trans)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).uses_trans) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(uses_trans)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).width) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).height) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).resource_image) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_img),
+            "::",
+            stringify!(resource_image)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_frame {
+    pub tile_id: ::std::os::raw::c_uint,
+    pub duration: ::std::os::raw::c_uint,
+}
+#[test]
+fn bindgen_test_layout__tmx_frame() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_frame> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_frame>(),
+        8usize,
+        concat!("Size of: ", stringify!(_tmx_frame))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_frame>(),
+        4usize,
+        concat!("Alignment of ", stringify!(_tmx_frame))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tile_id) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_frame),
+            "::",
+            stringify!(tile_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).duration) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_frame),
+            "::",
+            stringify!(duration)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_tile {
+    pub id: ::std::os::raw::c_uint,
+    pub tileset: *mut tmx_tileset,
+    pub ul_x: ::std::os::raw::c_uint,
+    pub ul_y: ::std::os::raw::c_uint,
+    pub image: *mut tmx_image,
+    pub collision: *mut tmx_object,
+    pub animation_len: ::std::os::raw::c_uint,
+    pub animation: *mut tmx_anim_frame,
+    pub type_: *mut ::std::os::raw::c_char,
+    pub properties: *mut tmx_properties,
+    pub user_data: tmx_user_data,
+}
+#[test]
+fn bindgen_test_layout__tmx_tile() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_tile> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_tile>(),
+        80usize,
+        concat!("Size of: ", stringify!(_tmx_tile))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_tile>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_tile))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).id) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tileset) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(tileset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ul_x) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(ul_x)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ul_y) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(ul_y)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).image) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(image)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).collision) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(collision)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).animation_len) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(animation_len)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).animation) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(animation)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).properties) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(properties)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).user_data) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_tile),
+            "::",
+            stringify!(user_data)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_ts {
+    pub name: *mut ::std::os::raw::c_char,
+    pub tile_width: ::std::os::raw::c_uint,
+    pub tile_height: ::std::os::raw::c_uint,
+    pub spacing: ::std::os::raw::c_uint,
+    pub margin: ::std::os::raw::c_uint,
+    pub x_offset: ::std::os::raw::c_int,
+    pub y_offset: ::std::os::raw::c_int,
+    pub tilecount: ::std::os::raw::c_uint,
+    pub image: *mut tmx_image,
+    pub user_data: tmx_user_data,
+    pub properties: *mut tmx_properties,
+    pub tiles: *mut tmx_tile,
+}
+#[test]
+fn bindgen_test_layout__tmx_ts() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_ts> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_ts>(),
+        72usize,
+        concat!("Size of: ", stringify!(_tmx_ts))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_ts>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_ts))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tile_width) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(tile_width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tile_height) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(tile_height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).spacing) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(spacing)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).margin) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(margin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).x_offset) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(x_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).y_offset) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(y_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tilecount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(tilecount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).image) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(image)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).user_data) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(user_data)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).properties) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(properties)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tiles) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts),
+            "::",
+            stringify!(tiles)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_ts_list {
+    pub is_embedded: ::std::os::raw::c_int,
+    pub firstgid: ::std::os::raw::c_uint,
+    pub source: *mut ::std::os::raw::c_char,
+    pub tileset: *mut tmx_tileset,
+    pub next: *mut tmx_tileset_list,
+}
+#[test]
+fn bindgen_test_layout__tmx_ts_list() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_ts_list> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_ts_list>(),
+        32usize,
+        concat!("Size of: ", stringify!(_tmx_ts_list))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_ts_list>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_ts_list))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).is_embedded) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts_list),
+            "::",
+            stringify!(is_embedded)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).firstgid) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts_list),
+            "::",
+            stringify!(firstgid)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).source) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts_list),
+            "::",
+            stringify!(source)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tileset) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts_list),
+            "::",
+            stringify!(tileset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).next) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_ts_list),
+            "::",
+            stringify!(next)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_shape {
+    pub points: *mut *mut f64,
+    pub points_len: ::std::os::raw::c_int,
+}
+#[test]
+fn bindgen_test_layout__tmx_shape() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_shape> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_shape>(),
+        16usize,
+        concat!("Size of: ", stringify!(_tmx_shape))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_shape>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_shape))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).points) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_shape),
+            "::",
+            stringify!(points)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).points_len) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_shape),
+            "::",
+            stringify!(points_len)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_text {
+    pub fontfamily: *mut ::std::os::raw::c_char,
+    pub pixelsize: ::std::os::raw::c_int,
+    pub color: u32,
+    pub wrap: ::std::os::raw::c_int,
+    pub bold: ::std::os::raw::c_int,
+    pub italic: ::std::os::raw::c_int,
+    pub underline: ::std::os::raw::c_int,
+    pub strikeout: ::std::os::raw::c_int,
+    pub kerning: ::std::os::raw::c_int,
+    pub halign: tmx_horizontal_align,
+    pub valign: tmx_vertical_align,
+    pub text: *mut ::std::os::raw::c_char,
+}
+#[test]
+fn bindgen_test_layout__tmx_text() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_text> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_text>(),
+        56usize,
+        concat!("Size of: ", stringify!(_tmx_text))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_text>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_text))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).fontfamily) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(fontfamily)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pixelsize) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(pixelsize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).color) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(color)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).wrap) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(wrap)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bold) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(bold)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).italic) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(italic)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).underline) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(underline)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).strikeout) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(strikeout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).kerning) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(kerning)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).halign) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(halign)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).valign) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(valign)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).text) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_text),
+            "::",
+            stringify!(text)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_obj {
+    pub id: ::std::os::raw::c_uint,
+    pub obj_type: tmx_obj_type,
+    pub x: f64,
+    pub y: f64,
+    pub width: f64,
+    pub height: f64,
+    pub content: _tmx_obj__bindgen_ty_1,
+    pub visible: ::std::os::raw::c_int,
+    pub rotation: f64,
+    pub name: *mut ::std::os::raw::c_char,
+    pub type_: *mut ::std::os::raw::c_char,
+    pub template_ref: *mut tmx_template,
+    pub properties: *mut tmx_properties,
+    pub next: *mut tmx_object,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union _tmx_obj__bindgen_ty_1 {
+    pub gid: ::std::os::raw::c_int,
+    pub shape: *mut tmx_shape,
+    pub text: *mut tmx_text,
+}
+#[test]
+fn bindgen_test_layout__tmx_obj__bindgen_ty_1() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_obj__bindgen_ty_1> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_obj__bindgen_ty_1>(),
+        8usize,
+        concat!("Size of: ", stringify!(_tmx_obj__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_obj__bindgen_ty_1>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_obj__bindgen_ty_1))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gid) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj__bindgen_ty_1),
+            "::",
+            stringify!(gid)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).shape) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj__bindgen_ty_1),
+            "::",
+            stringify!(shape)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).text) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj__bindgen_ty_1),
+            "::",
+            stringify!(text)
+        )
+    );
+}
+#[test]
+fn bindgen_test_layout__tmx_obj() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_obj> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_obj>(),
+        104usize,
+        concat!("Size of: ", stringify!(_tmx_obj))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_obj>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_obj))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).id) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).obj_type) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(obj_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).x) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).y) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(y)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).width) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).height) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).content) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(content)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).visible) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(visible)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).rotation) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(rotation)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).template_ref) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(template_ref)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).properties) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(properties)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).next) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_obj),
+            "::",
+            stringify!(next)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_objgr {
+    pub color: u32,
+    pub draworder: tmx_objgr_draworder,
+    pub head: *mut tmx_object,
+}
+#[test]
+fn bindgen_test_layout__tmx_objgr() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_objgr> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_objgr>(),
+        16usize,
+        concat!("Size of: ", stringify!(_tmx_objgr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_objgr>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_objgr))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).color) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_objgr),
+            "::",
+            stringify!(color)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).draworder) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_objgr),
+            "::",
+            stringify!(draworder)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).head) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_objgr),
+            "::",
+            stringify!(head)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct _tmx_templ {
+    pub is_embedded: ::std::os::raw::c_int,
+    pub tileset_ref: *mut tmx_tileset_list,
+    pub object: *mut tmx_object,
+}
+#[test]
+fn bindgen_test_layout__tmx_templ() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_templ> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_templ>(),
+        24usize,
+        concat!("Size of: ", stringify!(_tmx_templ))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_templ>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_templ))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).is_embedded) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_templ),
+            "::",
+            stringify!(is_embedded)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tileset_ref) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_templ),
+            "::",
+            stringify!(tileset_ref)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).object) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_templ),
+            "::",
+            stringify!(object)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_layer {
+    pub id: ::std::os::raw::c_int,
+    pub name: *mut ::std::os::raw::c_char,
+    pub opacity: f64,
+    pub visible: ::std::os::raw::c_int,
+    pub offsetx: ::std::os::raw::c_int,
+    pub offsety: ::std::os::raw::c_int,
+    pub type_: tmx_layer_type,
+    pub content: _tmx_layer_layer_content,
+    pub user_data: tmx_user_data,
+    pub properties: *mut tmx_properties,
+    pub next: *mut tmx_layer,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union _tmx_layer_layer_content {
+    pub gids: *mut u32,
+    pub objgr: *mut tmx_object_group,
+    pub image: *mut tmx_image,
+    pub group_head: *mut tmx_layer,
+}
+#[test]
+fn bindgen_test_layout__tmx_layer_layer_content() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_layer_layer_content> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_layer_layer_content>(),
+        8usize,
+        concat!("Size of: ", stringify!(_tmx_layer_layer_content))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_layer_layer_content>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_layer_layer_content))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gids) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer_layer_content),
+            "::",
+            stringify!(gids)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).objgr) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer_layer_content),
+            "::",
+            stringify!(objgr)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).image) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer_layer_content),
+            "::",
+            stringify!(image)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).group_head) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer_layer_content),
+            "::",
+            stringify!(group_head)
+        )
+    );
+}
+#[test]
+fn bindgen_test_layout__tmx_layer() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_layer> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_layer>(),
+        72usize,
+        concat!("Size of: ", stringify!(_tmx_layer))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_layer>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_layer))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).id) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).name) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).opacity) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(opacity)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).visible) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(visible)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).offsetx) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(offsetx)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).offsety) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(offsety)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).content) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(content)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).user_data) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(user_data)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).properties) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(properties)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).next) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_layer),
+            "::",
+            stringify!(next)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _tmx_map {
+    pub orient: tmx_map_orient,
+    pub width: ::std::os::raw::c_uint,
+    pub height: ::std::os::raw::c_uint,
+    pub tile_width: ::std::os::raw::c_uint,
+    pub tile_height: ::std::os::raw::c_uint,
+    pub stagger_index: tmx_stagger_index,
+    pub stagger_axis: tmx_stagger_axis,
+    pub hexsidelength: ::std::os::raw::c_int,
+    pub backgroundcolor: u32,
+    pub renderorder: tmx_map_renderorder,
+    pub properties: *mut tmx_properties,
+    pub ts_head: *mut tmx_tileset_list,
+    pub ly_head: *mut tmx_layer,
+    pub tilecount: ::std::os::raw::c_uint,
+    pub tiles: *mut *mut tmx_tile,
+    pub user_data: tmx_user_data,
+}
+#[test]
+fn bindgen_test_layout__tmx_map() {
+    const UNINIT: ::std::mem::MaybeUninit<_tmx_map> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<_tmx_map>(),
+        88usize,
+        concat!("Size of: ", stringify!(_tmx_map))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<_tmx_map>(),
+        8usize,
+        concat!("Alignment of ", stringify!(_tmx_map))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).orient) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(orient)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).width) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).height) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tile_width) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(tile_width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tile_height) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(tile_height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stagger_index) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(stagger_index)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stagger_axis) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(stagger_axis)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hexsidelength) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(hexsidelength)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).backgroundcolor) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(backgroundcolor)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).renderorder) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(renderorder)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).properties) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(properties)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ts_head) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(ts_head)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ly_head) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(ly_head)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tilecount) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(tilecount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tiles) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(tiles)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).user_data) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_tmx_map),
+            "::",
+            stringify!(user_data)
+        )
+    );
+}
+extern "C" {
+    pub fn tmx_load(path: *const ::std::os::raw::c_char) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_load_buffer(
+        buffer: *const ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+    ) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_load_fd(fd: ::std::os::raw::c_int) -> *mut tmx_map;
+}
+pub type tmx_read_functor = ::std::option::Option<
+    unsafe extern "C" fn(
+        userdata: *mut ::std::os::raw::c_void,
+        buffer: *mut ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+>;
+extern "C" {
+    pub fn tmx_load_callback(
+        callback: tmx_read_functor,
+        userdata: *mut ::std::os::raw::c_void,
+    ) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_map_free(map: *mut tmx_map);
+}
+extern "C" {
+    pub fn tmx_get_tile(map: *mut tmx_map, gid: ::std::os::raw::c_uint) -> *mut tmx_tile;
+}
+extern "C" {
+    pub fn tmx_find_layer_by_id(map: *const tmx_map, id: ::std::os::raw::c_int) -> *mut tmx_layer;
+}
+extern "C" {
+    pub fn tmx_find_layer_by_name(
+        map: *const tmx_map,
+        name: *const ::std::os::raw::c_char,
+    ) -> *mut tmx_layer;
+}
+extern "C" {
+    pub fn tmx_get_property(
+        hash: *mut tmx_properties,
+        key: *const ::std::os::raw::c_char,
+    ) -> *mut tmx_property;
+}
+pub type tmx_property_functor = ::std::option::Option<
+    unsafe extern "C" fn(property: *mut tmx_property, userdata: *mut ::std::os::raw::c_void),
+>;
+extern "C" {
+    pub fn tmx_property_foreach(
+        hash: *mut tmx_properties,
+        callback: tmx_property_functor,
+        userdata: *mut ::std::os::raw::c_void,
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct tmx_col_bytes {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
+}
+#[test]
+fn bindgen_test_layout_tmx_col_bytes() {
+    const UNINIT: ::std::mem::MaybeUninit<tmx_col_bytes> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<tmx_col_bytes>(),
+        4usize,
+        concat!("Size of: ", stringify!(tmx_col_bytes))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<tmx_col_bytes>(),
+        1usize,
+        concat!("Alignment of ", stringify!(tmx_col_bytes))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).r) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_bytes),
+            "::",
+            stringify!(r)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).g) as usize - ptr as usize },
+        1usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_bytes),
+            "::",
+            stringify!(g)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).b) as usize - ptr as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_bytes),
+            "::",
+            stringify!(b)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).a) as usize - ptr as usize },
+        3usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_bytes),
+            "::",
+            stringify!(a)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct tmx_col_floats {
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
+    pub a: f32,
+}
+#[test]
+fn bindgen_test_layout_tmx_col_floats() {
+    const UNINIT: ::std::mem::MaybeUninit<tmx_col_floats> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<tmx_col_floats>(),
+        16usize,
+        concat!("Size of: ", stringify!(tmx_col_floats))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<tmx_col_floats>(),
+        4usize,
+        concat!("Alignment of ", stringify!(tmx_col_floats))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).r) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_floats),
+            "::",
+            stringify!(r)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).g) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_floats),
+            "::",
+            stringify!(g)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).b) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_floats),
+            "::",
+            stringify!(b)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).a) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(tmx_col_floats),
+            "::",
+            stringify!(a)
+        )
+    );
+}
+extern "C" {
+    pub fn tmx_col_to_bytes(color: u32) -> tmx_col_bytes;
+}
+extern "C" {
+    pub fn tmx_col_to_floats(color: u32) -> tmx_col_floats;
+}
+pub type tmx_resource_manager = ::std::os::raw::c_void;
+extern "C" {
+    pub fn tmx_make_resource_manager() -> *mut tmx_resource_manager;
+}
+extern "C" {
+    pub fn tmx_free_resource_manager(rc_mgr: *mut tmx_resource_manager);
+}
+extern "C" {
+    pub fn tmx_load_tileset(
+        rc_mgr: *mut tmx_resource_manager,
+        path: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_tileset_buffer(
+        rc_mgr: *mut tmx_resource_manager,
+        buffer: *const ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_tileset_fd(
+        rc_mgr: *mut tmx_resource_manager,
+        fd: ::std::os::raw::c_int,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_tileset_callback(
+        rc_mgr: *mut tmx_resource_manager,
+        callback: tmx_read_functor,
+        userdata: *mut ::std::os::raw::c_void,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_template(
+        rc_mgr: *mut tmx_resource_manager,
+        path: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_template_buffer(
+        rc_mgr: *mut tmx_resource_manager,
+        buffer: *const ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_template_fd(
+        rc_mgr: *mut tmx_resource_manager,
+        fd: ::std::os::raw::c_int,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_load_template_callback(
+        rc_mgr: *mut tmx_resource_manager,
+        callback: tmx_read_functor,
+        userdata: *mut ::std::os::raw::c_void,
+        key: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmx_rcmgr_load(
+        rc_mgr: *mut tmx_resource_manager,
+        path: *const ::std::os::raw::c_char,
+    ) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_rcmgr_load_buffer(
+        rc_mgr: *mut tmx_resource_manager,
+        buffer: *const ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+    ) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_rcmgr_load_fd(
+        rc_mgr: *mut tmx_resource_manager,
+        fd: ::std::os::raw::c_int,
+    ) -> *mut tmx_map;
+}
+extern "C" {
+    pub fn tmx_rcmgr_load_callback(
+        rc_mgr: *mut tmx_resource_manager,
+        callback: tmx_read_functor,
+        userdata: *mut ::std::os::raw::c_void,
+    ) -> *mut tmx_map;
+}
+pub const _tmx_error_codes_E_NONE: _tmx_error_codes = 0;
+pub const _tmx_error_codes_E_UNKN: _tmx_error_codes = 1;
+pub const _tmx_error_codes_E_INVAL: _tmx_error_codes = 2;
+pub const _tmx_error_codes_E_ALLOC: _tmx_error_codes = 8;
+pub const _tmx_error_codes_E_ACCESS: _tmx_error_codes = 10;
+pub const _tmx_error_codes_E_NOENT: _tmx_error_codes = 11;
+pub const _tmx_error_codes_E_FORMAT: _tmx_error_codes = 12;
+pub const _tmx_error_codes_E_ENCCMP: _tmx_error_codes = 13;
+pub const _tmx_error_codes_E_FONCT: _tmx_error_codes = 16;
+pub const _tmx_error_codes_E_BDATA: _tmx_error_codes = 20;
+pub const _tmx_error_codes_E_ZDATA: _tmx_error_codes = 21;
+pub const _tmx_error_codes_E_XDATA: _tmx_error_codes = 22;
+pub const _tmx_error_codes_E_CDATA: _tmx_error_codes = 24;
+pub const _tmx_error_codes_E_MISSEL: _tmx_error_codes = 30;
+pub type _tmx_error_codes = ::std::os::raw::c_uint;
+pub use self::_tmx_error_codes as tmx_error_codes;
+extern "C" {
+    pub static mut tmx_errno: tmx_error_codes;
+}
+extern "C" {
+    pub fn tmx_perror(arg1: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn tmx_strerr() -> *const ::std::os::raw::c_char;
+}
 pub const SaveData_MUSIC: SaveData = 0;
 pub const SaveData_SAVEDX: SaveData = 1;
 pub const SaveData_SAVEDY: SaveData = 2;
@@ -5905,7 +7906,7 @@ pub struct _bit_game {
     pub enemy: bit_enemy,
     pub state: bit_state,
     pub battleAni: bit_battleAni,
-    pub map: ::std::os::raw::c_int,
+    pub map: *mut tmx_map,
     pub invalidSave: bool,
 }
 #[test]
@@ -5914,12 +7915,12 @@ fn bindgen_test_layout__bit_game() {
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::std::mem::size_of::<_bit_game>(),
-        188usize,
+        200usize,
         concat!("Size of: ", stringify!(_bit_game))
     );
     assert_eq!(
         ::std::mem::align_of::<_bit_game>(),
-        4usize,
+        8usize,
         concat!("Alignment of ", stringify!(_bit_game))
     );
     assert_eq!(
@@ -5974,7 +7975,7 @@ fn bindgen_test_layout__bit_game() {
     );
     assert_eq!(
         unsafe { ::std::ptr::addr_of!((*ptr).map) as usize - ptr as usize },
-        180usize,
+        184usize,
         concat!(
             "Offset of field: ",
             stringify!(_bit_game),
@@ -5984,7 +7985,7 @@ fn bindgen_test_layout__bit_game() {
     );
     assert_eq!(
         unsafe { ::std::ptr::addr_of!((*ptr).invalidSave) as usize - ptr as usize },
-        184usize,
+        192usize,
         concat!(
             "Offset of field: ",
             stringify!(_bit_game),

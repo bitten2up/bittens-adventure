@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "raylib.h"
+#include "tmx.h"
 // set the title of the game
 #define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
@@ -123,7 +124,7 @@ struct _bit_game
     bit_enemy enemy;
     bit_state state;
     bit_battleAni battleAni;
-    int map;
+    tmx_map* map;
     bool invalidSave;
 };
 
