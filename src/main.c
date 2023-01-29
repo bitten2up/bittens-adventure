@@ -196,7 +196,7 @@ int main(int argc, char *argv[]){
     camera.target = (Vector2){ 0, 0 };
     camera.offset = (Vector2){ 0, 0 };
     camera.rotation = 0.0f;
-    camera.zoom = (float)(game.settings.width/SCREENWIDTH);
+    camera.zoom = (game.settings.width/SCREENWIDTH);
     // setup player sprite
     // Texture2D bitten = LoadTexture("assets/bitten.png");
     bitten=LoadTexture("assets/bitten.png");
@@ -429,14 +429,15 @@ int main(int argc, char *argv[]){
             }
         }
         if (!IsWindowFullscreen()){
-            SetWindowSize(game.settings.width, game.settings.height);
+            SetWindowSize(SCREENWIDTH*(game.settings.width/SCREENWIDTH), SCREENHEIGHT*(game.settings.height/SCREENHEIGHT));
         }
         bittenRec.x = bittenDirection*bitten.width/4;
         bittenRec.y = bitten.height/4;
 
         BeginDrawing();
         BeginMode2D(camera);
-            ClearBackground(BLACK);
+            if (isOverworld)           ClearBackground(BLACK);
+            else                        ClearBackground(WHITE);
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (isGameover) DrawText("GAMEOVER", 190, 200, 20, BLACK);
             else if (isBattle) {
