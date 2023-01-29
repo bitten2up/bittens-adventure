@@ -31,7 +31,7 @@ PLATFORM              ?= PLATFORM_DESKTOP
 # Define project variables
 PROJECT_NAME          ?= bittens-adventure
 PROJECT_VERSION       ?= 0.2
-PROJECT_BUILD_PATH    ?= ./src
+PROJECT_BUILD_PATH    ?= ./build
 PROJECT_OUT_DIR       ?= ./bin
 PROJECT_RUST_PATH     ?= ./rust-src
 
@@ -281,7 +281,7 @@ endif
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # NOTE: The resource .rc file contains windows executable icon and properties
-        LDFLAGS += -L./lib/win64 build/bitten.rc.data build/icon.rc.data
+        LDFLAGS += -L./lib/win64 build/bitten.rc.data
         # -Wl,--subsystem,windows hides the console window
         ifeq ($(BUILD_MODE), RELEASE)
             LDFLAGS += -Wl,--subsystem,windows
@@ -410,9 +410,10 @@ PROJECT_SOURCE_FILES ?= \
     src/bit_diag.c  \
     src/bit_patch.c \
     src/bit_collision.c
-
+# Define all recource files (windows)
+RESOBJ = $(patsubst %.rc,build/%.rc.data,$(wildcard *.rc))
 # Define all object files from source files
-OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
+OBJS = $(RESOBJ) $(patsubst src/%.c, $(PROJECT_BUILD_PATH)/%.o, $(PROJECT_SOURCE_FILES))
 
 
 # Define processes to execute
@@ -434,13 +435,21 @@ all:
 src/bittendef.h:
 	bindgen src/bittendef.h -o rust-src/src/bittendef.rs
 	$(CARGO) $(CARGO_PARAMS)
+
+build/%.rc.data: %.rc
+ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+    ifeq ($(PLATFORM_OS),WINDOWS)
+		windres $< -o $@
+    endif
+endif
+
 # Project target defined by PROJECT_NAME
 $(PROJECT_NAME): $(OBJS)
 	$(CC) -o $(PROJECT_OUT_DIR)/$(PROJECT_NAME)$(EXT) $(OBJS) $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(LDLIBS) -D$(PLATFORM)
 
 # Compile source files
 # NOTE: This pattern will compile every module defined on $(OBJS)
-%.o: %.c
+build/%.o: src/%.c
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM)
 
 # Clean everything
