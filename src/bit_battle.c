@@ -231,13 +231,13 @@ bool bit_BattleDraw(bit_game* game)
     }
     // draw the text, to be implmented into diagDraw
     if (enemyHealth<=0 && battleAni==waitInput)     DrawText("Well That was easy", 190, 200, 20, BLACK);
-    DrawText("Bitten", game->settings.width/4, game->settings.height/3*2.5, 10, WHITE);
-    DrawText(game->enemy.name, game->settings.width/4*3, game->settings.height/3*2.5, 10, WHITE);
+    DrawText("Bitten", SCREENWIDTH/4, SCREENHEIGHT/3*2.5, 10, WHITE);
+    DrawText(game->enemy.name, SCREENWIDTH/4*3, SCREENHEIGHT/3*2.5, 10, WHITE);
     char working[5];
     ftoa(bittenHealth, working, 4);
-    DrawText(working, game->settings.width/4, game->settings.height/3*2.6, 10, WHITE);
+    DrawText(working, SCREENWIDTH/4, SCREENHEIGHT/3*2.6, 10, WHITE);
     ftoa(enemyHealth, working, 4);
-    DrawText(working, game->settings.width/4*3, game->settings.height/3*2.6, 10, WHITE);
+    DrawText(working, SCREENWIDTH/4*3, SCREENHEIGHT/3*2.6, 10, WHITE);
     return true;
 }
 
@@ -245,19 +245,19 @@ bool bit_BattleDraw(bit_game* game)
 static void battleIntro(bit_game* game)
 {
     const int wframe=((frame*5));
-    if (wframe==(game->settings.height)){
+    if (wframe==(SCREENHEIGHT)){
         grow=false;
     }
 
-	if (wframe<=game->settings.height/3 && !grow)
+	if (wframe<=SCREENHEIGHT/3 && !grow)
 	{
 	    battleAni=waitInput;
         grow=true;
         frame=0;
 	}
    // battleAni=waitInput;
-    if (grow)                        {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame+=1;}
-    else                             {DrawRectangle(0, game->settings.height-wframe, game->settings.width, game->settings.height, BLACK);frame-=1;}
+    if (grow)                        {DrawRectangle(0, SCREENHEIGHT-wframe, SCREENWIDTH, SCREENHEIGHT, BLACK);frame+=1;}
+    else                             {DrawRectangle(0, SCREENHEIGHT-wframe, SCREENWIDTH, SCREENHEIGHT, BLACK);frame-=1;}
 	return;
 }
 
@@ -271,7 +271,7 @@ static void battleAttack(bit_game* game)
     if (battleAni==playerAttack) {
         if (bittenHealth>0){
             const int wframe=((frame*5));
-            if (wframe>=(game->settings.width/5)){
+            if (wframe>=(SCREENWIDTH/5)){
                 grow=false;
                 enemyHealth-=10;
             }
@@ -281,8 +281,8 @@ static void battleAttack(bit_game* game)
                 grow=true;
                 frame=0;
 	        }
-            if (grow)                        {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, GRAY);frame+=1;}
-            else                             {DrawRectangle(game->settings.width-wframe, 0, game->settings.width, game->settings.height, RED);frame-=1;}
+            if (grow)                        {DrawRectangle(SCREENWIDTH-wframe, 0, SCREENWIDTH, SCREENHEIGHT, GRAY);frame+=1;}
+            else                             {DrawRectangle(SCREENWIDTH-wframe, 0, SCREENWIDTH, SCREENHEIGHT, RED);frame-=1;}
         }
         else {
             battleAni=waitInput;
@@ -294,7 +294,7 @@ static void battleAttack(bit_game* game)
     if (battleAni==enemyAttack) {
         if (enemyHealth>0){
             const int wframe=((frame*5));
-            if (wframe>=(game->settings.width/5)){
+            if (wframe>=(SCREENWIDTH/5)){
                 grow=false;
                 bittenHealth-=10;
             }
@@ -304,8 +304,8 @@ static void battleAttack(bit_game* game)
                 grow=true;
                 frame=0;
 	        }
-            if (grow)                        {DrawRectangle(0, 0, wframe, game->settings.height, GRAY);frame+=1;}
-            else                             {DrawRectangle(0, 0, wframe, game->settings.height, RED);frame-=1;}
+            if (grow)                        {DrawRectangle(0, 0, wframe, SCREENHEIGHT, GRAY);frame+=1;}
+            else                             {DrawRectangle(0, 0, wframe, SCREENHEIGHT, RED);frame-=1;}
         }
         else {
             battleAni=waitInput;

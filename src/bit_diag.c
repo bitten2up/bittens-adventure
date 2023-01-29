@@ -55,6 +55,6 @@ void diagDraw(bool diagDrawrect, bit_settings* settings)
     // draw rectangle if defined
     if (diagDrawrect)
     {
-       DrawRectangle(0, settings->height-(settings->height/3), settings->width, settings->height-(settings->height/3), BLACK);
+       DrawRectangle(0, SCREENHEIGHT-(SCREENHEIGHT/3), SCREENWIDTH, SCREENHEIGHT-(SCREENHEIGHT/3), BLACK);
     }
 }

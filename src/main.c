@@ -181,7 +181,7 @@ int main(int argc, char *argv[]){
     else if (startup==2)    { game.settings.modded=true; pthread_create(&patching, NULL, patch, &game);}
     // init the window
     SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(game.settings.width, game.settings.height, GAME_NAME);
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, GAME_NAME);
     InitAudioDevice();
     #ifdef debugsprites
     SetTargetFPS(20);
@@ -191,6 +191,12 @@ int main(int argc, char *argv[]){
     #endif
     // set window icon
     SetWindowIcon(LoadImage("assets/window.png"));
+    //camera
+    Camera2D camera = { 0 };
+    camera.target = (Vector2){ 0, 0 };
+    camera.offset = (Vector2){ 0, 0 };
+    camera.rotation = 0.0f;
+    camera.zoom = (float)(game.settings.width/SCREENWIDTH);
     // setup player sprite
     // Texture2D bitten = LoadTexture("assets/bitten.png");
     bitten=LoadTexture("assets/bitten.png");
@@ -199,8 +205,8 @@ int main(int argc, char *argv[]){
     bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
     // position of player
-    bittenPos.x = game.settings.width/2 - bittenRec.width;
-    bittenPos.y = game.settings.height/2 - bittenRec.height;
+    bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
+    bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
     bittenRec.x = 4*bitten.width/4;
     bittenRec.y = bitten.height/4;
     bittenDirection = up;
@@ -213,8 +219,8 @@ int main(int argc, char *argv[]){
     enemyRec.width = enemySprite.width/2;
     enemyRec.height = enemySprite.height/4;
     #define enemyPos game.enemy.sprite.pos  // position of sprite
-    enemyPos.x = game.settings.width/2 + game.settings.width/3 - enemyRec.width/2;
-    enemyPos.y = game.settings.height/2 - enemyRec.height;
+    enemyPos.x = SCREENWIDTH/2 + SCREENWIDTH/3 - enemyRec.width/2;
+    enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
     enemyRec.x = 2*enemySprite.width/4;
     enemyRec.y = 3*enemySprite.height/4;
     //load save file, should be in a function but eh dont got time
@@ -241,6 +247,7 @@ int main(int argc, char *argv[]){
     #endif
     // declare collision type
     int collision;
+
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
     TraceLog(LOG_DEBUG, "Discord RPC activating");
@@ -271,6 +278,7 @@ int main(int argc, char *argv[]){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
+        camera.zoom = (float)game.settings.width/SCREENWIDTH;
         if ((isTitle) | (isGameover)){
             if (IsKeyReleased(KEY_TAB) && !game.settings.modded)     {
                 game.settings.modded=true;
@@ -290,8 +298,8 @@ int main(int argc, char *argv[]){
                     game.player.x=(lastx);
                     game.player.y=(lasty);
                 }
-                bittenPos.x = game.settings.width/2 - bittenRec.width;
-                bittenPos.y = game.settings.height/2 - bittenRec.height;
+                bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
+                bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 #ifdef DISCORD
                 updateDiscordPresence("Overworld");
                 #endif
@@ -355,8 +363,9 @@ int main(int argc, char *argv[]){
                     ticker=0;
                 }
             }
-            tilex = (map->width/2)-((game.player.x)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
-            tiley = (map->height/2)-((game.player.y+8)/32)-3; // dont ask me wtf this has to be subtracted by 3 idk
+            TraceLog(LOG_INFO, "width :%i\n height: %i" , map->width, map->height);
+            tilex = (map->width/2)-((game.player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
+            tiley = (map->height/2)-((game.player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
             collision=checkCollision(map, tilex, tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
             if (collision==2) {
@@ -365,15 +374,13 @@ int main(int argc, char *argv[]){
                 //enemy = "chest monster";
                 game.enemy.health=10;
                 TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
-                bittenPos.x = game.settings.width/4 - bittenRec.width;
-                bittenPos.y = game.settings.height-(game.settings.height/2);
+                bittenPos.x = SCREENWIDTH/4 - bittenRec.width;
+                bittenPos.y = SCREENHEIGHT-(SCREENHEIGHT/2);
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
                 if (game.settings.audio)          PlayMusicStream(bgm);
             }
             if (IsKeyReleased(KEY_TAB)){
-                // SaveStorageValue(SAVEDX, x);
-                // SaveStorageValue(SAVEDY, y);
                 saveGame(&game);
             }
         }
@@ -381,34 +388,33 @@ int main(int argc, char *argv[]){
             StopMusicStream(bgm);
             game.settings.audio=false;
             #ifndef PLATFORM_WEB
-            //SaveStorageValue(MUSIC, 0);
             saveGame(&game);
             #endif
         }
         else if (IsKeyReleased(KEY_M)){
             PlayMusicStream(bgm);
             game.settings.audio=true;
-            //SaveStorageValue(MUSIC, 1);
             saveGame(&game);
         }
+        #define BROKENCODETBH
         #ifdef BROKENCODETBH
         if (IsKeyPressed(KEY_F)){
             int display = GetCurrentMonitor();
             if (!IsWindowFullscreen()){
                 SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display)); // todo fix teleportation that happens here
-                game.settings.height=GetMonitorHeight(display);
+                game.settings.width=GetMonitorHeight(display);
                 game.settings.width=GetMonitorWidth(display);
                 ToggleFullscreen();
-                bittenPos.x = game.settings.width/2 - bittenRec.width;
-                bittenPos.y = game.settings.height/2 - bittenRec.height;
+                bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
+                bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
             }
             else {
                 ToggleFullscreen();
                 game.settings.width=SCREENWIDTH;
-                game.settings.height=SCREENHEIGHT;
-                SetWindowSize(game.settings.width, game.settings.height);
-                bittenPos.x = game.settings.width/2 - bittenRec.width;
-                bittenPos.y = game.settings.height/2 - bittenRec.height;
+                game.settings.width=SCREENHEIGHT;
+                SetWindowSize(SCREENWIDTH, SCREENHEIGHT);
+                bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
+                bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
             }
         }
         #endif
@@ -419,6 +425,7 @@ int main(int argc, char *argv[]){
         bittenRec.y = bitten.height/4;
 
         BeginDrawing();
+        BeginMode2D(camera);
             ClearBackground(WHITE);
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (isGameover) DrawText("GAMEOVER", 190, 200, 20, BLACK);
@@ -436,8 +443,9 @@ int main(int argc, char *argv[]){
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);
                 DrawText(xandy, 20,10,20, BLACK);
             }
-            if (game.settings.modded && (isTitle | !game.settings.silent))         DrawText("modded", 10, game.settings.height-20, 15, RED);
+            if (game.settings.modded && (isTitle | !game.settings.silent))         DrawText("modded", 10, SCREENHEIGHT-20, 15, RED);
             DrawFPS(10, 10);
+        EndMode2D();
         EndDrawing();
     }
     saveGame(&game);
