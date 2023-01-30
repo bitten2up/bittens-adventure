@@ -130,48 +130,7 @@ struct _bit_game
 
 
 // ease of use macros
-// called from main.c
-#ifdef DEFINE_MAIN
-/*
- player defines
-*/
-// player sprite
-    #define bitten game.player.sprite.img
-// player rectangle aka what we see of the sprite
-    #define bittenRec game.player.sprite.rec
-// position of player
-    #define bittenPos game.player.sprite.pos
-// direction of player
-    #define bittenDirection game.player.sprite.direction
-// player health
-    #define bittenHealth game.player.health
 
-/*
-* enemy defines
-*/
-// enemy sprite
-    #define enemySprite game.enemy.sprite.img
-// enemy rectangle aka what we see of the sprite
-    #define enemyRec game.enemy.sprite.rec
-// position of enemy
-    #define enemyPos game.enemy.sprite.pos
-// enemy health
-    #define enemyHealth game.enemy.health
-/*
-battle animation defines
-*/
-    #define battleAni game.battleAni
-
-/*
-* gamestate defines
-*/
-    #define state game.state
-    #define isTitle state==title
-    #define isBattle state==battle
-    #define isOverworld state==overworld
-    #define isGameover state==gameover
-#else
-// not main.c
 /*
  player defines
 */
@@ -181,6 +140,8 @@ battle animation defines
     #define bittenRec game->player.sprite.rec
 // position of player
     #define bittenPos game->player.sprite.pos
+// direction of player
+    #define bittenDirection game->player.sprite.direction
 // player health
     #define bittenHealth game->player.health
 /*
@@ -206,5 +167,4 @@ battle animation defines
     #define isGameover state==gameover
     #define isBattle state==battle
     #define isOverworld state==overworld
-#endif
 #endif

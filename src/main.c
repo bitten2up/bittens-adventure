@@ -150,7 +150,6 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 // ENGINE HEADERS
 ////////////////////////////////////////////////////////////
-#define DEFINE_MAIN              // we are the main function, so we dont want defines for pointers
 #include "bittendef.h"           // defines for the engine
 #include "bit_cmdlineParams.h"   // command line functionality
 #include "bit_battle.h"          // battle functionality
@@ -166,19 +165,19 @@ static void discordInit()
 int main(int argc, char *argv[]){
     pthread_t patching; // for patching
     // load superstruct (as im calling it)
-    bit_game game;
+    bit_game *game = malloc(sizeof(bit_game));
     // apply default settings
-    game.settings.width=SCREENWIDTH;
-    game.settings.height=SCREENHEIGHT;
-    game.settings.modded=false;
-    game.settings.silent=false;
-    game.invalidSave=false;
+    game->settings.width=SCREENWIDTH;
+    game->settings.height=SCREENHEIGHT;
+    game->settings.modded=false;
+    game->settings.silent=false;
+    game->invalidSave=false;
     state=title;
     battleAni=intro;
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { game.settings.modded=true; pthread_create(&patching, NULL, patch, &game);}
+    else if (startup==2)    { game->settings.modded=true; pthread_create(&patching, NULL, patch, game);}
     // init the window
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(SCREENWIDTH, SCREENHEIGHT, GAME_NAME);
@@ -196,7 +195,7 @@ int main(int argc, char *argv[]){
     camera.target = (Vector2){ 0, 0 };
     camera.offset = (Vector2){ 0, 0 };
     camera.rotation = 0.0f;
-    camera.zoom = (game.settings.width/SCREENWIDTH);
+    camera.zoom = (game->settings.width/SCREENWIDTH);
     // setup player sprite
     // Texture2D bitten = LoadTexture("assets/bitten.png");
     bitten=LoadTexture("assets/bitten.png");
@@ -211,39 +210,39 @@ int main(int argc, char *argv[]){
     bittenRec.y = bitten.height/4;
     bittenDirection = up;
     // Enemy sprite loading
-    #define enemySprite game.enemy.sprite.img
+    #define enemySprite game->enemy.sprite.img
     enemySprite = LoadTexture("assets/enemy.png");
     enemySprite.width=enemySprite.width*2;
     enemySprite.height=enemySprite.height*2;
-    #define enemyRec game.enemy.sprite.rec
+    #define enemyRec game->enemy.sprite.rec
     enemyRec.width = enemySprite.width/2;
     enemyRec.height = enemySprite.height/4;
-    #define enemyPos game.enemy.sprite.pos  // position of sprite
+    #define enemyPos game->enemy.sprite.pos  // position of sprite
     enemyPos.x = SCREENWIDTH/2 + SCREENWIDTH/3 - enemyRec.width/2;
     enemyPos.y = SCREENHEIGHT/2 - enemyRec.height;
     enemyRec.x = 2*enemySprite.width/4;
     enemyRec.y = 3*enemySprite.height/4;
     //load save file, should be in a function but eh dont got time
-    loadGame(&game);
+    loadGame(game);
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
     PlayMusicStream(bgm);
-    if (!game.settings.audio)                StopMusicStream(bgm);
+    if (!game->settings.audio)                StopMusicStream(bgm);
     int ticker = 0;
     int frame = 4;
     // last x and y to go back to
-    int lastx=game.player.x;
-    int lasty=game.player.y;
+    int lastx=game->player.x;
+    int lasty=game->player.y;
     // tile x and y
     int tilex;
     int tiley;
     // setup map
     TraceLog(LOG_INFO, "FILEIO: LOADING MAP");
     #ifdef PLATFORM_WEB
-    game.map = LoadTMX("assets/bit_towntest.tmx");
+    game->map = LoadTMX("assets/bit_towntest.tmx");
     #endif
     #ifndef PLATFORM_WEB
-    game.map = LoadTMX("assets/maps/bit_towntest.tmx");
+    game->map = LoadTMX("assets/maps/bit_towntest.tmx");
     #endif
     // declare collision type
     int collision;
@@ -257,7 +256,7 @@ int main(int argc, char *argv[]){
     TraceLog(LOG_DEBUG, "Discord RPC status set");
     #endif
     // see if the game has an invalid save file
-    if (game.invalidSave==true) {
+    if (game->invalidSave==true) {
         while (!WindowShouldClose) {
             BeginDrawing();
                 if (isTitle) DrawText("Error invalid save file, file from newer version", 190, 200, 20, BLACK);
@@ -269,7 +268,7 @@ int main(int argc, char *argv[]){
         UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
         CloseAudioDevice();
         //free_layers(chests);
-        UnloadTMX(game.map);
+        UnloadTMX(game->map);
         UnloadTexture(bitten);
         CloseWindow();
         return 1;
@@ -278,11 +277,11 @@ int main(int argc, char *argv[]){
     while (!WindowShouldClose())
     {
         UpdateMusicStream(bgm);
-        camera.zoom = game.settings.width/SCREENWIDTH;
+        camera.zoom = game->settings.width/SCREENWIDTH;
         if ((isTitle) | (isGameover)){
-            if (IsKeyReleased(KEY_TAB) && !game.settings.modded)     {
-                game.settings.modded=true;
-                pthread_create(&patching, NULL, patch, &game.settings);
+            if (IsKeyReleased(KEY_TAB) && !game->settings.modded)     {
+                game->settings.modded=true;
+                pthread_create(&patching, NULL, patch, game);
             }
 
             if (IsKeyReleased(KEY_ENTER)) {
@@ -292,8 +291,8 @@ int main(int argc, char *argv[]){
             }
         }
         else if (isBattle){
-            if (bit_battleInput(&game)){
-                disableCollision(game.map, tilex, tiley);
+            if (bit_battleInput(game)){
+                disableCollision(game->map, tilex, tiley);
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
                 #ifdef DISCORD
@@ -302,7 +301,7 @@ int main(int argc, char *argv[]){
             }
             #ifdef DISCORD
             char buf[20];
-            sprintf(buf, "battling %s", game.enemy.name);
+            sprintf(buf, "battling %s", game->enemy.name);
             updateDiscordPresence(buf);
             #endif
         }
@@ -316,8 +315,8 @@ int main(int argc, char *argv[]){
                 //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
-                    lastx=game.player.x;
-                    game.player.x -= 8;
+                    lastx=game->player.x;
+                    game->player.x -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -328,8 +327,8 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lastx=game.player.x;
-                    game.player.x += 8;
+                    lastx=game->player.x;
+                    game->player.x += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -340,8 +339,8 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=game.player.y;
-                    game.player.y += 8;
+                    lasty=game->player.y;
+                    game->player.y += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
@@ -352,84 +351,84 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=game.player.y;
-                    game.player.y -= 8;
+                    lasty=game->player.y;
+                    game->player.y -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
                     ticker=0;
                 }
             }
-            TraceLog(LOG_INFO, "width :%i\n height: %i" , game.map->width, game.map->height);
-            tilex = (game.map->width/2)-((game.player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
-            tiley = (game.map->height/2)-((game.player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
-            collision=checkCollision(game.map, tilex, tiley);
+            TraceLog(LOG_INFO, "width :%i\n height: %i" , game->map->width, game->map->height);
+            tilex = (game->map->width/2)-((game->player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
+            tiley = (game->map->height/2)-((game->player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
+            collision=checkCollision(game->map, tilex, tiley);
             //TraceLog(LOG_INFO, "collision: %i", collision);
             if (collision==2) {
                 state=battle;
-                strcpy(game.enemy.name, "chest monster");
+                strcpy(game->enemy.name, "chest monster");
                 //enemy = "chest monster";
-                game.enemy.health=10;
-                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game.enemy.name);
+                game->enemy.health=10;
+                TraceLog(LOG_DEBUG, "ENGINE: ENTERING BATTLE: %s health: %i", game->enemy.name);
                 bittenPos.x = SCREENWIDTH/4 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT-(SCREENHEIGHT/2);
                 UnloadMusicStream(bgm);
                 bgm=LoadMusicStream("assets/M_IntroHP.mp3");
-                if (game.settings.audio)          PlayMusicStream(bgm);
+                if (game->settings.audio)          PlayMusicStream(bgm);
                 switch (bittenDirection)
                 {
                 case up:
-                    undoTile(&game,tilex,tiley+1);
+                    undoTile(game,tilex,tiley+1);
                     break;
                 case down:
-                    undoTile(&game,tilex,tiley-1);
+                    undoTile(game,tilex,tiley-1);
                     break;
                 case left:
-                    undoTile(&game,tilex+1,tiley);
+                    undoTile(game,tilex+1,tiley);
                     break;
                 case right:
-                    undoTile(&game,tilex-1,tiley);
+                    undoTile(game,tilex-1,tiley);
                     break;
                 default:
                     break;
                 }
             }
             if (IsKeyReleased(KEY_TAB)){
-                saveGame(&game);
+                saveGame(game);
             }
         }
-        if (IsKeyReleased(KEY_M) && game.settings.audio) {
+        if (IsKeyReleased(KEY_M) && game->settings.audio) {
             StopMusicStream(bgm);
-            game.settings.audio=false;
+            game->settings.audio=false;
             #ifndef PLATFORM_WEB
-            saveGame(&game);
+            saveGame(game);
             #endif
         }
         else if (IsKeyReleased(KEY_M)){
             PlayMusicStream(bgm);
-            game.settings.audio=true;
-            saveGame(&game);
+            game->settings.audio=true;
+            saveGame(game);
         }
         if (IsKeyPressed(KEY_F)){
             int display = GetCurrentMonitor();
             if (!IsWindowFullscreen()){
                 SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display)); // todo fix teleportation that happens here
-                game.settings.width=GetMonitorHeight(display);
-                game.settings.width=GetMonitorWidth(display);
+                game->settings.width=GetMonitorHeight(display);
+                game->settings.width=GetMonitorWidth(display);
                 ToggleFullscreen();
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
             }
             else {
                 ToggleFullscreen();
-                game.settings.width=SCREENWIDTH;
-                game.settings.width=SCREENHEIGHT;
+                game->settings.width=SCREENWIDTH;
+                game->settings.width=SCREENHEIGHT;
                 SetWindowSize(SCREENWIDTH, SCREENHEIGHT);
                 bittenPos.x = SCREENWIDTH/2 - bittenRec.width;
                 bittenPos.y = SCREENHEIGHT/2 - bittenRec.height;
             }
         }
         if (!IsWindowFullscreen()){
-            SetWindowSize(SCREENWIDTH*(game.settings.width/SCREENWIDTH), SCREENHEIGHT*(game.settings.height/SCREENHEIGHT));
+            SetWindowSize(SCREENWIDTH*(game->settings.width/SCREENWIDTH), SCREENHEIGHT*(game->settings.height/SCREENHEIGHT));
         }
         bittenRec.x = bittenDirection*bitten.width/4;
         bittenRec.y = bitten.height/4;
@@ -441,33 +440,34 @@ int main(int argc, char *argv[]){
             if (isTitle) DrawText("bitten's adventure", 190, 200, 20, BLACK);
             if (isGameover) DrawText("GAMEOVER", 190, 200, 20, BLACK);
             else if (isBattle) {
-                if (bit_BattleDraw(&game)){
+                if (bit_BattleDraw(game)){
                     DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
                     DrawTextureRec(enemySprite, enemyRec, enemyPos, WHITE);
                 }
             }
             else if (isOverworld)
             {
-                DrawTMX(game.map, game.player.x, game.player.y, WHITE);
+                DrawTMX(game->map, game->player.x, game->player.y, WHITE);
                 DrawTextureRec(bitten, bittenRec,bittenPos,WHITE);
                 char xandy[20];
                 snprintf(xandy, sizeof(xandy), "\nx: %i\ny: %i", tilex, tiley);
                 DrawText(xandy, 20,10,20, BLACK);
             }
-            if (game.settings.modded && (isTitle | !game.settings.silent))         DrawText("modded", 10, SCREENHEIGHT-20, 15, RED);
+            if (game->settings.modded && (isTitle | !game->settings.silent))         DrawText("modded", 10, SCREENHEIGHT-20, 15, RED);
             DrawFPS(10, 10);
         EndMode2D();
         EndDrawing();
     }
-    saveGame(&game);
+    saveGame(game);
     #ifdef DISCORD
     Discord_Shutdown();
     #endif
     UnloadMusicStream(bgm);   // Unload bgm stream buffers from RAM
     CloseAudioDevice();
     //free_layers(chests);
-    UnloadTMX(game.map);
+    UnloadTMX(game->map);
     UnloadTexture(bitten);
+    free(game);
     CloseWindow();
     TraceLog(LOG_INFO, "print memory leaks");
     return 0;
