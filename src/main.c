@@ -166,6 +166,7 @@ int main(int argc, char *argv[]){
     pthread_t patching; // for patching
     // load superstruct (as im calling it)
     bit_game *game = malloc(sizeof(bit_game));
+    if (game==NULL)
     // apply default settings
     game->settings.width=SCREENWIDTH;
     game->settings.height=SCREENHEIGHT;
@@ -230,9 +231,6 @@ int main(int argc, char *argv[]){
     if (!game->settings.audio)                StopMusicStream(bgm);
     int ticker = 0;
     int frame = 4;
-    // last x and y to go back to
-    int lastx=game->player.x;
-    int lasty=game->player.y;
     // tile x and y
     int tilex;
     int tiley;
@@ -315,7 +313,6 @@ int main(int argc, char *argv[]){
                 //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
-                    lastx=game->player.x;
                     game->player.x -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -327,7 +324,6 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lastx=game->player.x;
                     game->player.x += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -339,7 +335,6 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=game->player.y;
                     game->player.y += 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;
@@ -351,7 +346,6 @@ int main(int argc, char *argv[]){
                 ticker+=1;
                 if (ticker==5)
                 {
-                    lasty=game->player.y;
                     game->player.y -= 8;
                     frame+=1;
                     bittenRec.y=frame*bitten.height/4;

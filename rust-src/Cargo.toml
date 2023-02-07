@@ -1,16 +1,17 @@
 [package]
 name = "rust-src"
 version = "0.1.0"
+build = "build.rs"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-savefile="0.11"
-savefile-derive="0.11"
+savefile="0.12.0"
+savefile-derive="0.12.0"
 
 [lib]
-name = "bitsav"
+name = "bitrs"
 path = "src/bittenSave.rs"
 # crate-type = ["cdylib"]      # Creates dynamic lib
 crate-type = ["staticlib"] # Creates static lib

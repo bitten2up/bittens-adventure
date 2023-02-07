@@ -343,7 +343,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # Libraries for Windows desktop compilation
         # NOTE: WinMM library required to set high-res timer resolution
-        LDLIBS = -lraylib -ltmx -lxml2 -lbitsav -lopengl32 -lgdi32 -lbcrypt -lncrypt -luserenv -lws2_32 -lwinmm -lz -ldl -L/c/raylib/raylib/src
+        LDLIBS = -lraylib -ltmx -lxml2 -lbitrs -lopengl32 -lgdi32 -lbcrypt -lncrypt -luserenv -lws2_32 -lwinmm -lz -ldl -L/c/raylib/raylib/src
         # Required for physac examples
         LDLIBS += -static -lpthread
         ifeq ($(DISCORDRPC),TRUE)
@@ -353,7 +353,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),LINUX)
         # Libraries for Debian GNU/Linux desktop compiling
         # NOTE: Required packages: libegl1-mesa-dev
-        LDLIBS = -lraylib -ltmx -lxml2 -lbitsav -lz -lGL -lm -lpthread -ldl -lrt
+        LDLIBS = -lraylib -ltmx -lxml2 -lbitrs -lz -lGL -lm -lpthread -ldl -lrt
 
         # On X11 requires also below libraries
         LDLIBS += -lX11
@@ -430,11 +430,9 @@ endif
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target Also build rust-src
 all:
-	$(MAKE) $(MAKEFILE_PARAMS)
-# if bittendef is changed regenerate bindings for rust and build
-src/bittendef.h:
 	bindgen src/bittendef.h -o rust-src/src/bittendef.rs
 	$(CARGO) $(CARGO_PARAMS)
+	$(MAKE) $(MAKEFILE_PARAMS)
 
 build/%.rc.data: %.rc
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
