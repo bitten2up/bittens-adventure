@@ -16,6 +16,8 @@ jobs:
     - uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: install x11-dev
+      run: sudo apt install libxi-dev libxinerama-dev libxcursor-dev -y
     - name: install Raylib
       run: git clone https://github.com/raysan5/raylib; cd raylib/src; make;
     - name: Compile
