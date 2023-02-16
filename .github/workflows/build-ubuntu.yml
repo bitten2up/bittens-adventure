@@ -10,12 +10,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
     - name: install Raylib
       run: git clone https://github.com/raysan5/raylib; cd raylib/src; make;
     - name: Compile
