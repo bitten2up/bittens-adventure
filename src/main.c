@@ -163,6 +163,7 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
+    bittenTest();
     pthread_t patching; // for patching
     // load superstruct (as im calling it)
     bit_game *game = malloc(sizeof(bit_game));
@@ -242,8 +243,6 @@ int main(int argc, char *argv[]){
     #ifndef PLATFORM_WEB
     game->map = LoadTMX("assets/maps/bit_towntest.tmx");
     #endif
-    // declare collision type
-    int collision;
 
     // lastly in our setting up, setup discord rpc
     #ifdef DISCORD
@@ -308,9 +307,6 @@ int main(int argc, char *argv[]){
             if (IsKeyDown(KEY_RIGHT)){
                 bittenDirection=right;
                 ticker+=1;
-                //TraceLog(LOG_INFO, "collision: %i", collision);
-                //TraceLog(LOG_INFO,"tilex: %i", tilex);
-                //TraceLog(LOG_INFO,"tiley: %i", tiley);
                 if (ticker==5)
                 {
                     game->player.x -= 8;
@@ -355,8 +351,7 @@ int main(int argc, char *argv[]){
             TraceLog(LOG_INFO, "width :%i\n height: %i" , game->map->width, game->map->height);
             tilex = (game->map->width/2)-((game->player.x)/32)-3;    // dont ask me why this has to be subtracted by 3 idk
             tiley = (game->map->height/2)-((game->player.y+8)/32)-3; // dont ask me why this has to be subtracted by 3 idk
-            collision=checkCollision(game->map, tilex, tiley);
-            //TraceLog(LOG_INFO, "collision: %i", collision);
+            const int collision=checkCollision(game->map, tilex, tiley);
             if (collision==2) {
                 state=battle;
                 strcpy(game->enemy.name, "chest monster");

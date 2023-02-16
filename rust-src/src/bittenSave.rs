@@ -1,6 +1,3 @@
-#![allow(non_upper_case_globals)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
 /*
 * MIT License
 *
@@ -29,10 +26,14 @@
 /////////////////////////////////////////////////////////
 //  saving functionality
 /////////////////////////////////////////////////////////
-//  done in rust to keep shit safe (kinda)
+//  done in rust to keep shit safe (kinda not really)
 /////////////////////////////////////////////////////////
 
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
 #![allow(dead_code)]
+
 mod bittendef;
 
 
@@ -79,7 +80,7 @@ pub extern "C" fn saveGame(game_state: *mut bittendef::bit_game){
 }
 
 fn save_data(save_data: bitSave) {
-    save_file("bitten.sav", 0, &save_data).unwrap();
+    save_file("bitten.sav", 0, &save_data).expect("bitten.sav could not be written to.\nIs it a folder?\nDo you have write access?\nDid you try to write to a folder that does not expect");
 }
 
 #[no_mangle]
@@ -95,13 +96,13 @@ pub extern "C" fn loadGame(game_state: *mut bittendef::bit_game) {
 fn load_data() -> bitSave {
     // prevent crash by seeing if file is real
     if Path::new("./bitten.sav").exists() {
-        return load_file("bitten.sav", 0).unwrap();
+        return load_file("bitten.sav", 0).expect("damm you made a file race condition");
     }
     else {
         return reset_save();
     }
 }
-// safe wrapper for writing saves to game_state
+// "safe" wrapper for writing saves to game_state
 fn updateState(game_state: *mut bittendef::bit_game, save_data: bitSave) {
     // see if our version is higher than the current version
     if save_data.version > bittendef::BIT_VERSION {

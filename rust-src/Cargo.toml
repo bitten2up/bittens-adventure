@@ -1,6 +1,6 @@
 [package]
 name = "rust-src"
-version = "0.1.0"
+version = "0.2.0"
 build = "build.rs"
 edition = "2021"
 
@@ -9,9 +9,9 @@ edition = "2021"
 [dependencies]
 savefile="0.12.0"
 savefile-derive="0.12.0"
+color-eyre = "0.6.2"
 
 [lib]
 name = "bitrs"
-path = "src/bittenSave.rs"
 # crate-type = ["cdylib"]      # Creates dynamic lib
 crate-type = ["staticlib"] # Creates static lib
