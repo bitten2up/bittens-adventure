@@ -163,7 +163,6 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
-    bittenTest();
     pthread_t patching; // for patching
     // load superstruct (as im calling it)
     bit_game *game = malloc(sizeof(bit_game));

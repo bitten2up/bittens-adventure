@@ -413,8 +413,12 @@ PROJECT_SOURCE_FILES ?= \
 # Define all recource files (windows)
 RESOBJ = $(patsubst %.rc,build/%.rc.data,$(wildcard *.rc))
 # Define all object files from source files
-OBJS = $(RESOBJ) $(patsubst src/%.c, $(PROJECT_BUILD_PATH)/%.o, $(PROJECT_SOURCE_FILES))
-
+OBJS = $(patsubst src/%.c, $(PROJECT_BUILD_PATH)/%.o, $(PROJECT_SOURCE_FILES))
+ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+    ifeq ($(PLATFORM_OS),WINDOWS)
+        OBJS += $(RESOBJ)
+    endif
+endif
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------
