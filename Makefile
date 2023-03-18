@@ -33,7 +33,6 @@ PROJECT_NAME          ?= bittens-adventure
 PROJECT_VERSION       ?= 0.2
 PROJECT_BUILD_PATH    ?= ./build
 PROJECT_OUT_DIR       ?= ./bin
-PROJECT_RUST_PATH     ?= ./rust-src
 
 RAYLIB_PATH           ?= ../raylib
 
@@ -61,12 +60,6 @@ BUILD_WEB_HEAP_SIZE   ?= 134217728
 BUILD_WEB_RESOURCES   ?= TRUE
 BUILD_WEB_RESOURCES_PATH  ?= assets
 
-# cargo stuff
-ifeq ($(BUILD_MODE), RELEASE)
-    CARGO_PARAMS = build --release
-else
-    CARGO_PARAMS = build
-endif
 # Use cross-compiler for PLATFORM_RPI
 ifeq ($(PLATFORM),PLATFORM_RPI)
     USE_RPI_CROSS_COMPILER ?= FALSE
@@ -189,10 +182,6 @@ ifeq ($(PLATFORM),PLATFORM_ANDROID)
     MAKE = mingw32-make
 endif
 
-# Define default CARGO program: CARGO
-#------------------------------------------------------------------------------------------------
-CARGO   ?= cargo
-
 # Define compiler flags: CFLAGS
 #------------------------------------------------------------------------------------------------
 #  -O1                  defines optimization level
@@ -272,12 +261,6 @@ endif
 #------------------------------------------------------------------------------------------------
 LDFLAGS = -L. -L$(RAYLIB_RELEASE_PATH) -L$(RAYLIB_PATH)/src # -L/c/raylib/raylib/src
 
-ifeq ($(BUILD_MODE), RELEASE)
-    LDFLAGS += -Ltarget/release/
-else
-    LDFLAGS += -Ltarget/debug/
-endif
-
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # NOTE: The resource .rc file contains windows executable icon and properties
@@ -343,7 +326,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # Libraries for Windows desktop compilation
         # NOTE: WinMM library required to set high-res timer resolution
-        LDLIBS = -lraylib -ltmx -lxml2 -lbitrs -lopengl32 -lgdi32 -lbcrypt -lncrypt -luserenv -lws2_32 -lwinmm -lz -ldl -L/c/raylib/raylib/src
+        LDLIBS = -lraylib -ltmx -lxml2 -lopengl32 -lgdi32 -lbcrypt -lncrypt -luserenv -lws2_32 -lwinmm -lz -ldl -L/c/raylib/raylib/src
         # Required for physac examples
         LDLIBS += -static -lpthread
         ifeq ($(DISCORDRPC),TRUE)
@@ -353,7 +336,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),LINUX)
         # Libraries for Debian GNU/Linux desktop compiling
         # NOTE: Required packages: libegl1-mesa-dev
-        LDLIBS = -lraylib -ltmx -lxml2 -lbitrs -lz -lGL -lm -lpthread -ldl -lrt
+        LDLIBS = -lraylib -ltmx -lxml2 -lz -lGL -lm -lpthread -ldl -lrt
 
         # On X11 requires also below libraries
         LDLIBS += -lX11
@@ -409,7 +392,8 @@ PROJECT_SOURCE_FILES ?= \
     src/bit_battle.c \
     src/bit_diag.c  \
     src/bit_patch.c \
-    src/bit_collision.c
+    src/bit_collision.c \
+    src/bit_file.c
 # Define all recource files (windows)
 RESOBJ = $(patsubst %.rc,build/%.rc.data,$(wildcard *.rc))
 # Define all object files from source files
@@ -434,8 +418,6 @@ endif
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target Also build rust-src
 all:
-	bindgen src/bittendef.h -o rust-src/src/bittendef.rs
-	$(CARGO) $(CARGO_PARAMS)
 	$(MAKE) $(MAKEFILE_PARAMS)
 
 build/%.rc.data: %.rc
@@ -480,5 +462,4 @@ endif
 ifeq ($(PLATFORM),PLATFORM_WEB)
 	del *.o *.html *.js
 endif
-	cargo clean;
 	@echo Cleaning done
