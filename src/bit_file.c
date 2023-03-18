@@ -59,12 +59,14 @@ int loadGame(bit_game* game)
 				if (i==7) {
 					if ((buffer[11] >> i) & 0x01) {
 						printf("music enabled\n");
+						game->settings.audio=true;
 					}
 				}
 			}
 			printf("xpos: %i\n", buffer[12]);
-			game;
+			game->player.x=buffer[12];
 			printf("ypos: %i\n", buffer[13]);
+			game->player.y=buffer[13];
 			// free memory
 			fclose(f1);
 			free(buffer);
