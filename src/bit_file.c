@@ -17,7 +17,7 @@ bool file_exists(const char *filename)
     }
     return is_exist;
 }
-void saveGame(bit_game* game);
+void resetGame(bit_game* game);
 int loadGame(bit_game* game)
 {
     if (file_exists("bitten.sav")) {
@@ -48,7 +48,7 @@ int loadGame(bit_game* game)
 				if (buffer[i] != saveD[i])
 				{
 					printf("header mismatch");
-					saveGame(game);
+					resetGame(game);
 				}
 				printf("%c",buffer[i]);
 			}
@@ -73,15 +73,19 @@ int loadGame(bit_game* game)
 		} // dont write default data to file that already exsits
 		else {
 			fclose(f1);
-			saveGame(game);
+			resetGame(game);
     	}
     }
     else {
-        saveGame(game);
+        resetGame(game);
     }
 	return 0;
 }
-void saveGame(bit_game* game)
+void saveGame(bit_game* game) {
+	FILE* f1 = fopen("bitten.sav", "wb");
+	
+}
+void resetGame(bit_game* game)
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
 	printf("save data that is being created\n");
