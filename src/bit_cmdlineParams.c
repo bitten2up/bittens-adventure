@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2022 bitten2up
+Copyright (c) 2023 bitten2up
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ int cmdlineParams(int argc, char** argv){
     if (argc!=1){
         for (int i = 1; i < argc; ++i) {
             if (strcmp(argv[i], "--version")==0){
-                printf("\nBitten Engine\n\nversion 1.0 indev\n\nfeatures subject to change\n\n\nCopyright (c) 2022 Bitten2up, licened under the M.I.T license check LICENSE\n");
+                printf("\nBitten Engine\n\nversion 1.0 indev\n\nfeatures subject to change\n\n\nCopyright (c) 2023 bitten2up, licened under the M.I.T license check LICENSE\n");
                 return 0;
             }
             // easter eggs

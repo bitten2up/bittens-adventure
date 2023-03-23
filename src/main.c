@@ -70,7 +70,7 @@ SOFTWARE.
 ////////////////////////////////////////////////////////////
 
 #ifdef DISCORD
-static const char* APPLICATION_ID = "905202859686129784";
+static const char* APPLICATION_ID = "905202859686129784"; // todo check if this gets freed
 static int64_t StartTime;
 static int SendPresence = 1;
 

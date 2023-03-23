@@ -17,7 +17,8 @@ bool file_exists(const char *filename)
     }
     return is_exist;
 }
-void resetGame(bit_game* game);
+
+void resetGame();
 int loadGame(bit_game* game)
 {
     if (file_exists("bitten.sav")) {
@@ -32,14 +33,22 @@ int loadGame(bit_game* game)
 			if (!buffer)
 			{
 				fclose(f1);
+				free(buffer);
 				fputs("mem alloc failed", stderr);
 				return 1;
 			}
 			if (1!=fread(buffer,saveSize, 1, f1))
 			{
 				fclose(f1);
-				fputs("read failed", stderr);
+				free(buffer);
+				fputs("read failed, or file is blank\n", stderr);
+				resetGame();
 				return 1;
+			}
+			if (saveSize<11) {
+				fclose(f1);
+				free(buffer);
+				fputs("INVALID SAVE DATA", stderr);
 			}
 			// read and printout the data
 			printf("header:\n");
@@ -50,7 +59,7 @@ int loadGame(bit_game* game)
 					printf("header mismatch");
 					resetGame(game);
 				}
-				printf("%c",buffer[i]);
+				printf("%c", buffer[i]);
 			}
 			printf("\n");
 			printf("Version of game saved: %i\n", buffer[10]);
@@ -85,7 +94,7 @@ void saveGame(bit_game* game) {
 	FILE* f1 = fopen("bitten.sav", "wb");
 	
 }
-void resetGame(bit_game* game)
+void resetGame()
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
 	printf("save data that is being created\n");
