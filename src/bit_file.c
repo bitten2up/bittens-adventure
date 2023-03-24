@@ -30,7 +30,7 @@ int loadGame(bit_game* game)
 		long saveSize;
 		if (f1==NULL){
 		    fclose(f1);
-		    resetSave();
+		    resetGame();
 		    f1=fopen("bitten.sav", "rb");
 	    }
 		else {
@@ -56,7 +56,7 @@ int loadGame(bit_game* game)
 				fclose(f1);
 				free(buffer);
 				fputs("INVALID SAVE DATA", stderr);
-				resetSave();
+				resetGame();
 				f1=fopen("bitten.sav", "rb");
 			}
 			// read and printout the data
