@@ -155,7 +155,6 @@ static void discordInit()
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
 #include "bit_collision.h"       // colision handling
-#include "rust/bit_save.h"       // saving
 
 
 ////////////////////////////////////////////////////////////
