@@ -271,7 +271,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         endif
     endif
     ifeq ($(PLATFORM_OS),LINUX)
-        LDFLAGS += -L$(RAYLIB_LIB_PATH) -L./lib/linux64
+        LDFLAGS += -L$(RAYLIB_LIB_PATH)
     endif
     ifeq ($(PLATFORM_OS),BSD)
         LDFLAGS += -Lsrc -L$(RAYLIB_LIB_PATH)
