@@ -200,8 +200,6 @@ int main(int argc, char *argv[]){
     // setup player sprite
     // Texture2D bitten = LoadTexture("assets/bitten.png");
     bitten=LoadTexture("assets/bitten.png");
-    bitten.width=bitten.width;
-    bitten.height=bitten.height;
     bittenRec.width = bitten.width/4;
     bittenRec.height = bitten.height/4;
     // position of player
@@ -225,6 +223,8 @@ int main(int argc, char *argv[]){
     enemyRec.y = 3*enemySprite.height/4;
     //load save file, should be in a function but eh dont got time
     loadGame(game);
+    game->player.y=0;
+    game->player.x=0;
     // setup music
     Music bgm = LoadMusicStream("assets/bitten.wav");
     PlayMusicStream(bgm);
@@ -275,7 +275,7 @@ int main(int argc, char *argv[]){
         UpdateMusicStream(bgm);
         camera.zoom = game->settings.width/SCREENWIDTH;
         if ((isTitle) | (isGameover)){
-            /*(
+            /*
             if (IsKeyReleased(KEY_TAB) && !game->settings.modded)     {
                 game->settings.modded=true;
                 pthread_create(&patching, NULL, patch, game);
