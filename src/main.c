@@ -155,7 +155,7 @@ static void discordInit()
 #include "bit_battle.h"          // battle functionality
 #include "bit_patch.h"           // dll patching
 #include "bit_collision.h"       // colision handling
-
+#include "bit_file.h"
 
 ////////////////////////////////////////////////////////////
 // Entrypoint of Engine
@@ -189,7 +189,8 @@ int main(int argc, char *argv[]){
     SetTargetFPS(60);               // we want our game running at 60 fps to avoid audio skipping
     #endif
     // set window icon
-    SetWindowIcon(LoadImage("assets/window.png"));
+    Image icon = LoadImage("assets/window.png");
+    SetWindowIcon(icon);
     //camera
     Camera2D camera = { 0 };
     camera.target = (Vector2){ 0, 0 };
@@ -456,6 +457,7 @@ int main(int argc, char *argv[]){
     UnloadTMX(game->map);
     UnloadTexture(bitten);
     free(game);
+    UnloadImage(icon);
     CloseWindow();
     TraceLog(LOG_INFO, "print memory leaks");
     return 0;
