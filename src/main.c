@@ -163,7 +163,7 @@ static void discordInit()
 ////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]){
-    pthread_t patching; // for patching
+    //pthread_t patching; // for patching
     // load superstruct (as im calling it)
     bit_game *game = malloc(sizeof(bit_game));
     if (game==NULL)
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]){
     // check command line paramiters to see if we need to exit or not because of a command line parm (should be in main.c but I'm trying to keep this file not cluttered as it it)
     int startup = cmdlineParams(argc, argv);
     if (startup==0)   { return 1; }
-    else if (startup==2)    { game->settings.modded=true; pthread_create(&patching, NULL, patch, game);}
+    // else if (startup==2)    { game->settings.modded=true; pthread_create(&patching, NULL, patch, game);}
     // init the window
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(SCREENWIDTH, SCREENHEIGHT, GAME_NAME);
@@ -275,11 +275,12 @@ int main(int argc, char *argv[]){
         UpdateMusicStream(bgm);
         camera.zoom = game->settings.width/SCREENWIDTH;
         if ((isTitle) | (isGameover)){
+            /*(
             if (IsKeyReleased(KEY_TAB) && !game->settings.modded)     {
                 game->settings.modded=true;
                 pthread_create(&patching, NULL, patch, game);
             }
-
+            */
             if (IsKeyReleased(KEY_ENTER)) {
                 bittenHealth=100;
                 state=overworld;
