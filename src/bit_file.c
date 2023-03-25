@@ -33,70 +33,66 @@ int loadGame(bit_game* game)
 		    resetGame();
 		    f1=fopen("bitten.sav", "rb");
 	    }
-		else {
-			fseek(f1, 0L, SEEK_END);
-			saveSize = ftell(f1);
-			rewind(f1);
-			buffer = calloc(1, saveSize+1);
-			if (!buffer)
-			{
-				fclose(f1);
-				free(buffer);
-				fputs("mem alloc failed", stderr);
-				return 1;
-			}
-			if (1!=fread(buffer,saveSize, 1, f1))
-			{
-				fclose(f1);
-				free(buffer);
-				fputs("read failed, or file is blank\n", stderr);
-				resetGame();
-			}
-			if (saveSize<11) {
-				fclose(f1);
-				free(buffer);
-				fputs("INVALID SAVE DATA", stderr);
-				resetGame();
-				f1=fopen("bitten.sav", "rb");
-			}
-			// read and printout the data
-			printf("header:\n");
-			for (int i=0; i<9; i++)
-			{
-				if (buffer[i] != saveD[i])
-				{
-					printf("header mismatch");
-					fclose(f1);
-					resetGame(game);
-					f1=fopen("bitten.sav", "rb");
-				}
-				printf("%c", buffer[i]);
-			}
-			printf("\n");
-			printf("Version of game saved: %i\n", buffer[10]);
-			for(int i = 7; 0 <= i; i --) {
-        		printf("%d\n", (buffer[11] >> i) & 0x01);
-				if (i==7) {
-					if ((buffer[11] >> i) & 0x01) {
-						printf("music enabled\n");
-						game->settings.audio=true;
-					}
-				}
-			}
-			printf("xpos: %i\n", buffer[12]);
-			game->player.x=buffer[12];
-			printf("ypos: %i\n", buffer[13]);
-			game->player.y=buffer[13];
-			game->badsave=false;
-			// free memory
+		fseek(f1, 0L, SEEK_END);
+		saveSize = ftell(f1);
+		rewind(f1);
+		buffer = calloc(1, saveSize+1);
+		if (!buffer)
+		{
 			fclose(f1);
 			free(buffer);
-		} // dont write default data to file that already exsits
+			fputs("mem alloc failed", stderr);
+			return 1;
+		}
+		if (1!=fread(buffer,saveSize, 1, f1))
+		{
+			fclose(f1);
+			fputs("read failed, or file is blank\n", stderr);
+			resetGame();
+		}
+		if (saveSize<11) {
+			fclose(f1);
+			fputs("INVALID SAVE DATA", stderr);
+			resetGame();
+			f1=fopen("bitten.sav", "rb");
+		}
+		// read and printout the data
+		printf("header:\n");
+		for (int i=0; i<9; i++)
+		{
+			if (buffer[i] != saveD[i])
+			{
+				printf("header mismatch");
+				fclose(f1);
+				resetGame(game);
+				f1=fopen("bitten.sav", "rb");
+			}
+			printf("%c", buffer[i]);
+		}
+		printf("\n");
+		printf("Version of game saved: %i\n", buffer[10]);
+		for(int i = 7; 0 <= i; i --) {
+        	printf("%d\n", (buffer[11] >> i) & 0x01);
+			if (i==7) {
+				if ((buffer[11] >> i) & 0x01) {
+					printf("music enabled\n");
+					game->settings.audio=true;
+				}
+			}
+		}
+		printf("xpos: %i\n", buffer[12]);
+		game->player.x=buffer[12];
+		printf("ypos: %i\n", buffer[13]);
+		game->player.y=buffer[13];
+		game->invalidSave=false;
+		// free memory
+		fclose(f1);
+		free(buffer);
 	}
 	return 0;
 }
 void saveGame(bit_game* game) {
-	FILE* f1 = fopen("bitten.sav", "wb");
+	//FILE* f1 = fopen("bitten.sav", "wb");
 }
 void resetGame()
 {
