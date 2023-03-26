@@ -4,9 +4,13 @@ find_package(raylib 4.5 REQUIRED) # Requires at least version 3.0
 set(CMAKE_C_STANDARD 11) # Requires C11 standard
 
 add_executable(bittens-adventure main.c  bit_cmdlineParams.c  bit_battle.c  bit_diag.c   bit_patch.c  bit_collision.c  bit_file.c)
-
 target_link_libraries(bittens-adventure tmx raylib)
 target_link_libraries(bittens-adventure m dl)
+set(DISCORDRPC OFF CACHE BOOL ON)
+if (DISCORDRPC)
+    target_link_libraries(bittens-adventure discord-rpc stdc++)
+    add_definitions(-DDISCORDRPC)
+endif()
 # The following libs should be transitively imported by raylib...
 find_package(Threads REQUIRED)
 target_link_libraries(bittens-adventure Threads::Threads)
