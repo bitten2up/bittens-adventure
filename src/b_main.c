@@ -4,8 +4,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+// bitten headers
 #include "sdl_bittendef.h"
 #include "r_render.h"
+#include "i_event.h"
+
 
 int main (int argc, char argv[])
 {
@@ -24,24 +27,10 @@ int main (int argc, char argv[])
 	// keep on running game while it is open
 	
 	bool gameRunning = true;
-	// take input
-	SDL_Event event;
 
 	while (gameRunning)
 	{
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type){
-				case SDL_QUIT:
-					gameRunning = false;
-					break;
-				case SDL_KEYDOWN:
-					gameRunning = false;
-					break;
-				default:
-					break;
-			}
-		}
+		i_poll(&gameRunning);
 		r_clear();
 		r_renderer(player);
 		r_display();
