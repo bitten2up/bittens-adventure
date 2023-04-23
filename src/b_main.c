@@ -8,7 +8,7 @@
 #include "sdl_bittendef.h"
 #include "r_render.h"
 #include "i_event.h"
-
+#include "e_entity.h"
 
 int main (int argc, char argv[])
 {
@@ -23,7 +23,8 @@ int main (int argc, char argv[])
 	RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
 	
 	// load sprite
-	SDL_Texture* player = loadTexture("../assets/bitten.png");
+	e_entity player;
+	player.sprite = loadTexture("../assets/bitten.png");
 	// keep on running game while it is open
 	
 	bool gameRunning = true;
@@ -32,7 +33,7 @@ int main (int argc, char argv[])
 	{
 		i_poll(&gameRunning);
 		r_clear();
-		r_renderer(player);
+		r_renderer(&player);
 		r_display();
 	}
 	CloseWindow();

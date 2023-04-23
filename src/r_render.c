@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "r_render.h"
+#include "e_entity.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -41,7 +42,7 @@ void r_clear(void)
 	SDL_RenderClear(renderer);
 }
 
-void r_renderer(SDL_Texture* p_tex)
+void r_renderer(e_entity* e)
 {
 	SDL_Rect src;
 	src.x = 0;
@@ -54,7 +55,7 @@ void r_renderer(SDL_Texture* p_tex)
 	dst.y = 0;
 	dst.w = 32;
 	dst.h = 32;
-	SDL_RenderCopy(renderer, p_tex, &src, &dst);
+	SDL_RenderCopy(renderer, e->sprite, &src, &dst);
 }
 
 void r_display()
