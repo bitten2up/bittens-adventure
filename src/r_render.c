@@ -34,7 +34,7 @@ SDL_Texture* loadTexture(const char* p_filePath)
 void CloseWindow(void)
 {
 	SDL_DestroyWindow(window);
-	free(renderer);
+	SDL_DestroyRenderer(renderer);
 }
 
 void r_clear(void)
