@@ -4,12 +4,11 @@
 #include <SDL2/SDL_image.h>
 typedef struct e_entity e_entity;
 typedef struct e_player e_player;
+
 struct e_entity {
 	SDL_Texture* sprite;
-	int x;
-	int y;
-	int h;
-	int w;
+	SDL_Rect src;
+	SDL_Rect dst;
 };
 
 struct e_player{

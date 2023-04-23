@@ -44,18 +44,16 @@ void r_clear(void)
 
 void r_renderer(e_entity* e)
 {
-	SDL_Rect src;
-	src.x = 0;
-	src.y = 0;
-	src.w = 32;
-	src.h = 32;
+	e->src.x = 0;
+	e->src.y = 0;
+	e->src.w = 32;
+	e->src.h = 32;
 
-	SDL_Rect dst;
-	dst.x = 0;
-	dst.y = 0;
-	dst.w = 32;
-	dst.h = 32;
-	SDL_RenderCopy(renderer, e->sprite, &src, &dst);
+	e->dst.x = 0;
+	e->dst.y = 0;
+	e->dst.w = 32;
+	e->dst.h = 32;
+	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }
 
 void r_display()
