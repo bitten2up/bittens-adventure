@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = b_main.c r_render.c i_event.c
+OBJS = b_main.c r_render.c i_event.c f_save.c
 
 #CC specifies which compiler we're using
 CC = clang
