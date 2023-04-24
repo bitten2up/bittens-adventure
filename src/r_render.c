@@ -44,15 +44,6 @@ void r_clear(void)
 
 void r_renderer(e_entity* e)
 {
-	e->src.x = 0;
-	e->src.y = 0;
-	e->src.w = 32;
-	e->src.h = 32;
-
-	e->dst.x = 0;
-	e->dst.y = 0;
-	e->dst.w = 32;
-	e->dst.h = 32;
 	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }
 

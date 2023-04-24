@@ -25,6 +25,16 @@ int main (int argc, char argv[])
 	// load sprite
 	e_entity player;
 	player.sprite = loadTexture("../assets/bitten.png");
+	player.src.x = 0;
+	player.src.y = 0;
+	player.src.w = 32;
+	player.src.h = 32;
+
+	player.dst.x = 0;
+	player.dst.y = 0;
+	player.dst.w = 32;
+	player.dst.h = 32;
+	
 	// keep on running game while it is open
 	
 	bool gameRunning = true;
@@ -33,6 +43,7 @@ int main (int argc, char argv[])
 	{
 		i_poll(&gameRunning);
 		r_clear();
+		player.src.x=64;
 		r_renderer(&player);
 		r_display();
 	}

@@ -14,10 +14,16 @@ void i_poll(bool* gameRunning)
 				*gameRunning=false;
 				break;
 			case SDL_KEYDOWN:
+				keyboardIn();
 				*gameRunning=false;
 				break;
 			default:
 				break;
 		}
 	}
+}
+void keyboardIn()
+{
+	if (strcmp(")", SDL_GetKeyName(event.key.keysym.scancode)))
+		printf("E\n");
 }
