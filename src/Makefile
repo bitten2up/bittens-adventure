@@ -2,7 +2,7 @@
 OBJS = b_main.c r_render.c i_event.c f_save.c
 
 #CC specifies which compiler we're using
-CC = clang
+CC = gcc
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
