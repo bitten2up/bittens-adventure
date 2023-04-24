@@ -13,12 +13,12 @@ void RenderWindow(const char* p_title, int p_w, int p_h)
 	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
-		printf("Window failed to init %c\n", SDL_GetError());
+		printf("Window failed to init %s\n", SDL_GetError());
 	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL)
 	{
-		printf("Renderer failed to init %c\n", SDL_GetError());
+		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
 }
 
