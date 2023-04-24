@@ -3,7 +3,7 @@
 #include "e_entity.h"
 #include <tmx.h>
 
-typedef struct bit_game bit_game;
+typedef struct g_game g_game;
 typedef struct g_settings g_settings;
 typedef enum {
     title,

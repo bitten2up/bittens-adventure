@@ -21,7 +21,7 @@ bool file_exists(const char *filename)
 }
 
 void resetGame();
-int loadGame(bit_game* game)
+int loadGame(g_game* game)
 {
     if (!file_exists("bitten.sav")) {
         resetGame();
@@ -93,7 +93,7 @@ int loadGame(bit_game* game)
 	}
 	return 0;
 }
-void saveGame(bit_game* game) {
+void saveGame(g_game* game) {
 	//FILE* f1 = fopen("bitten.sav", "wb");
 }
 void resetGame()

@@ -14,5 +14,7 @@ struct e_entity {
 struct e_player{
 	e_entity entity;
 	char name[10];
+	int x;
+	int y;
 };
 #endif
