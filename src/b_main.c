@@ -10,7 +10,7 @@
 #include "i_event.h"
 #include "e_entity.h"
 
-int main (int argc, char argv[])
+int main(int argc, char argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO > 0))
 	{

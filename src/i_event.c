@@ -5,6 +5,7 @@
 
 
 SDL_Event event;
+void keyboardIn(void);
 void i_poll(bool* gameRunning)
 {
 	while (SDL_PollEvent(&event))
