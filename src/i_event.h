@@ -4,4 +4,5 @@
 #include <stdbool.h>
 
 void i_poll(bool* gameRunning);
+
 #endif

@@ -13,6 +13,8 @@ SDL_Texture* loadTexture(const char* p_filePath);
 void r_clear();
 void r_renderer(e_entity* e);
 void r_display();
+// libtmx shit
+void render_map(tmx_map *map);
 // dealloc memory
 void CloseWindow(void);
 #endif

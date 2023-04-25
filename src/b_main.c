@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <tmx.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -11,6 +12,7 @@
 
 #ifdef DISCORD
 #include <discord_rpc.h>
+#include <time.h>
 
 static const char* APPLICATION_ID = "905202859686129784"; // todo check if this gets freed
 static int64_t StartTime;
@@ -22,7 +24,7 @@ static void updateDiscordPresence(char* message)
     seconds = time(NULL);
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
-    discordPresence.state = "Bittens adventure";
+    discordPresence.state = "whatever that is....";
     discordPresence.details = message;
     discordPresence.startTimestamp = seconds;
     discordPresence.endTimestamp = seconds+818;
@@ -113,7 +115,7 @@ int main(int argc, char* argv[])
 	
 	// load sprite
 	e_entity player;
-	player.sprite = loadTexture("../assets/bitten.png");
+	player.sprite = loadTexture("./assets/bitten.png");
 	player.src.x = 0;
 	player.src.y = 0;
 	player.src.w = 32;
@@ -124,6 +126,12 @@ int main(int argc, char* argv[])
 	player.dst.w = 32;
 	player.dst.h = 32;
 	
+	tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
+	tmx_map *map = tmx_load("./assets/maps/bit_towntest.tmx");
+	if (!map) {
+		tmx_perror("Cannot load map");
+		return 1;
+	}
 	// keep on running game while it is open
 	
 	bool gameRunning = true;
@@ -133,9 +141,11 @@ int main(int argc, char* argv[])
 		i_poll(&gameRunning);
 		r_clear();
 		player.src.x=64;
+		render_map(map);
 		r_renderer(&player);
 		r_display();
 	}
+	tmx_map_free(map);
 	CloseWindow();
 	SDL_Quit();
 	return 0;
