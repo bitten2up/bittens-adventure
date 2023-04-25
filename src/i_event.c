@@ -3,6 +3,7 @@
 
 #include "i_event.h"
 #include "g_game.h"
+#include "e_collision.h"
 
 bool quit=false;
 
@@ -24,6 +25,7 @@ void i_poll(g_game* game)
 					if (game->state==overworld){
 						game->player.y+=2;
 						game->player.entity.src.x=0;
+						checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-3, (game->map->height/2)-((game->player.y+8)/32)-3);
 					}
 					break;
 				case SDLK_DOWN:

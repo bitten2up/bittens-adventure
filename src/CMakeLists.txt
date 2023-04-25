@@ -6,7 +6,7 @@ if(MSVC AND NOT VCPKG_TOOLCHAIN)
   message(FATAL_ERROR "MSVC is only supported when using vcpkg")
 endif()
 
-add_executable(bittens-adventure "b_main.c" "r_render.c" "i_event.c" "f_save.c")
+add_executable(bittens-adventure "b_main.c" "r_render.c" "i_event.c" "f_save.c" "e_collision.c")
 
 find_package(tmx REQUIRED)
 target_link_libraries(bittens-adventure PRIVATE tmx)

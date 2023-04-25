@@ -128,8 +128,8 @@ int main(int argc, char* argv[])
 	game.player.entity.dst.h = 32;
 	
 	tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
-	tmx_map *map = tmx_load("./assets/maps/bit_towntest.tmx");
-	if (!map) {
+	game.map = tmx_load("./assets/maps/bit_towntest.tmx");
+	if (!game.map) {
 		tmx_perror("Cannot load map");
 		return 1;
 	}
@@ -141,12 +141,12 @@ int main(int argc, char* argv[])
 		i_poll(&game);
 		r_clear();
 		if (game.state==overworld){
-			render_map(map, &game);
+			render_map(game.map, &game);
 			r_renderer(&game.player.entity);
 		}
 		r_display();
 	}
-	tmx_map_free(map);
+	tmx_map_free(game.map);
 	CloseWindow();
 	SDL_Quit();
 	return 0;
