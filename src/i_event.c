@@ -64,8 +64,13 @@ void i_poll(g_game* game)
 					game->player.direction.y=0;
 					break;
 				case SDLK_LEFT:
+					if (game->player.direction.x > 0)
+						game->player.direction.x = 0;
+					break;
+
 				case SDLK_RIGHT:
-					game->player.direction.x=0;
+					if (game->player.direction.x < 0)
+						game->player.direction.x = 0;
 					break;
 				default:
 					break;
