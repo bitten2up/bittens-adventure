@@ -114,6 +114,7 @@ int main(int argc, char* argv[])
 #endif
 	RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
 	g_game game;
+	game.state=title;
 	// load sprite
 	game.player.entity.sprite = loadTexture("./assets/bitten.png");
 	game.player.entity.src.x = 0;
@@ -140,8 +141,10 @@ int main(int argc, char* argv[])
 		i_poll(&game);
 		r_clear();
 		game.player.entity.src.x=64;
-		render_map(map, &game);
-		r_renderer(&game.player.entity);
+		if (game.state==overworld){
+			render_map(map, &game);
+			r_renderer(&game.player.entity);
+		}
 		r_display();
 	}
 	tmx_map_free(map);
