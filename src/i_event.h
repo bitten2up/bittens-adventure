@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-void i_poll(bool* gameRunning);
+#include "g_game.h"
+
+void i_poll(g_game* game);
 
 #endif

@@ -96,6 +96,7 @@ static void discordInit()
 #include "r_render.h"
 #include "i_event.h"
 #include "e_entity.h"
+#include "g_game.h"
 
 int main(int argc, char* argv[])
 {
@@ -112,19 +113,18 @@ int main(int argc, char* argv[])
 	updateDiscordPresence("title screen");
 #endif
 	RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
-	
+	g_game game;
 	// load sprite
-	e_entity player;
-	player.sprite = loadTexture("./assets/bitten.png");
-	player.src.x = 0;
-	player.src.y = 0;
-	player.src.w = 32;
-	player.src.h = 32;
+	game.player.entity.sprite = loadTexture("./assets/bitten.png");
+	game.player.entity.src.x = 0;
+	game.player.entity.src.y = 0;
+	game.player.entity.src.w = 32;
+	game.player.entity.src.h = 32;
 
-	player.dst.x = 0;
-	player.dst.y = 0;
-	player.dst.w = 32;
-	player.dst.h = 32;
+	game.player.entity.dst.x = SCREENWIDTH/2;
+	game.player.entity.dst.y = SCREENHEIGHT/2;
+	game.player.entity.dst.w = 32;
+	game.player.entity.dst.h = 32;
 	
 	tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
 	tmx_map *map = tmx_load("./assets/maps/bit_towntest.tmx");
@@ -132,17 +132,16 @@ int main(int argc, char* argv[])
 		tmx_perror("Cannot load map");
 		return 1;
 	}
-	// keep on running game while it is open
 	
-	bool gameRunning = true;
+	game.gameRunning=true;
 
-	while (gameRunning)
+	while (game.gameRunning)
 	{
-		i_poll(&gameRunning);
+		i_poll(&game);
 		r_clear();
-		player.src.x=64;
-		render_map(map);
-		r_renderer(&player);
+		game.player.entity.src.x=64;
+		render_map(map, &game);
+		r_renderer(&game.player.entity);
 		r_display();
 	}
 	tmx_map_free(map);

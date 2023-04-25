@@ -5,6 +5,7 @@
 
 #include "r_render.h"
 #include "e_entity.h"
+#include "g_game.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -120,7 +121,7 @@ void draw_tile(void *image, unsigned int sx, unsigned int sy, unsigned int sw, u
 	SDL_RenderCopy(renderer, (SDL_Texture*)image, &src_rect, &dest_rect);
 }
 
-void draw_layer(tmx_map *map, tmx_layer *layer) {
+void draw_layer(tmx_map *map, tmx_layer *layer, g_game* game) {
 	unsigned long i, j;
 	unsigned int gid, x, y, w, h, flags;
 	float op;
@@ -145,43 +146,44 @@ void draw_layer(tmx_map *map, tmx_layer *layer) {
 					image = ts->image->resource_image;
 				}
 				flags = (layer->content.gids[(i*map->width)+j]) & ~TMX_FLIP_BITS_REMOVAL;
-				draw_tile(image, x, y, w, h, j*ts->tile_width, i*ts->tile_height, op, flags);
+				draw_tile(image, x, y, w, h, (j*ts->tile_width)+game->player.x, (i*ts->tile_height)+game->player.y, op, flags);
 			}
 		}
 	}
 }
 
-void draw_image_layer(tmx_image *image) {
+void draw_image_layer(tmx_image *image, g_game* game) {
 	SDL_Rect dim;
-	dim.x = dim.y = 0;
+	dim.x = 0;
+	dim.y = 0;
 
 	SDL_Texture *texture = (SDL_Texture*)image->resource_image; // Texture loaded by libTMX
 	SDL_QueryTexture(texture, NULL, NULL, &(dim.w), &(dim.h));
 	SDL_RenderCopy(renderer, texture, NULL, &dim);
 }
 
-void draw_all_layers(tmx_map *map, tmx_layer *layers) {
+void draw_all_layers(tmx_map *map, tmx_layer *layers, g_game* game) {
 	while (layers) {
 		if (layers->visible) {
 
 			if (layers->type == L_GROUP) {
-				draw_all_layers(map, layers->content.group_head);
+				draw_all_layers(map, layers->content.group_head, game);
 			}
 			else if (layers->type == L_OBJGR) {
 				draw_objects(layers->content.objgr);
 			}
 			else if (layers->type == L_IMAGE) {
-				draw_image_layer(layers->content.image);
+				draw_image_layer(layers->content.image, game);
 			}
 			else if (layers->type == L_LAYER) {
-				draw_layer(map, layers);
+				draw_layer(map, layers, game);
 			}
 		}
 		layers = layers->next;
 	}
 }
 
-void render_map(tmx_map *map) {
+void render_map(tmx_map *map, g_game* game) {
 	set_color(map->backgroundcolor);
-	draw_all_layers(map, map->ly_head);
+	draw_all_layers(map, map->ly_head, game);
 }

@@ -2,6 +2,7 @@
 #define G_GAME_H
 #include "e_entity.h"
 #include <tmx.h>
+#include <stdbool.h>
 
 typedef struct g_game g_game;
 typedef struct g_settings g_settings;
@@ -28,5 +29,6 @@ struct g_game
     //bit_battleAni battleAni;
     tmx_map* map;
     bool invalidSave;
+    bool gameRunning;
 };
 #endif
