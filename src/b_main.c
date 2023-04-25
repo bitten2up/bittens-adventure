@@ -140,7 +140,6 @@ int main(int argc, char* argv[])
 	{
 		i_poll(&game);
 		r_clear();
-		game.player.entity.src.x=64;
 		if (game.state==overworld){
 			render_map(map, &game);
 			r_renderer(&game.player.entity);

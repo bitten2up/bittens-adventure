@@ -21,20 +21,28 @@ void i_poll(g_game* game)
 					game->gameRunning=false;
 					break;
 				case SDLK_UP:
-					if (game->state==overworld)
+					if (game->state==overworld){
 						game->player.y+=2;
+						game->player.entity.src.x=0;
+					}
 					break;
 				case SDLK_DOWN:
-					if (game->state==overworld)
+					if (game->state==overworld){
 						game->player.y-=2;
+						game->player.entity.src.x=32;
+					}
 					break;
 				case SDLK_LEFT:
-					if (game->state==overworld)
+					if (game->state==overworld){
 						game->player.x+=2;
+						game->player.entity.src.x=64;
+					}
 					break;
 				case SDLK_RIGHT:
-					if (game->state==overworld)
+					if (game->state==overworld){
 						game->player.x-=2;
+						game->player.entity.src.x=96;
+					}
 					break;
 				case SDLK_RETURN:
 					if (game->state==title)
