@@ -133,7 +133,11 @@ int main(int argc, char* argv[])
 		tmx_perror("Cannot load map");
 		return 1;
 	}
-	
+	Uint32 startTime = 0;
+    	Uint32 endTime = 0;
+    	Uint32 delta = 0;
+    	short fps = 60;
+    	short timePerFrame = 16; // miliseconds
 	game.gameRunning=true;
 
 	while (game.gameRunning)
@@ -145,6 +149,27 @@ int main(int argc, char* argv[])
 			r_renderer(&game.player.entity);
 		}
 		r_display();
+		if (!startTime) {
+        	    // get the time in ms passed from the moment the program started
+	            startTime = SDL_GetTicks(); 
+        	} else {
+	            delta = endTime - startTime; // how many ms for a frame
+        	}
+        
+  
+        	// if less than 16ms, delay 
+        	if (delta < timePerFrame) {
+	            SDL_Delay(timePerFrame - delta);
+	        }
+        
+	        // if delta is bigger than 16ms between frames, get the actual fps
+        	if (delta > timePerFrame) {
+	            fps = 1000 / delta;
+        	}
+        
+        
+        	startTime = endTime;
+	        endTime = SDL_GetTicks();
 	}
 	tmx_map_free(game.map);
 	CloseWindow();

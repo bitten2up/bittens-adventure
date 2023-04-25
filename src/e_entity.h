@@ -10,10 +10,14 @@ struct e_entity {
 	SDL_Rect src;
 	SDL_Rect dst;
 };
-
+struct e_direction {
+	char x;
+	char y;
+};
 struct e_player{
 	e_entity entity;
 	char name[10];
+	struct e_direction direction;
 	int x;
 	int y;
 };
