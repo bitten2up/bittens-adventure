@@ -29,7 +29,9 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 {
   // setup layers
   tmx_layer* chests = tmx_find_layer_by_id(map, CHESTS_LAYER); // chests
+#ifdef DEBUGBUILD
   printf("value of tile: %i\n", chests->content.gids[y * map->width + x]);
+#endif
   //if (tile->user_data.integer){
   //    return 0;
   //}
@@ -47,15 +49,17 @@ int32_t checkCollision(tmx_map* map, int x, int y)
         int tilex = ((test->x)/32);
         int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
         if ((x==tilex) && (y==tiley))
-          {
-            found=true;
-            break;
-          }
+        {
+          found=true;
+          break;
+        }
+#ifdef DEBUGBUILD
         else
         {
           printf("tilex didn't work, x: %i, tilex: %i\n", x, tilex);
           printf("tiley didn't work, y: %i, tiley: %i\n", y, tiley);
         }
+#endif
         if (counter==0)     {counter++;}
         // go to next object
         test=test->next;
