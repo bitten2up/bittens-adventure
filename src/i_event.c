@@ -27,11 +27,8 @@ void i_poll(g_game* game)
           case SDLK_UP:
             if (game->state==overworld)
             {
-              if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)-6) != CHESTS_LAYER)
-              {
-                game->player.direction.y=1;
-                game->player.entity.src.x=0;
-              }
+              game->player.entity.src.x=0;
+              game->player.direction.y=1;
             }
             break;
           case SDLK_DOWN:
@@ -89,4 +86,9 @@ void move(g_game* game)
 {
   game->player.y+=game->player.direction.y;
   game->player.x+=game->player.direction.x;
+  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)-5) == CHESTS_LAYER)
+  {
+    game->player.y-=game->player.direction.y;
+    game->player.x-=game->player.direction.x;
+  }
 }
