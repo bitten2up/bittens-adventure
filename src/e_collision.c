@@ -60,11 +60,10 @@ int32_t checkCollision(tmx_map* map, int x, int y)
           printf("tiley didn't work, y: %i, tiley: %i\n", y, tiley);
         }
 #endif
-        if (counter==0)     {counter++;}
+      counter++;
         // go to next object
         test=test->next;
       }
-      printf("counter: %i\n");
 
       if (found){
         return CHESTS_LAYER;
