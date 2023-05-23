@@ -3,8 +3,13 @@
 the game bitten's adventure that I am currently working on
 
 ## building
-you will need to install [raylib](https://github.com/raysan5/raylib/) and rust, also make sure you have rust bindgens-cli installed
+you need sdl2, sdl2_mixer, and cmake
 ```bash
+mkdir build && cd build
+```
+then you run
+```bash
+cmake ..
 make
 ```
 ## credits
