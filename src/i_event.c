@@ -30,8 +30,10 @@
 #include "e_collision.h"
 
 struct direction {
-  char x;
-  char y;
+  char left;
+  char right;
+  char up;
+  char down;
 };
 void move(g_game* game);
 SDL_Event event;
@@ -52,24 +54,24 @@ void i_poll(g_game* game)
             if (game->state==overworld)
             {
               game->player.entity.src.x=0;
-              game->player.direction.y=1;
+              game->player.direction.up=1;
             }
             break;
           case SDLK_DOWN:
             if (game->state==overworld){
-              game->player.direction.y=-1;
+              game->player.direction.down=1;
               game->player.entity.src.x=32;
             }
             break;
           case SDLK_LEFT:
             if (game->state==overworld){
-              game->player.direction.x=1;
+              game->player.direction.left=1;
               game->player.entity.src.x=64;
             }
             break;
           case SDLK_RIGHT:
             if (game->state==overworld){
-              game->player.direction.x=-1;
+              game->player.direction.right=1;
               game->player.entity.src.x=96;
             }
             break;
@@ -84,17 +86,16 @@ void i_poll(g_game* game)
       case SDL_KEYUP:
         switch( event.key.keysym.sym ) {
           case SDLK_DOWN:
+            game->player.direction.down = 0;
+            break;
           case SDLK_UP:
-            game->player.direction.y=0;
+            game->player.direction.up = 0;
             break;
           case SDLK_LEFT:
-            if (game->player.direction.x > 0)
-              game->player.direction.x = 0;
-            break;
+            game->player.direction.left = 0;
 
           case SDLK_RIGHT:
-            if (game->player.direction.x < 0)
-              game->player.direction.x = 0;
+            game->player.direction.right = 0;
             break;
           default:
             break;
@@ -108,14 +109,14 @@ void i_poll(g_game* game)
 }
 void move(g_game* game)
 {
-  game->player.y+=game->player.direction.y;
+  game->player.y+=game->player.direction.up - game->player.direction.down;
   if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.y-=game->player.direction.y;
+    game->player.y-=game->player.direction.up - game->player.direction.down;
   }
-  game->player.x+=game->player.direction.x;
+  game->player.x+=game->player.direction.left - game->player.direction.right;
   if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.x-=game->player.direction.x;
+    game->player.x-=game->player.direction.left - game->player.direction.right;
   }
 }

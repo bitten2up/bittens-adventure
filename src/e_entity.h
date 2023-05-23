@@ -35,9 +35,12 @@ struct e_entity {
 	SDL_Rect dst;
 };
 struct e_direction {
-	char x;
-	char y;
+  char left;
+  char right;
+  char up;
+  char down;
 };
+
 struct e_player{
 	e_entity entity;
 	char name[10];

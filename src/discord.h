@@ -34,14 +34,14 @@ static const char* APPLICATION_ID = "905202859686129784"; // todo check if this 
 static int64_t StartTime;
 static int SendPresence = 1;
 
-static void updateDiscordPresence(char* message)
+static void updateDiscordPresence(char* message1, char* message2)
 {
     time_t seconds;
     seconds = time(NULL);
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
-    discordPresence.state = "whatever that is....";
-    discordPresence.details = message;
+    discordPresence.state = message1;
+    discordPresence.details = message2;
     discordPresence.startTimestamp = seconds;
     discordPresence.endTimestamp = seconds+818;
     discordPresence.largeImageKey = "window";

@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
   }
 #ifdef DISCORD
   discordInit();
-  updateDiscordPresence("title screen");
+  updateDiscordPresence("title screen", "lets go");
 #endif
   RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
   g_game game;
@@ -108,6 +108,22 @@ int main(int argc, char* argv[])
     if (delta > timePerFrame) {
       fps = 1000 / delta;
     }
+    #ifdef DISCORD
+    switch (game.state){
+      case title:
+        updateDiscordPresence("title screen", "press start");
+        break;
+      case overworld:
+         updateDiscordPresence("Overworld", "e");
+         break;
+      case battle:
+         updateDiscordPresence("","");
+         break;
+      default:
+        updateDiscordPresence("wat", "this dont make sense. %_%");
+        break;
+    }
+    #endif
 
 
     startTime = endTime;
