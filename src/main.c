@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 #endif
   RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
   g_game game;
-  game.state=title;
+  game.state = title;
   // load sprite
   game.player.entity.sprite = loadTexture("./assets/bitten.png");
   game.player.entity.src.x = 0;
@@ -80,13 +80,13 @@ int main(int argc, char* argv[])
   Uint32 delta = 0;
   short fps = 60;
   short timePerFrame = 16; // miliseconds
-  game.gameRunning=true;
+  game.gameRunning = true;
 
   while (game.gameRunning)
   {
     i_poll(&game);
     r_clear();
-    if (game.state==overworld){
+    if (game.state == overworld){
       render_map(game.map, &game);
       r_renderer(&game.player.entity);
     }

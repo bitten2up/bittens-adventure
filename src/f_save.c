@@ -55,10 +55,10 @@ int loadGame(g_game* game)
 		char* buffer;
 		long saveSize;
 		if (f1==NULL){
-		    fclose(f1);
-		    resetGame();
-		    f1=fopen("bitten.sav", "rb");
-	    }
+		  fclose(f1);
+		  resetGame();
+		  f1=fopen("bitten.sav", "rb");
+	  }
 		fseek(f1, 0L, SEEK_END);
 		saveSize = ftell(f1);
 		rewind(f1);
@@ -84,7 +84,7 @@ int loadGame(g_game* game)
 		}
 		// read and printout the data
 		printf("header:\n");
-		for (int i=0; i<9; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			if (buffer[i] != saveD[i])
 			{
@@ -107,9 +107,9 @@ int loadGame(g_game* game)
 			}
 		}
 		printf("xpos: %i\n", buffer[12]);
-		game->player.x=buffer[12];
+		game->player.x = buffer[12];
 		printf("ypos: %i\n", buffer[13]);
-		game->player.y=buffer[13];
+		game->player.y = buffer[13];
 		game->invalidSave=false;
 		// free memory
 		fclose(f1);

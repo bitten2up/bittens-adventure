@@ -115,8 +115,10 @@ void draw_objects(tmx_object_group *objgr) {
 	while (head) {
 		if (head->visible) {
 			if (head->obj_type == OT_SQUARE) {
-				rect.x =     head->x;  rect.y =      head->y;
-				rect.w = head->width;  rect.h = head->height;
+				rect.x = head->x;
+        rect.y = head->y;
+				rect.w = head->width;
+        rect.h = head->height;
 				SDL_RenderDrawRect(renderer, &rect);
 			}
 			else if (head->obj_type  == OT_POLYGON) {

@@ -63,13 +63,13 @@ int32_t checkCollision(tmx_map* map, int x, int y)
   // objects
   if (chests->type==L_OBJGR)
     {
-      tmx_object* test= chests->content.objgr->head;
+      tmx_object* test = chests->content.objgr->head;
       // go through the entire list of possible objects
-      int counter=0;
+      int counter = 0;
       int tilex = ((test->x)/32);
       int tiley = ((test->y+8)/32)+4;
-      test=test->next;
-      if ((x==tilex) && (y==tiley))
+      test = test->next;
+      if ((x == tilex) && (y == tiley))
       {
         return CHESTS_LAYER;
       }
@@ -78,7 +78,7 @@ int32_t checkCollision(tmx_map* map, int x, int y)
         tilex = ((test->x)/32)+1;
         tiley = ((test->y+8)/32)+4;
         // make this work with tilex and tiley
-        if ((x==tilex) && (y==tiley))
+        if ((x == tilex) && (y == tiley))
         {
           return CHESTS_LAYER;
         }
@@ -91,14 +91,14 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 #endif
       counter++;
         // go to next object
-        test=test->next;
+        test = test->next;
       }
 
       return 0;
 
     }
     // simple layers are pritty easy
-  else if (chests->type==L_LAYER)
+  else if (chests->type == L_LAYER)
   {
     printf("%i\n", chests->content.gids[y * map->width + x]);
     return chests->content.gids[y * map->width + x];
@@ -109,29 +109,30 @@ int32_t disableCollision(tmx_map* map, int x, int y)
 {
   // setup layers
   tmx_layer* chests = tmx_find_layer_by_id(map, CHESTS_LAYER); // chests
-  if (chests->type==L_OBJGR)
+  if (chests->type == L_OBJGR)
     {
-      tmx_object* test= chests->content.objgr->head;
+      tmx_object* test = chests->content.objgr->head;
       // go through the entire list of possible objects
-      bool found=false;
+      bool found = false;
       int counter;
-      while (test!=NULL)
+      while (test != NULL)
       {
-        // make this work with tilex and tiley
+        // make this work with tilex and tiley dont fucking question it
         int tilex = ((test->x)/32)+counter;
         int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
-        if ((y==tiley) && (x==tilex))
+        if ((y == tiley) && (x == tilex))
         {
-          found=true;
+          found = true;
           break;
         }
         // go to next object
         test=test->next;
-        if (counter==0)     {counter++;}
+        if (counter == 0 )
+          counter++;
       }
 
       if (found){
-        test->content.gid=3;
+        test->content.gid = 3;
         return 0;
       }
       return 1;

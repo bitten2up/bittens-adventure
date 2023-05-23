@@ -44,41 +44,41 @@ void i_poll(g_game* game)
   {
     switch (event.type) {
       case SDL_QUIT:
-        game->gameRunning=false;
+        game->gameRunning = false;
         break;
       case SDL_KEYDOWN:
         switch( event.key.keysym.sym ) {
           case SDLK_ESCAPE:
-            game->gameRunning=false;
+            game->gameRunning = false;
             break;
           case SDLK_UP:
-            if (game->state==overworld)
+            if (game->state == overworld)
             {
-              game->player.entity.src.x=0;
-              game->player.direction.up=1;
+              game->player.entity.src.x = 0;
+              game->player.direction.up = 1;
             }
             break;
           case SDLK_DOWN:
-            if (game->state==overworld){
-              game->player.direction.down=1;
-              game->player.entity.src.x=32;
+            if (game->state == overworld){
+              game->player.direction.down = 1;
+              game->player.entity.src.x = 32;
             }
             break;
           case SDLK_LEFT:
-            if (game->state==overworld){
-              game->player.direction.left=1;
-              game->player.entity.src.x=64;
+            if (game->state == overworld){
+              game->player.direction.left = 1;
+              game->player.entity.src.x = 64;
             }
             break;
           case SDLK_RIGHT:
-            if (game->state==overworld){
-              game->player.direction.right=1;
-              game->player.entity.src.x=96;
+            if (game->state == overworld){
+              game->player.direction.right = 1;
+              game->player.entity.src.x = 96;
             }
             break;
           case SDLK_RETURN:
-            if (game->state==title)
-              game->state=overworld;
+            if (game->state == title)
+              game->state = overworld;
             break;
           default:
             break;
@@ -113,11 +113,11 @@ void move(g_game* game)
   game->player.y+=game->player.direction.up - game->player.direction.down;
   if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.y-=game->player.direction.up - game->player.direction.down;
+    game->player.y- = game->player.direction.up - game->player.direction.down;
   }
-  game->player.x+=game->player.direction.left - game->player.direction.right;
+  game->player.x += game->player.direction.left - game->player.direction.right;
   if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.x-=game->player.direction.left - game->player.direction.right;
+    game->player.x -= game->player.direction.left - game->player.direction.right;
   }
 }
