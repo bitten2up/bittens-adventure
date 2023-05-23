@@ -140,8 +140,8 @@ int32_t disableCollision(tmx_map* map, int x, int y)
     // simple layers are pritty easy
   else if (chests->type==L_LAYER)
   {
-  return 1;
-}
+    return 1;
+  }
 }
 
 
