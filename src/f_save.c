@@ -110,7 +110,7 @@ int loadGame(g_game* game)
 		game->player.x = buffer[12];
 		printf("ypos: %i\n", buffer[13]);
 		game->player.y = buffer[13];
-		game->invalidSave=false;
+		game->invalidSave = false;
 		// free memory
 		fclose(f1);
 		free(buffer);
