@@ -54,10 +54,10 @@ int loadGame(g_game* game)
 		FILE *f1 = fopen("bitten.sav", "rb"); // open in binary mode
 		char* buffer;
 		long saveSize;
-		if (f1==NULL){
+		if (f1 == NULL){
 		  fclose(f1);
 		  resetGame();
-		  f1=fopen("bitten.sav", "rb");
+		  f1 = fopen("bitten.sav", "rb");
 	  }
 		fseek(f1, 0L, SEEK_END);
 		saveSize = ftell(f1);
@@ -70,7 +70,7 @@ int loadGame(g_game* game)
 			fputs("mem alloc failed", stderr);
 			return 1;
 		}
-		if (1!=fread(buffer,saveSize, 1, f1))
+		if (1 != fread(buffer,saveSize, 1, f1))
 		{
 			fclose(f1);
 			fputs("read failed, or file is blank\n", stderr);
@@ -80,7 +80,7 @@ int loadGame(g_game* game)
 			fclose(f1);
 			fputs("INVALID SAVE DATA", stderr);
 			resetGame();
-			f1=fopen("bitten.sav", "rb");
+			f1 = fopen("bitten.sav", "rb");
 		}
 		// read and printout the data
 		printf("header:\n");
@@ -91,7 +91,7 @@ int loadGame(g_game* game)
 				printf("header mismatch");
 				fclose(f1);
 				resetGame(game);
-				f1=fopen("bitten.sav", "rb");
+				f1 = fopen("bitten.sav", "rb");
 			}
 			printf("%c", buffer[i]);
 		}
@@ -99,7 +99,7 @@ int loadGame(g_game* game)
 		printf("Version of game saved: %i\n", buffer[10]);
 		for(int i = 7; 0 <= i; i --) {
         	printf("%d\n", (buffer[11] >> i) & 0x01);
-			if (i==7) {
+			if (i == 7) {
 				if ((buffer[11] >> i) & 0x01) {
 					printf("music enabled\n");
 					game->settings.audio=true;
