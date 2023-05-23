@@ -35,6 +35,7 @@ struct direction {
   char up;
   char down;
 };
+
 void move(g_game* game);
 SDL_Event event;
 void i_poll(g_game* game)

@@ -12,5 +12,9 @@ then you run
 cmake ..
 make
 ```
+
 ## credits
 bitten2up: developer
+
+## license
+this is licensed by the MIT license
