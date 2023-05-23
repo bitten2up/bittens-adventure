@@ -50,10 +50,11 @@ int main(int argc, char* argv[])
   {
     printf("ERROR: SDL_image has failed to init png %s\n", SDL_GetError());
   }
+
 #ifdef DISCORD
   discordInit();
-  updateDiscordPresence("title screen", "lets go");
 #endif
+
   RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
   g_game game;
   game.state = title;

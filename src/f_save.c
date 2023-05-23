@@ -31,15 +31,17 @@
 #include "sdl_bittendef.h"
 #include "g_game.h"
 #include "f_save.h"
+
 #define VERSION 0x01
+
 bool file_exists(const char *filename)
 {
     FILE *fp = fopen(filename, "r");
     bool is_exist = false;
     if (fp != NULL)
     {
-        is_exist = true;
-        fclose(fp); // close the file
+      is_exist = true;
+      fclose(fp); // close the file
     }
     return is_exist;
 }
@@ -47,10 +49,10 @@ bool file_exists(const char *filename)
 void resetGame();
 int loadGame(g_game* game)
 {
-    if (!file_exists("bitten.sav")) {
-        resetGame();
-    }
-    else {
+  if (!file_exists("bitten.sav")) {
+    resetGame();
+  }
+  else {
 		FILE *f1 = fopen("bitten.sav", "rb"); // open in binary mode
 		char* buffer;
 		long saveSize;
@@ -98,7 +100,7 @@ int loadGame(g_game* game)
 		printf("\n");
 		printf("Version of game saved: %i\n", buffer[10]);
 		for(int i = 7; 0 <= i; i --) {
-        	printf("%d\n", (buffer[11] >> i) & 0x01);
+      printf("%d\n", (buffer[11] >> i) & 0x01);
 			if (i == 7) {
 				if ((buffer[11] >> i) & 0x01) {
 					printf("music enabled\n");
