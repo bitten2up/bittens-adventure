@@ -63,20 +63,20 @@ int32_t checkCollision(tmx_map* map, int x, int y)
   // objects
   if (chests->type==L_OBJGR)
     {
-      tmx_object* test = chests->content.objgr->head;
+      tmx_object* currentObject = chests->content.objgr->head;
       // go through the entire list of possible objects
       int counter = 0;
-      int tilex = ((test->x)/32);
-      int tiley = ((test->y+8)/32)+4;
-      test = test->next;
+      int tilex = ((currentObject->x)/32);
+      int tiley = ((currentObject->y+8)/32)+4;
+      currentObject = currentObject->next;
       if ((x == tilex) && (y == tiley))
       {
         return CHESTS_LAYER;
       }
-      while (test!=NULL)
+      while (currentObject != NULL)
       {
-        tilex = ((test->x)/32)+1;
-        tiley = ((test->y+8)/32)+4;
+        tilex = ((currentObject->x)/32)+1;
+        tiley = ((currentObject->y+8)/32)+4;
         // make this work with tilex and tiley
         if ((x == tilex) && (y == tiley))
         {
@@ -89,9 +89,9 @@ int32_t checkCollision(tmx_map* map, int x, int y)
           printf("tiley didn't work, y: %i, tiley: %i\n", y, tiley);
         }
 #endif
-      counter++;
+        counter++;
         // go to next object
-        test = test->next;
+        currentObject = currentObject->next;
       }
 
       return 0;

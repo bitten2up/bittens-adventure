@@ -53,7 +53,7 @@ void InitWindow(const char* p_title, int p_w, int p_h)
 		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
 	TTF_Init();
-	font = TTF_OpenFont("assets/BitPotionExt.ttf", 24);
+	font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
 	if (font == NULL) {
 		printf("font failed to init %s\n", SDL_GetError());
   }
@@ -86,8 +86,8 @@ void r_text(char* message, int x, int y) {
   text_width = surface->w;
   text_height = surface->h;
   SDL_FreeSurface(surface);
-  textRec.x = x;
-  textRec.y = y;
+  textRec.x = x - text_width * 0.5;
+  textRec.y = y - text_height * 0.5;
   textRec.w = text_width;
   textRec.h = text_height;
   SDL_RenderCopy(renderer, text, NULL, &textRec);
@@ -106,7 +106,7 @@ void r_clear(void)
 	SDL_RenderClear(renderer);
 }
 
-void r_renderer(e_entity* e)
+void r_sprite(e_entity* e)
 {
 	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }

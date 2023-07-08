@@ -158,37 +158,60 @@ struct _bit_game
 /*
  player defines
 */
+
 // player sprite
-    #define bitten game->player.sprite.img
+
+#define bitten game->player.sprite.img
+
 // player rectangle aka what we see of the sprite
-    #define bittenRec game->player.sprite.rec
+
+#define bittenRec game->player.sprite.rec
+
 // position of player
-    #define bittenPos game->player.sprite.pos
+
+#define bittenPos game->player.sprite.pos
+
 // direction of player
-    #define bittenDirection game->player.sprite.direction
+
+#define bittenDirection game->player.sprite.direction
+
 // player health
-    #define bittenHealth game->player.health
+
+#define bittenHealth game->player.health
+
 /*
 * enemy defines
 */
 // enemy sprite
-    #define enemySprite game->enemy.sprite.img
+
+#define enemySprite game->enemy.sprite.img
+
 // enemy rectangle aka what we see of the sprite
-    #define enemyRec game->enemy.sprite.rec
+
+#define enemyRec game->enemy.sprite.rec
+
 // position of enemy
-    #define enemyPos game->enemy.sprite.pos
+
+#define enemyPos game->enemy.sprite.pos
+
 // enemy health
-    #define enemyHealth game->enemy.health
+
+#define enemyHealth game->enemy.health
+
 /*
 battle animation defines
 */
-    #define battleAni game->battleAni
+
+#define battleAni game->battleAni
+
 /*
 * gamestate defines
 */
-    #define state game->state
-    #define isTitle state==title
-    #define isGameover state==gameover
-    #define isBattle state==battle
-    #define isOverworld state==overworld
+
+#define state game->state
+#define isTitle state==title
+#define isGameover state==gameover
+#define isBattle state==battle
+#define isOverworld state==overworld
+
 #endif

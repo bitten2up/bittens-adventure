@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
 
     if (game.state == overworld){
       render_map(game.map, &game);
-      r_renderer(&game.player.entity);
+      r_sprite(&game.player.entity);
     }
     r_display();
     if (!startTime) {
