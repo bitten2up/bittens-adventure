@@ -39,6 +39,7 @@
 #include "i_event.h"
 #include "e_entity.h"
 #include "g_game.h"
+#include "b_battle.h"
 
 int main(int argc, char* argv[])
 {
@@ -98,11 +99,11 @@ int main(int argc, char* argv[])
         #ifdef DISCORD
         updateDiscordPresence("Overworld", "e");
         #endif
-         break;
+        render_map(game.map, &game);
+        r_sprite(&game.player.entity);
+        break;
       case battle:
-        #ifdef DISCORD
-        updateDiscordPresence("","");
-        #endif
+        b_battle(&game);
         break;
       default:
         #ifdef DISCORD
@@ -110,13 +111,9 @@ int main(int argc, char* argv[])
         #endif
         break;
     }
-    
 
-    if (game.state == overworld){
-      render_map(game.map, &game);
-      r_sprite(&game.player.entity);
-    }
     r_display();
+
     if (!startTime) {
       // get the time in ms passed from the moment the program started
       startTime = SDL_GetTicks(); 

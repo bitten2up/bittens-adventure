@@ -150,3 +150,19 @@ void undoTile(g_game* game, int tilex, int tiley) {
   game->player.x = -(32*(tilex - (game->map->width/2) + 3));
   game->player.y = -(32*(tiley - (game->map->height/2) + 3) + 14);
 }
+// movement code
+void p_move(g_game* game)
+{
+  game->player.y+=game->player.direction.up - game->player.direction.down;
+  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
+  {
+    game->player.y -= game->player.direction.up - game->player.direction.down;
+    game->state = battle;
+  }
+  game->player.x += game->player.direction.left - game->player.direction.right;
+  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
+  {
+    game->player.x -= game->player.direction.left - game->player.direction.right;
+    game->state = battle;
+  }
+}

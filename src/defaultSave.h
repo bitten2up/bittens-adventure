@@ -21,7 +21,8 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-
+#ifndef defaultsave_h
+#define defaultsave_h
 unsigned char saveD[] = {
   'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
   0x01, // version
@@ -30,3 +31,4 @@ unsigned char saveD[] = {
   0x0a
 };
 unsigned int saveDlen = 15;
+#endif
