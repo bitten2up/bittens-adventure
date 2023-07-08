@@ -150,7 +150,7 @@ void undoTile(g_game* game, int tilex, int tiley) {
   game->player.x = -(32*(tilex - (game->map->width/2) + 3));
   game->player.y = -(32*(tiley - (game->map->height/2) + 3) + 14);
 }
-// movement code
+// shit that should probally be in a different file
 void p_move(g_game* game)
 {
   game->player.y+=game->player.direction.up - game->player.direction.down;
@@ -158,7 +158,7 @@ void p_move(g_game* game)
   {
     game->player.y -= game->player.direction.up - game->player.direction.down;
     game->state = battle;
-    game->player.entity.dst.x = SCREENWIDTH/2;
+    game->player.entity.dst.x = SCREENWIDTH/4;
     game->player.entity.dst.y = SCREENHEIGHT/2;
     game->player.entity.dst.w = 32;
     game->player.entity.dst.h = 32;
@@ -168,11 +168,20 @@ void p_move(g_game* game)
   {
     game->player.x -= game->player.direction.left - game->player.direction.right;
     game->state = battle;
-    game->player.entity.dst.x = SCREENWIDTH/2;
+    game->player.entity.dst.x = SCREENWIDTH/4;
     game->player.entity.dst.y = SCREENHEIGHT/2;
     game->player.entity.dst.w = 32;
     game->player.entity.dst.h = 32;
   }
+}
+
+void p_enterOverworld(g_game* game)
+{
+  game->player.entity.dst.x = SCREENWIDTH/2;
+  game->player.entity.dst.y = SCREENHEIGHT/2;
+  game->player.entity.dst.w = 32;
+  game->player.entity.dst.h = 32;
+  game->state = overworld;
 }
 
 

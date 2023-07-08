@@ -140,6 +140,7 @@ int main(int argc, char* argv[])
   }
   tmx_map_free(game->map);
   CloseWindow();
+  free(game);
   SDL_Quit();
   return 0;
 }

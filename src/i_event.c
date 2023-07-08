@@ -77,8 +77,8 @@ void i_poll(g_game* game)
             }
             break;
           case SDLK_RETURN:
-            if (game->state == title)
-              game->state = overworld;
+            if (game->state == title || game->state == battle)
+              p_enterOverworld(game);
             break;
           default:
             break;
