@@ -106,6 +106,5 @@ void i_poll(g_game* game)
         break;
     }
   }
-  p_move(game);
 }
 

@@ -40,6 +40,7 @@
 #include "e_entity.h"
 #include "g_game.h"
 #include "b_battle.h"
+#include "e_collision.h"
 
 int main(int argc, char* argv[])
 {
@@ -57,23 +58,23 @@ int main(int argc, char* argv[])
 #endif
 
   InitWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
-  g_game game;
-  game.state = title;
+  g_game *game = malloc(sizeof(g_game));
+  game->state = title;
   // load sprite
-  game.player.entity.sprite = loadTexture("./assets/bitten.png");
-  game.player.entity.src.x = 0;
-  game.player.entity.src.y = 0;
-  game.player.entity.src.w = 32;
-  game.player.entity.src.h = 32;
+  game->player.entity.sprite = loadTexture("./assets/bitten.png");
+  game->player.entity.src.x = 0;
+  game->player.entity.src.y = 0;
+  game->player.entity.src.w = 32;
+  game->player.entity.src.h = 32;
 
-  game.player.entity.dst.x = SCREENWIDTH/2;
-  game.player.entity.dst.y = SCREENHEIGHT/2;
-  game.player.entity.dst.w = 32;
-  game.player.entity.dst.h = 32;
+  game->player.entity.dst.x = SCREENWIDTH/2;
+  game->player.entity.dst.y = SCREENHEIGHT/2;
+  game->player.entity.dst.w = 32;
+  game->player.entity.dst.h = 32;
 
   tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
-  game.map = tmx_load("./assets/maps/bit_towntest.tmx");
-  if (!game.map) {
+  game->map = tmx_load("./assets/maps/bit_towntest.tmx");
+  if (!game->map) {
     tmx_perror("Cannot load map");
     return 1;
   }
@@ -82,13 +83,13 @@ int main(int argc, char* argv[])
   Uint32 delta = 0;
   short fps = 60;
   short timePerFrame = 16; // miliseconds
-  game.gameRunning = true;
+  game->gameRunning = true;
 
-  while (game.gameRunning)
+  while (game->gameRunning)
   {
-    i_poll(&game);
+    i_poll(game);
     r_clear();
-    switch (game.state){
+    switch (game->state){
       case title:
         #ifdef DISCORD
         updateDiscordPresence("title screen", "press start");
@@ -99,11 +100,12 @@ int main(int argc, char* argv[])
         #ifdef DISCORD
         updateDiscordPresence("Overworld", "e");
         #endif
-        render_map(game.map, &game);
-        r_sprite(&game.player.entity);
+        p_move(game);
+        render_map(game->map, game);
+        r_sprite(&game->player.entity);
         break;
       case battle:
-        b_battle(&game);
+        b_battle(game);
         break;
       default:
         #ifdef DISCORD
@@ -136,7 +138,7 @@ int main(int argc, char* argv[])
     startTime = endTime;
     endTime = SDL_GetTicks();
   }
-  tmx_map_free(game.map);
+  tmx_map_free(game->map);
   CloseWindow();
   SDL_Quit();
   return 0;

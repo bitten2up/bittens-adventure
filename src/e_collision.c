@@ -158,11 +158,21 @@ void p_move(g_game* game)
   {
     game->player.y -= game->player.direction.up - game->player.direction.down;
     game->state = battle;
+    game->player.entity.dst.x = SCREENWIDTH/2;
+    game->player.entity.dst.y = SCREENHEIGHT/2;
+    game->player.entity.dst.w = 32;
+    game->player.entity.dst.h = 32;
   }
   game->player.x += game->player.direction.left - game->player.direction.right;
   if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
   {
     game->player.x -= game->player.direction.left - game->player.direction.right;
     game->state = battle;
+    game->player.entity.dst.x = SCREENWIDTH/2;
+    game->player.entity.dst.y = SCREENHEIGHT/2;
+    game->player.entity.dst.w = 32;
+    game->player.entity.dst.h = 32;
   }
 }
+
+
