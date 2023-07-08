@@ -34,10 +34,13 @@
 
 SDL_Window* window;
 SDL_Renderer* renderer;
+TTF_Font* font;
+SDL_Texture* text;
+SDL_Rect textRec;
 
 void* SDL_tex_loader(const char *path);
 
-void RenderWindow(const char* p_title, int p_w, int p_h)
+void InitWindow(const char* p_title, int p_w, int p_h)
 {
 	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
 	if (window == NULL)
@@ -49,6 +52,11 @@ void RenderWindow(const char* p_title, int p_w, int p_h)
 	{
 		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
+	TTF_Init();
+	font = TTF_OpenFont("assets/BitPotionExt.ttf", 24);
+	if (font == NULL) {
+		printf("font failed to init %s\n", SDL_GetError());
+  }
 	tmx_img_load_func = SDL_tex_loader;
 }
 
@@ -61,8 +69,34 @@ SDL_Texture* loadTexture(const char* p_filePath)
 	return texture;
 }
 
+
+
+/*
+- x, y: upper left corner.
+- texture, rect: outputs.
+*/
+void r_text(char* message, int x, int y) {
+  int text_width;
+  int text_height;
+  SDL_Surface *surface;
+  SDL_Color textColor = {255, 255, 255, 0};
+
+  surface = TTF_RenderText_Solid(font, message, textColor);
+  text = SDL_CreateTextureFromSurface(renderer, surface);
+  text_width = surface->w;
+  text_height = surface->h;
+  SDL_FreeSurface(surface);
+  textRec.x = x;
+  textRec.y = y;
+  textRec.w = text_width;
+  textRec.h = text_height;
+  SDL_RenderCopy(renderer, text, NULL, &textRec);
+}
+
 void CloseWindow(void)
 {
+	SDL_DestroyTexture(text);
+  TTF_Quit();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 }
@@ -76,6 +110,7 @@ void r_renderer(e_entity* e)
 {
 	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }
+
 
 void r_display()
 {

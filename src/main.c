@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
   discordInit();
 #endif
 
-  RenderWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
+  InitWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
   g_game game;
   game.state = title;
   // load sprite
@@ -87,6 +87,31 @@ int main(int argc, char* argv[])
   {
     i_poll(&game);
     r_clear();
+    switch (game.state){
+      case title:
+        #ifdef DISCORD
+        updateDiscordPresence("title screen", "press start");
+        #endif
+        r_text("bitten's adventure", SCREENWIDTH/2, SCREENHEIGHT/2);
+        break;
+      case overworld:
+        #ifdef DISCORD
+        updateDiscordPresence("Overworld", "e");
+        #endif
+         break;
+      case battle:
+        #ifdef DISCORD
+        updateDiscordPresence("","");
+        #endif
+        break;
+      default:
+        #ifdef DISCORD
+        updateDiscordPresence("wat", "this dont make sense. %_%");
+        #endif
+        break;
+    }
+    
+
     if (game.state == overworld){
       render_map(game.map, &game);
       r_renderer(&game.player.entity);
@@ -109,23 +134,7 @@ int main(int argc, char* argv[])
     if (delta > timePerFrame) {
       fps = 1000 / delta;
     }
-    #ifdef DISCORD
-    switch (game.state){
-      case title:
-        updateDiscordPresence("title screen", "press start");
-        break;
-      case overworld:
-         updateDiscordPresence("Overworld", "e");
-         break;
-      case battle:
-         updateDiscordPresence("","");
-         break;
-      default:
-        updateDiscordPresence("wat", "this dont make sense. %_%");
-        break;
-    }
-    #endif
-
+    
 
     startTime = endTime;
     endTime = SDL_GetTicks();

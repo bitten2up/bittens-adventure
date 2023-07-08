@@ -15,12 +15,15 @@ target_link_libraries(bittens-adventure PRIVATE tmx)
 if(VCPKG_TOOLCHAIN)
   #find_package(sdl2 REQUIRED) # transitively included?
   find_package(sdl2-image REQUIRED)
+  find_package(SDL_ttf REQUIRED)
   target_link_libraries(bittens-adventure PRIVATE sdl2-image)
 else()
   find_package(PkgConfig REQUIRED)
   #pkg_search_module(SDL2 REQUIRED IMPORTED_TARGET sdl2 SDL2_image) # does not work for unknown reasons
   pkg_search_module(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image) # transitively includes SDL2
   target_link_libraries(bittens-adventure PRIVATE PkgConfig::SDL2_IMAGE)
+  pkg_search_module(SDL2_TTF REQUIRED IMPORTED_TARGET SDL2_ttf) # transitively includes SDL2
+  target_link_libraries(bittens-adventure PRIVATE PkgConfig::SDL2_TTF)
 endif()
 set(DISCORD OFF CACHE BOOL ON)
 if (DISCORD)
