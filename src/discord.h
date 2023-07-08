@@ -25,7 +25,9 @@
 ///////////////////////////////////////////////////////////
 // some stuff needed for Discord RPC
 ////////////////////////////////////////////////////////////
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 #ifdef DISCORD
 #include <discord_rpc.h>
 #include <time.h>
@@ -105,4 +107,7 @@ static void discordInit()
     Discord_Initialize(APPLICATION_ID, &handlers, 1, NULL);
 }
 
+#endif
+#ifdef __cplusplus
+}
 #endif
