@@ -41,6 +41,7 @@
 #include "g_game.h"
 #include "b_battle.h"
 #include "e_collision.h"
+#include "f_save.h"
 
 int main(int argc, char* argv[])
 {
@@ -59,6 +60,7 @@ int main(int argc, char* argv[])
 
   InitWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
   g_game *game = malloc(sizeof(g_game));
+  loadGame(game);
   game->state = title;
   // load sprite
   game->player.entity.sprite = loadTexture("./assets/bitten.png");
@@ -138,6 +140,7 @@ int main(int argc, char* argv[])
     startTime = endTime;
     endTime = SDL_GetTicks();
   }
+  saveGame(game);
   tmx_map_free(game->map);
   CloseWindow();
   free(game);

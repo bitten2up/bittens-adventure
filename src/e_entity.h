@@ -26,6 +26,8 @@
 #define E_ENTITY_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdint.h>
+
 typedef struct e_entity e_entity;
 typedef struct e_player e_player;
 
@@ -45,7 +47,7 @@ struct e_player{
 	e_entity entity;
 	char name[10];
 	struct e_direction direction;
-	int x;
-	int y;
+	int32_t x;
+	int32_t y;
 };
 #endif
