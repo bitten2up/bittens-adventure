@@ -121,10 +121,10 @@ int loadGame(g_game* game)
 		}
 
 		char x[4];
-		x[0]=buffer[12];
-		x[1]=buffer[13];
-		x[2]=buffer[14];
-		x[3]=buffer[15];
+		x[3]=buffer[12];
+		x[2]=buffer[13];
+		x[1]=buffer[14];
+		x[0]=buffer[15];
 
 #ifdef DEBUG
 		printf("xpos: %i\n", (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0]);
@@ -132,10 +132,10 @@ int loadGame(g_game* game)
 		game->player.x = (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0];
 	  // y position
 	  char y[4];
-		y[0]=buffer[16];
-		y[1]=buffer[17];
-		y[2]=buffer[18];
-		y[3]=buffer[19];
+		y[3]=buffer[16];
+		y[2]=buffer[17];
+		y[1]=buffer[18];
+		y[0]=buffer[19];
 #ifdef DEBUG
 		printf("ypos: %i\n", (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0]);
 #endif
