@@ -21,15 +21,26 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef defaultsave_h
-#define defaultsave_h
-unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
-  0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
-};
-unsigned int saveDlen = 20;
+
+#ifndef R_RENDER_H
+#define R_RENDER_H
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include "e_entity.h"
+#include "g_game.h"
+
+// handles the window
+void InitWindow(const char* p_title, int p_w, int p_h);
+
+// load image
+SDL_Texture* loadTexture(const char* p_filePath);
+// drawing
+void r_clear();
+void r_sprite(e_entity* e);
+void r_text(char* message, int x, int y);
+void r_display();
+// libtmx shit
+void render_map(tmx_map *map, g_game* game);
+// dealloc memory
+void CloseWindow(void);
 #endif

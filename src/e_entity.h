@@ -21,15 +21,33 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef defaultsave_h
-#define defaultsave_h
-unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
-  0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
+
+#ifndef E_ENTITY_H
+#define E_ENTITY_H
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <stdint.h>
+
+typedef struct e_entity e_entity;
+typedef struct e_player e_player;
+
+struct e_entity {
+	SDL_Texture* sprite;
+	SDL_Rect src;
+	SDL_Rect dst;
 };
-unsigned int saveDlen = 20;
+struct e_direction {
+  char left;
+  char right;
+  char up;
+  char down;
+};
+
+struct e_player{
+	e_entity entity;
+	char name[10];
+	struct e_direction direction;
+	int32_t x;
+	int32_t y;
+};
 #endif

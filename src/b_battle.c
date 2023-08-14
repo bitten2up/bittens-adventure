@@ -21,15 +21,28 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef defaultsave_h
-#define defaultsave_h
-unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
-  0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
-};
-unsigned int saveDlen = 20;
-#endif
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include "discord.h"
+
+//////////////////
+// bitten headers
+//////////////////
+
+#include "sdl_bittendef.h"
+#include "r_render.h"
+#include "i_event.h"
+#include "e_entity.h"
+#include "g_game.h"
+
+void b_battle(g_game *game) {
+  #ifdef DISCORD
+  updateDiscordPresence("testing","battle");
+  #endif
+  r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
+  r_sprite(&game->player.entity);
+}

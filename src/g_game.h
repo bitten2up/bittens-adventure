@@ -21,15 +21,38 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef defaultsave_h
-#define defaultsave_h
-unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
-  0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
+
+#ifndef G_GAME_H
+#define G_GAME_H
+#include "e_entity.h"
+#include <tmx.h>
+#include <stdbool.h>
+
+typedef struct g_game g_game;
+typedef struct g_settings g_settings;
+typedef enum {
+    title,
+    overworld,
+    battle,
+} g_state;
+struct g_settings
+{
+    int width;
+    int height;
+    bool audio;
+    bool modded;
+    bool silent; // dont show modded text durring gameplay
 };
-unsigned int saveDlen = 20;
+
+struct g_game
+{
+    g_settings settings;
+    e_player player;
+    //bit_enemy enemy;
+    g_state state;
+    //bit_battleAni battleAni;
+    tmx_map* map;
+    bool invalidSave;
+    bool gameRunning;
+};
 #endif

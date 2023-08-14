@@ -1,27 +1,37 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(bittens-adventure VERSION 1.0.0 LANGUAGES C)
+
+if(MSVC AND NOT VCPKG_TOOLCHAIN)
+  message(FATAL_ERROR "MSVC is only supported when using vcpkg")
+endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall")
+
+add_executable(bittens-adventure "main.c" "b_battle.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
+
 find_package(tmx REQUIRED)
-find_package(raylib 4.5 REQUIRED) # Requires at least version 3.0
+target_link_libraries(bittens-adventure PRIVATE tmx)
 
-set(CMAKE_C_STANDARD 11) # Requires C11 standard
-
-add_executable(bittens-adventure main.c  bit_cmdlineParams.c  bit_battle.c  bit_diag.c   bit_patch.c  bit_collision.c  bit_file.c)
-target_link_libraries(bittens-adventure tmx raylib)
-target_link_libraries(bittens-adventure m dl)
-set(DISCORDRPC OFF CACHE BOOL ON)
-if (DISCORDRPC)
-    target_link_libraries(bittens-adventure discord-rpc stdc++)
-    add_definitions(-DDISCORDRPC)
+if(VCPKG_TOOLCHAIN)
+  #find_package(sdl2 REQUIRED) # transitively included?
+  find_package(sdl2-image REQUIRED)
+  find_package(SDL_ttf REQUIRED)
+  target_link_libraries(bittens-adventure PRIVATE sdl2-image)
+else()
+  find_package(PkgConfig REQUIRED)
+  #pkg_search_module(SDL2 REQUIRED IMPORTED_TARGET sdl2 SDL2_image) # does not work for unknown reasons
+  pkg_search_module(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image) # transitively includes SDL2
+  target_link_libraries(bittens-adventure PRIVATE PkgConfig::SDL2_IMAGE)
+  pkg_search_module(SDL2_TTF REQUIRED IMPORTED_TARGET SDL2_ttf) # transitively includes SDL2
+  target_link_libraries(bittens-adventure PRIVATE PkgConfig::SDL2_TTF)
 endif()
-# The following libs should be transitively imported by raylib...
-find_package(Threads REQUIRED)
-target_link_libraries(bittens-adventure Threads::Threads)
-if(UNIX)
-  find_package(X11 REQUIRED)
-  target_link_libraries(bittens-adventure X11::X11)
+set(DISCORD OFF CACHE BOOL ON)
+if (DISCORD)
+    target_link_libraries(bittens-adventure PRIVATE discord-rpc)
+    target_link_libraries(bittens-adventure PRIVATE stdc++)
+    add_definitions(-DDISCORD)
 endif()
-
-# Checks if OSX and links appropriate frameworks (only required on MacOS)
-if (APPLE)
-    target_link_libraries(bittens-adventure "-framework IOKit")
-    target_link_libraries(bittens-adventure "-framework Cocoa")
-    target_link_libraries(bittens-adventure "-framework OpenGL")
+set(DEBUG OFF CACHE BOOL ON)
+if (DEBUG) 
+    add_definitions(-DDEBUG)
 endif()

@@ -21,15 +21,9 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef defaultsave_h
-#define defaultsave_h
-unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
-  0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
-};
-unsigned int saveDlen = 20;
+#ifndef B_BATTLE_H
+#define B_BATTLE_H
+
+#include <stdbool.h>
+void b_battle(g_game *game);
 #endif
