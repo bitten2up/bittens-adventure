@@ -5,7 +5,7 @@ project(bittens-adventure VERSION 1.0.0 LANGUAGES C)
 if(MSVC AND NOT VCPKG_TOOLCHAIN)
   message(FATAL_ERROR "MSVC is only supported when using vcpkg")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wpedantic -Wextra -std=c99 -fsanitize=address")
 
 add_executable(bittens-adventure "main.c" "b_battle.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
 
