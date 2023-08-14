@@ -48,8 +48,10 @@ bool file_exists(const char *filename)
 }
 
 void resetGame();
+// loads the game on start
 int loadGame(g_game* game)
 {
+  // check if the save exists before reading it
   if (!file_exists("bitten.sav")) {
     resetGame();
   }
@@ -57,6 +59,7 @@ int loadGame(g_game* game)
 		FILE *f1 = fopen("bitten.sav", "rb"); // open in binary mode
 		char* buffer;
 		long saveSize;
+    // if file is null reset save
 		if (f1 == NULL){
 		  fclose(f1);
 		  resetGame();
@@ -66,19 +69,22 @@ int loadGame(g_game* game)
 		saveSize = ftell(f1);
 		rewind(f1);
 		buffer = calloc(1, saveSize+1);
-		if (!buffer)
+    // see if there is a buffer
+		if (buffer = NULL)
 		{
 			fclose(f1);
 			free(buffer);
 			fputs("mem alloc failed", stderr);
 			return 1;
 		}
+    // is the file blank
 		if (1 != fread(buffer,saveSize, 1, f1))
 		{
 			fclose(f1);
 			fputs("read failed, or file is blank\n", stderr);
 			resetGame();
 		}
+    // save is wrong size
 		if (saveSize<sizeof(saveD)) {
 			fclose(f1);
 			fputs("INVALID SAVE DATA", stderr);
@@ -91,6 +97,7 @@ int loadGame(g_game* game)
 #endif
 		for (int i = 0; i < 9; i++)
 		{
+      // header is wrong
 			if (buffer[i] != saveD[i])
 			{
 				printf("header mismatch");
@@ -120,6 +127,7 @@ int loadGame(g_game* game)
 			}
 		}
 
+    // buffers to read the x cords
 		char x[4];
 		x[3]=buffer[12];
 		x[2]=buffer[13];
@@ -129,8 +137,9 @@ int loadGame(g_game* game)
 #ifdef DEBUG
 		printf("xpos: %i\n", (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0]);
 #endif
+    // bitmask to read x as a 32 bit int
 		game->player.x = (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0];
-	  // y position
+	  // buffer to read the y cords
 	  char y[4];
 		y[3]=buffer[16];
 		y[2]=buffer[17];
@@ -139,6 +148,7 @@ int loadGame(g_game* game)
 #ifdef DEBUG
 		printf("ypos: %i\n", (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0]);
 #endif
+    // bitmask to read y as a 32 bit int
 		game->player.y = (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0];
 		game->invalidSave = false;
 		// free memory
@@ -147,6 +157,7 @@ int loadGame(g_game* game)
 	}
 	return 0;
 }
+// saves the game, takes g_game to get the data wanted to save
 void saveGame(g_game* game)
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
@@ -155,18 +166,18 @@ void saveGame(g_game* game)
 	printf("xpos: %i\n", game->player.x);
 	printf("ypos: %i\n", game->player.y);
 #endif
-
+// 12-15 are for the x position
 	saveD[12] = (game->player.x>>24) & 0xFF;
 	saveD[13] = (game->player.x>>16) & 0xFF;
 	saveD[14] = (game->player.x>>8) & 0xFF;
 	saveD[15] = game->player.x & 0xFF;
-
+// 16-19 are for the y position
 	saveD[16] = (game->player.y>>24) & 0xFF;
 	saveD[17] = (game->player.y>>16) & 0xFF;
 	saveD[18] = (game->player.y>>8) & 0xFF;
 	saveD[19] = game->player.y & 0xFF;
 #ifdef DEBUG
-	printf("saving data\n");
+	printf("saved data\n");
 	printf("%s", saveD);
 #endif
 	fwrite(saveD, sizeof(char), sizeof(saveD), f1);
@@ -174,6 +185,7 @@ void saveGame(g_game* game)
 	return;
 }
 
+// called if the save file is corrupt, runs when the game starts
 void resetGame()
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
