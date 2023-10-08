@@ -2,7 +2,7 @@
 
 # MIT License
 #
-# Copyright (c) 2023 bitten2up
+# Copyright (c) 2021-2023 bitten2up
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# for the dll
+# Use this to compile the test patch dll for the game
 
 gcc -o ../patch.dll -s -shared dll_testing.c -ldl
