@@ -39,6 +39,7 @@
 #include "i_event.h"
 #include "e_entity.h"
 #include "g_game.h"
+#include "p_player.h"
 #include "b_battle.h"
 #include "e_collision.h"
 #include "f_save.h"
@@ -57,35 +58,16 @@ int main(int argc, char* argv[])
 #ifdef DISCORD
   discordInit();
 #endif
-
   InitWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
-  g_game *game = malloc(sizeof(g_game));
-  loadGame(game);
-  game->state = title;
-  // load sprite
-  game->player.entity.sprite = loadTexture("./assets/bitten.png");
-  game->player.entity.src.x = 0;
-  game->player.entity.src.y = 0;
-  game->player.entity.src.w = 32;
-  game->player.entity.src.h = 32;
 
-  game->player.entity.dst.x = SCREENWIDTH/2;
-  game->player.entity.dst.y = SCREENHEIGHT/2;
-  game->player.entity.dst.w = 32;
-  game->player.entity.dst.h = 32;
-
-  tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
-  game->map = tmx_load("./assets/maps/bit_towntest.tmx");
-  if (!game->map) {
-    tmx_perror("Cannot load map");
-    return 1;
-  }
+  g_game* game = g_init();
+  // TODO: move this to g_settings
   Uint32 startTime = 0;
   Uint32 endTime = 0;
   Uint32 delta = 0;
   short fps = 60;
   short timePerFrame = 16; // miliseconds
-  game->gameRunning = true;
+
 
   while (game->gameRunning)
   {
@@ -104,14 +86,14 @@ int main(int argc, char* argv[])
         #endif
         p_move(game);
         render_map(game->map, game);
-        r_sprite(&game->player.entity);
+        r_sprite(&game->player.entitySprite);
         break;
       case battle:
         b_battle(game);
         break;
       default:
         #ifdef DISCORD
-        updateDiscordPresence("wat", "this dont make sense. %_%");
+        updateDiscordPresence("wat", "this dont make sense. \%_\%");
         #endif
         break;
     }
@@ -120,8 +102,9 @@ int main(int argc, char* argv[])
 
     if (!startTime) {
       // get the time in ms passed from the moment the program started
-      startTime = SDL_GetTicks(); 
-      } else {
+      startTime = SDL_GetTicks;
+    }
+    else {
       delta = endTime - startTime; // how many ms for a frame
     }
 

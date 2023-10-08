@@ -36,7 +36,7 @@ void InitWindow(const char* p_title, int p_w, int p_h);
 SDL_Texture* loadTexture(const char* p_filePath);
 // drawing
 void r_clear();
-void r_sprite(e_entity* e);
+void r_sprite(e_entitySprite* e);
 void r_text(char* message, int x, int y);
 void r_display();
 // libtmx shit

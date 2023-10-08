@@ -38,7 +38,7 @@
 // self explanitory utiliy
 int getBit(char byte, int bitNum)
 {
-    return (byte & (0x1 << (bitNum - 1)))
+    return (byte & (0x1 << (bitNum - 1)));
 }
 
 bool file_exists(const char *filename)
@@ -195,8 +195,11 @@ void saveGame(g_game* game)
 void resetGame()
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
+	#ifdef DEBUG
 	printf("save data that is being created\n");
 	printf("%s", saveD);
+	printf("\n");
+	#endif
 	fwrite(saveD, sizeof(char), sizeof(saveD), f1);
 	fclose(f1);
 	return;

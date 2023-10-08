@@ -7,7 +7,7 @@ if(MSVC AND NOT VCPKG_TOOLCHAIN)
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wpedantic -Wextra -std=c99 -fsanitize=address")
 
-add_executable(bittens-adventure "main.c" "b_battle.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
+add_executable(bittens-adventure "main.c" "g_game.c" "b_battle.c" "p_player.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
 
 find_package(tmx REQUIRED)
 target_link_libraries(bittens-adventure PRIVATE tmx)

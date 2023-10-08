@@ -32,6 +32,4 @@
 int32_t checkCollision(tmx_map* map, int x, int y);
 int disableCollision(tmx_map* map, int x, int y);
 void undoTile(g_game *game, int tilex, int tiley);
-void p_move(g_game* game);
-void p_enterOverworld(g_game* game);
 #endif

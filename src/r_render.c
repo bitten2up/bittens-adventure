@@ -28,6 +28,7 @@
 #include <tmx.h>
 #include <stdio.h>
 
+#include "sdl_bittendef.h"
 #include "r_render.h"
 #include "e_entity.h"
 #include "g_game.h"
@@ -63,9 +64,12 @@ void InitWindow(const char* p_title, int p_w, int p_h)
 SDL_Texture* loadTexture(const char* p_filePath)
 {
 	SDL_Texture* texture = NULL;
-	texture=IMG_LoadTexture(renderer, p_filePath);
+	texture = IMG_LoadTexture(renderer, p_filePath);
 	if (texture == NULL)
+	{
 		printf("failed to load texture %s, SDL backtrace %s\n", p_filePath, SDL_GetError());
+		exit(1);
+	}
 	return texture;
 }
 
@@ -106,7 +110,7 @@ void r_clear(void)
 	SDL_RenderClear(renderer);
 }
 
-void r_sprite(e_entity* e)
+void r_sprite(e_entitySprite* e)
 {
 	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }

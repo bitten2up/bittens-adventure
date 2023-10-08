@@ -21,7 +21,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-
+////////////////
+// g_game.h
+/***************
+ * stores the top level of the bittenstruct, shouldn't be included, unless absolutly nessary
+**/ 
 #ifndef G_GAME_H
 #define G_GAME_H
 #include "e_entity.h"
@@ -55,4 +59,5 @@ struct g_game
     bool invalidSave;
     bool gameRunning;
 };
+g_game* g_init(void);
 #endif

@@ -44,5 +44,5 @@ void b_battle(g_game *game) {
   updateDiscordPresence("testing","battle");
   #endif
   r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
-  r_sprite(&game->player.entity);
+  r_sprite(&game->player.entitySprite);
 }

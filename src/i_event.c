@@ -28,6 +28,7 @@
 #include "i_event.h"
 #include "g_game.h"
 #include "e_collision.h"
+#include "p_player.h"
 
 struct direction {
   char left;
@@ -54,26 +55,26 @@ void i_poll(g_game* game)
           case SDLK_UP:
             if (game->state == overworld)
             {
-              game->player.entity.src.x = 0;
               game->player.direction.up = 1;
+              game->player.entitySprite.src.x = 0;
             }
             break;
           case SDLK_DOWN:
             if (game->state == overworld){
               game->player.direction.down = 1;
-              game->player.entity.src.x = 32;
+              game->player.entitySprite.src.x = 32;
             }
             break;
           case SDLK_LEFT:
             if (game->state == overworld){
               game->player.direction.left = 1;
-              game->player.entity.src.x = 64;
+              game->player.entitySprite.src.x = 64;
             }
             break;
           case SDLK_RIGHT:
             if (game->state == overworld){
               game->player.direction.right = 1;
-              game->player.entity.src.x = 96;
+              game->player.entitySprite.src.x = 96;
             }
             break;
           case SDLK_RETURN:

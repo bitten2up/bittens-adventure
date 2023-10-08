@@ -21,6 +21,9 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+///////////////////////////////////
+// structs for enemies and players
+///////////////////////////////////
 
 #ifndef E_ENTITY_H
 #define E_ENTITY_H
@@ -28,26 +31,27 @@
 #include <SDL2/SDL_image.h>
 #include <stdint.h>
 
-typedef struct e_entity e_entity;
+typedef struct e_entitySprite e_entitySprite;
 typedef struct e_player e_player;
 
-struct e_entity {
+struct e_entitySprite {
 	SDL_Texture* sprite;
 	SDL_Rect src;
 	SDL_Rect dst;
 };
 struct e_direction {
-  char left;
-  char right;
-  char up;
-  char down;
+  int8_t left;
+  int8_t right;
+  int8_t up;
+  int8_t down;
 };
 
 struct e_player{
-	e_entity entity;
-	char name[10];
+	e_entitySprite entitySprite;
+	int8_t name[10];
 	struct e_direction direction;
 	int32_t x;
 	int32_t y;
 };
+
 #endif

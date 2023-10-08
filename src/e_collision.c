@@ -22,6 +22,12 @@
 * SOFTWARE.
 */
 
+//----------------------------------------------------------
+// e_collision.c
+/***********************************************************
+* this file handles the collision between sprites
+************************************************************/
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -40,7 +46,8 @@
 ////////////////////////////////////////////////////////////
 
 #include "sdl_bittendef.h"           // defines for the engine
-#include "e_collision.h"       // colision handling
+#include "e_collision.h"             // collision handling
+#include "p_player.h"
 #include "g_game.h"
 #include "discord.h"
 
@@ -150,38 +157,3 @@ void undoTile(g_game* game, int tilex, int tiley) {
   game->player.x = -(32*(tilex - (game->map->width/2) + 3));
   game->player.y = -(32*(tiley - (game->map->height/2) + 3) + 14);
 }
-// shit that should probally be in a different file
-void p_move(g_game* game)
-{
-  game->player.y+=game->player.direction.up - game->player.direction.down;
-  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
-  {
-    game->player.y -= game->player.direction.up - game->player.direction.down;
-    game->state = battle;
-    game->player.entity.dst.x = SCREENWIDTH/4;
-    game->player.entity.dst.y = SCREENHEIGHT/2;
-    game->player.entity.dst.w = 32;
-    game->player.entity.dst.h = 32;
-  }
-  game->player.x += game->player.direction.left - game->player.direction.right;
-  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
-  {
-    game->player.x -= game->player.direction.left - game->player.direction.right;
-    game->state = battle;
-    game->player.entity.dst.x = SCREENWIDTH/4;
-    game->player.entity.dst.y = SCREENHEIGHT/2;
-    game->player.entity.dst.w = 32;
-    game->player.entity.dst.h = 32;
-  }
-}
-
-void p_enterOverworld(g_game* game)
-{
-  game->player.entity.dst.x = SCREENWIDTH/2;
-  game->player.entity.dst.y = SCREENHEIGHT/2;
-  game->player.entity.dst.w = 32;
-  game->player.entity.dst.h = 32;
-  game->state = overworld;
-}
-
-
