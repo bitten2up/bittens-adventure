@@ -64,17 +64,17 @@ int loadGame(g_game* game)
 		  fclose(f1);
 		  resetGame();
 		  f1 = fopen("bitten.sav", "rb");
-	  }
+		}
 		fseek(f1, 0L, SEEK_END);
 		saveSize = ftell(f1);
 		rewind(f1);
 		buffer = calloc(1, saveSize+1);
     // see if there is a buffer
-		if (buffer = NULL)
+		if (buffer == NULL)
 		{
 			fclose(f1);
 			free(buffer);
-			fputs("mem alloc failed", stderr);
+			fputs("mem alloc failed\n", stderr);
 			return 1;
 		}
     // is the file blank
@@ -87,7 +87,7 @@ int loadGame(g_game* game)
     // save is wrong size
 		if (saveSize<sizeof(saveD)) {
 			fclose(f1);
-			fputs("INVALID SAVE DATA", stderr);
+			fputs("INVALID SAVE DATA\n", stderr);
 			resetGame();
 			f1 = fopen("bitten.sav", "rb");
 		}
