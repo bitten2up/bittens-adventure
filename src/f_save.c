@@ -35,6 +35,12 @@
 
 #define VERSION 0x01
 
+// self explanitory utiliy
+int getBit(char byte, int bitNum)
+{
+    return (byte & (0x1 << (bitNum - 1)))
+}
+
 bool file_exists(const char *filename)
 {
   FILE *fp = fopen(filename, "r");
@@ -118,7 +124,7 @@ int loadGame(g_game* game)
       printf("%d\n", (buffer[11] >> i) & 0x01);
 #endif
 			if (i == 7) {
-				if ((buffer[11] >> i) & 0x01) {
+				if (getBit(buffer[11], 1)) {
 #ifdef DEBUG
 					printf("music enabled\n");
 #endif
