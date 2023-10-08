@@ -23,13 +23,20 @@
 */
 #ifndef defaultsave_h
 #define defaultsave_h
+enum saveFormat
+{
+  HEADER = 0,
+  HEADERVERSION = 10,
+  SETTINGS = 11,
+  SAVEDXPOS = 12,
+  SAVEDYPOS = 16,
+};
 unsigned char saveD[] = {
-  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0xc4, // header
-  0x01, // version
+  'b', 'i', 't', 't', 'e', 'n', 's', 'a', 'v', 0x00, // header, last byte is for different games
+  0x00, // version of save format, part of header, but we check this separately
   0b10000000, // first value: music, second value: fullscreen
-  0x00, 0x00, 0x00, 0x00, // x
-  0x00, 0x00, 0x00, 0x00, // y
-  0x0a
+  0x00, 0x00, 0x00, 0x00, // x position
+  0x00, 0x00, 0x00, 0x00, // y position
 };
 unsigned int saveDlen = 20;
 #endif

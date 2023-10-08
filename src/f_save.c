@@ -33,7 +33,7 @@
 #include "g_game.h"
 #include "f_save.h"
 
-#define VERSION 0x01
+#define VERSION 0x00
 
 // self explanitory utiliy
 int getBit(char byte, int bitNum)
@@ -90,18 +90,18 @@ int loadGame(g_game* game)
 			fputs("read failed, or file is blank\n", stderr);
 			resetGame();
 		}
-    // save is wrong size
-		if (saveSize<sizeof(saveD)) {
+    // save is wrong size (too small) need to make this run after we check version of the save to prevent loss of progress, but i havent done that yet
+		if (saveSize < sizeof(saveD)) {
 			fclose(f1);
 			fputs("INVALID SAVE DATA\n", stderr);
 			resetGame();
 			f1 = fopen("bitten.sav", "rb");
 		}
-		// read and printout the data
+		// read the data
 #ifdef DEBUG
 		printf("header:\n");
 #endif
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i <= 9; i++)
 		{
       // header is wrong
 			if (buffer[i] != saveD[i])
@@ -116,18 +116,19 @@ int loadGame(g_game* game)
 #endif
 		}
 		printf("\n");
-#ifdef DEBUG
-		printf("Version of game saved: %i\n", buffer[10]);
-#endif
+
+		printf("Version of game saved: %i\n", buffer[HEADERVERSION]);
+		if (buffer[HEADERVERSION] > VERSION)
+		{
+			printf("Version of save's saving format is greater than the current version, aborting to prevent overwriting the save\nPlease update to the latest version\n");
+			fclose(f1);
+			exit(1);
+		}
+		// i need to redo this, because this makes no fucking sense rn
 		for(int i = 7; 0 <= i; i --) {
-#ifdef DEBUG
-      printf("%d\n", (buffer[11] >> i) & 0x01);
-#endif
 			if (i == 7) {
-				if (getBit(buffer[11], 1)) {
-#ifdef DEBUG
+				if (getBit(buffer[SETTINGS], 1)) {
 					printf("music enabled\n");
-#endif
 					game->settings.audio=true;
 				}
 			}
@@ -135,10 +136,10 @@ int loadGame(g_game* game)
 
     // buffers to read the x cords
 		char x[4];
-		x[3]=buffer[12];
-		x[2]=buffer[13];
-		x[1]=buffer[14];
-		x[0]=buffer[15];
+		x[3]=buffer[SAVEDXPOS];
+		x[2]=buffer[SAVEDXPOS+1];
+		x[1]=buffer[SAVEDXPOS+2];
+		x[0]=buffer[SAVEDXPOS+3];
 
 #ifdef DEBUG
 		printf("xpos: %i\n", (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0]);
@@ -147,10 +148,10 @@ int loadGame(g_game* game)
 		game->player.x = (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0];
 	  // buffer to read the y cords
 	  char y[4];
-		y[3]=buffer[16];
-		y[2]=buffer[17];
-		y[1]=buffer[18];
-		y[0]=buffer[19];
+		y[3]=buffer[SAVEDYPOS];
+		y[2]=buffer[SAVEDYPOS+1];
+		y[1]=buffer[SAVEDYPOS+2];
+		y[0]=buffer[SAVEDYPOS+3];
 #ifdef DEBUG
 		printf("ypos: %i\n", (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0]);
 #endif
@@ -173,15 +174,15 @@ void saveGame(g_game* game)
 	printf("ypos: %i\n", game->player.y);
 #endif
 // 12-15 are for the x position
-	saveD[12] = (game->player.x>>24) & 0xFF;
-	saveD[13] = (game->player.x>>16) & 0xFF;
-	saveD[14] = (game->player.x>>8) & 0xFF;
-	saveD[15] = game->player.x & 0xFF;
+	saveD[SAVEDXPOS] = (game->player.x>>24) & 0xFF;
+	saveD[SAVEDXPOS+1] = (game->player.x>>16) & 0xFF;
+	saveD[SAVEDXPOS+2] = (game->player.x>>8) & 0xFF;
+	saveD[SAVEDXPOS+3] = game->player.x & 0xFF;
 // 16-19 are for the y position
-	saveD[16] = (game->player.y>>24) & 0xFF;
-	saveD[17] = (game->player.y>>16) & 0xFF;
-	saveD[18] = (game->player.y>>8) & 0xFF;
-	saveD[19] = game->player.y & 0xFF;
+	saveD[SAVEDYPOS] = (game->player.y>>24) & 0xFF;
+	saveD[SAVEDYPOS+1] = (game->player.y>>16) & 0xFF;
+	saveD[SAVEDYPOS+2] = (game->player.y>>8) & 0xFF;
+	saveD[SAVEDYPOS+3] = game->player.y & 0xFF;
 #ifdef DEBUG
 	printf("saved data\n");
 	printf("%s", saveD);
