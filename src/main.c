@@ -166,6 +166,7 @@ int main(int argc, char *argv[]){
     // load superstruct (as im calling it)
     bit_game *game = malloc(sizeof(bit_game));
     if (game==NULL)
+        return;
     // apply default settings
     game->settings.width=SCREENWIDTH;
     game->settings.height=SCREENHEIGHT;
