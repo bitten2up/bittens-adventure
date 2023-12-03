@@ -30,6 +30,6 @@
 #include "g_game.h"
 
 int32_t checkCollision(tmx_map* map, int x, int y);
-int disableCollision(tmx_map* map, int x, int y);
+int32_t disableCollision(tmx_map* map, int x, int y);
 void undoTile(g_game *game, int tilex, int tiley);
 #endif

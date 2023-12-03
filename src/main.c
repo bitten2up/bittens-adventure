@@ -89,6 +89,9 @@ int main(int argc, char* argv[])
         r_sprite(&game->player.entitySprite);
         break;
       case battle:
+        #ifdef DISCORD
+        updateDiscordPresence("Battling", "themself");
+        #endif
         b_battle(game);
         break;
       default:

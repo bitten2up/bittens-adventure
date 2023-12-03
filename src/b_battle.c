@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "discord.h"
 
 //////////////////
 // bitten headers
@@ -40,9 +39,6 @@
 #include "g_game.h"
 
 void b_battle(g_game *game) {
-  #ifdef DISCORD
-  updateDiscordPresence("testing","battle");
-  #endif
   r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
   r_sprite(&game->player.entitySprite);
 }
