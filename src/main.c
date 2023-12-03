@@ -125,8 +125,8 @@ int main(int argc, char* argv[])
   }
   saveGame(game);
   tmx_map_free(game->map);
-  CloseWindow();
   free(game);
+  CloseWindow();
   SDL_Quit();
   return 0;
 }

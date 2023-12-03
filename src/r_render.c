@@ -101,8 +101,8 @@ void CloseWindow(void)
 {
 	SDL_DestroyTexture(text);
   TTF_Quit();
-	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 }
 
 void r_clear(void)
