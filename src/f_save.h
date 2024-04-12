@@ -26,7 +26,7 @@
 #define BIT_FILE_H
 
 #include "sdl_bittendef.h"
-int loadGame(g_game* game);
-void saveGame(g_game* game);
+int loadGame();
+void saveGame();
 
 #endif

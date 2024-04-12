@@ -26,8 +26,8 @@
 #define R_RENDER_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <tmx.h>
 #include "e_entity.h"
-#include "g_game.h"
 
 // handles the window
 void InitWindow(const char* p_title, int p_w, int p_h);
@@ -40,7 +40,7 @@ void r_sprite(e_entitySprite* e);
 void r_text(char* message, int x, int y);
 void r_display();
 // libtmx shit
-void render_map(tmx_map *map, g_game* game);
+void render_map(tmx_map *map);
 // dealloc memory
 void CloseWindow(void);
 #endif

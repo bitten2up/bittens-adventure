@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 #include "i_event.h"
-#include "g_game.h"
+#include "bit_game.h"
 #include "e_collision.h"
 #include "p_player.h"
 
@@ -37,49 +37,49 @@ struct direction {
   char down;
 };
 
-void move(g_game* game);
+void move();
 SDL_Event event;
-void i_poll(g_game* game)
+void i_poll()
 {
   while (SDL_PollEvent(&event))
   {
     switch (event.type) {
       case SDL_QUIT:
-        game->gameRunning = false;
+        bitgame.gameRunning = false;
         break;
       case SDL_KEYDOWN:
         switch( event.key.keysym.sym ) {
           case SDLK_ESCAPE:
-            game->gameRunning = false;
+            bitgame.gameRunning = false;
             break;
           case SDLK_UP:
-            if (game->state == overworld)
+            if (bitgame.state == overworld)
             {
-              game->player.direction.up = 1;
-              game->player.entitySprite.src.x = 0;
+              bitgame.player.direction.up = 1;
+              bitgame.player.entitySprite.src.x = 0;
             }
             break;
           case SDLK_DOWN:
-            if (game->state == overworld){
-              game->player.direction.down = 1;
-              game->player.entitySprite.src.x = 32;
+            if (bitgame.state == overworld){
+              bitgame.player.direction.down = 1;
+              bitgame.player.entitySprite.src.x = 32;
             }
             break;
           case SDLK_LEFT:
-            if (game->state == overworld){
-              game->player.direction.left = 1;
-              game->player.entitySprite.src.x = 64;
+            if (bitgame.state == overworld){
+              bitgame.player.direction.left = 1;
+              bitgame.player.entitySprite.src.x = 64;
             }
             break;
           case SDLK_RIGHT:
-            if (game->state == overworld){
-              game->player.direction.right = 1;
-              game->player.entitySprite.src.x = 96;
+            if (bitgame.state == overworld){
+              bitgame.player.direction.right = 1;
+              bitgame.player.entitySprite.src.x = 96;
             }
             break;
           case SDLK_RETURN:
-            if (game->state == title || game->state == battle)
-              p_enterOverworld(game);
+            if (bitgame.state == title || bitgame.state == battle)
+              p_enterOverworld();
             break;
           default:
             break;
@@ -88,16 +88,16 @@ void i_poll(g_game* game)
       case SDL_KEYUP:
         switch( event.key.keysym.sym ) {
           case SDLK_DOWN:
-            game->player.direction.down = 0;
+            bitgame.player.direction.down = 0;
             break;
           case SDLK_UP:
-            game->player.direction.up = 0;
+            bitgame.player.direction.up = 0;
             break;
           case SDLK_LEFT:
-            game->player.direction.left = 0;
+            bitgame.player.direction.left = 0;
 
           case SDLK_RIGHT:
-            game->player.direction.right = 0;
+            bitgame.player.direction.right = 0;
             break;
           default:
             break;

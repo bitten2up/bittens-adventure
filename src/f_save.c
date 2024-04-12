@@ -30,7 +30,7 @@
 #include "defaultSave.h"	// default savefile
 
 #include "sdl_bittendef.h"
-#include "g_game.h"
+#include "bit_game.h"
 #include "f_save.h"
 
 #define VERSION 0x00
@@ -55,7 +55,7 @@ bool file_exists(const char *filename)
 
 void resetGame();
 // loads the game on start
-int loadGame(g_game* game)
+int loadGame()
 {
   // check if the save exists before reading it
   if (!file_exists("bitten.sav")) {
@@ -108,7 +108,7 @@ int loadGame(g_game* game)
 			{
 				printf("header mismatch");
 				fclose(f1);
-				resetGame(game);
+				resetGame();
 				f1 = fopen("bitten.sav", "rb");
 			}
 #ifdef DEBUG
@@ -129,7 +129,7 @@ int loadGame(g_game* game)
 			if (i == 7) {
 				if (getBit(buffer[SETTINGS], 1)) {
 					printf("music enabled\n");
-					game->settings.audio=true;
+					bitgame.settings.audio=true;
 				}
 			}
 		}
@@ -145,7 +145,7 @@ int loadGame(g_game* game)
 		printf("xpos: %i\n", (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0]);
 #endif
     // bitmask to read x as a 32 bit int
-		game->player.x = (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0];
+		bitgame.player.x = (x[3]  << 24) | (x[2] << 16) | (x[1] << 8) | x[0];
 	  // buffer to read the y cords
 	  char y[4];
 		y[3]=buffer[SAVEDYPOS];
@@ -156,33 +156,33 @@ int loadGame(g_game* game)
 		printf("ypos: %i\n", (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0]);
 #endif
     // bitmask to read y as a 32 bit int
-		game->player.y = (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0];
-		game->invalidSave = false;
+		bitgame.player.y = (y[3]  << 24) | (y[2] << 16) | (y[1] << 8) | y[0];
+		bitgame.invalidSave = false;
 		// free memory
 		fclose(f1);
 		free(buffer);
 	}
 	return 0;
 }
-// saves the game, takes g_game to get the data wanted to save
-void saveGame(g_game* game)
+// saves the game, takes bit_game to get the data wanted to save
+void saveGame()
 {
 	FILE* f1 = fopen("bitten.sav", "wb");
 	
 #ifdef DEBUG
-	printf("xpos: %i\n", game->player.x);
-	printf("ypos: %i\n", game->player.y);
+	printf("xpos: %i\n", bitgame.player.x);
+	printf("ypos: %i\n", bitgame.player.y);
 #endif
 // 12-15 are for the x position
-	saveD[SAVEDXPOS] = (game->player.x>>24) & 0xFF;
-	saveD[SAVEDXPOS+1] = (game->player.x>>16) & 0xFF;
-	saveD[SAVEDXPOS+2] = (game->player.x>>8) & 0xFF;
-	saveD[SAVEDXPOS+3] = game->player.x & 0xFF;
+	saveD[SAVEDXPOS] = (bitgame.player.x>>24) & 0xFF;
+	saveD[SAVEDXPOS+1] = (bitgame.player.x>>16) & 0xFF;
+	saveD[SAVEDXPOS+2] = (bitgame.player.x>>8) & 0xFF;
+	saveD[SAVEDXPOS+3] = bitgame.player.x & 0xFF;
 // 16-19 are for the y position
-	saveD[SAVEDYPOS] = (game->player.y>>24) & 0xFF;
-	saveD[SAVEDYPOS+1] = (game->player.y>>16) & 0xFF;
-	saveD[SAVEDYPOS+2] = (game->player.y>>8) & 0xFF;
-	saveD[SAVEDYPOS+3] = game->player.y & 0xFF;
+	saveD[SAVEDYPOS] = (bitgame.player.y>>24) & 0xFF;
+	saveD[SAVEDYPOS+1] = (bitgame.player.y>>16) & 0xFF;
+	saveD[SAVEDYPOS+2] = (bitgame.player.y>>8) & 0xFF;
+	saveD[SAVEDYPOS+3] = bitgame.player.y & 0xFF;
 #ifdef DEBUG
 	printf("saved data\n");
 	printf("%s", saveD);

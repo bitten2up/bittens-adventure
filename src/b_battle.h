@@ -25,5 +25,5 @@
 #define B_BATTLE_H
 
 #include <stdbool.h>
-void b_battle(g_game *game);
+void b_battle();
 #endif

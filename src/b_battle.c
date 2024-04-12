@@ -36,9 +36,11 @@
 #include "r_render.h"
 #include "i_event.h"
 #include "e_entity.h"
-#include "g_game.h"
+#include "bit_game.h"
 
-void b_battle(g_game *game) {
+// TODO: the rest of this
+
+void b_battle() {
   r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
-  r_sprite(&game->player.entitySprite);
+  r_sprite(&bitgame.player.entitySprite);
 }

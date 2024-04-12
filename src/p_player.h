@@ -1,9 +1,9 @@
 #ifndef P_PLAYER_H
 #define P_PLAYER_H
 
-#include "g_game.h"
+#include "bit_game.h"
 
-void p_move(g_game* game);
-void p_enterOverworld(g_game* game);
+void p_move();
+void p_enterOverworld();
 
 #endif

@@ -48,13 +48,13 @@
 #include "sdl_bittendef.h"           // defines for the engine
 #include "e_collision.h"             // collision handling
 #include "p_player.h"
-#include "g_game.h"
+#include "bit_game.h"
 #include "discord.h"
 
 ///////
 // quick tilepos to pos conversion function
 ///////
-void undoTile(g_game *game, int tilex, int tiley);
+void undoTile(int tilex, int tiley);
 
 int32_t checkCollision(tmx_map* map, int x, int y)
 {
@@ -153,7 +153,7 @@ int32_t disableCollision(tmx_map* map, int x, int y)
 }
 
 
-void undoTile(g_game* game, int tilex, int tiley) {
-  game->player.x = -(32*(tilex - (game->map->width/2) + 3));
-  game->player.y = -(32*(tiley - (game->map->height/2) + 3) + 14);
+void undoTile(int tilex, int tiley) {
+  bitgame.player.x = -(32*(tilex - (bitgame.map->width/2) + 3));
+  bitgame.player.y = -(32*(tiley - (bitgame.map->height/2) + 3) + 14);
 }

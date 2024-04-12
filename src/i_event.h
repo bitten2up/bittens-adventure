@@ -27,8 +27,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-#include "g_game.h"
-
-void i_poll(g_game* game);
+void i_poll();
 
 #endif

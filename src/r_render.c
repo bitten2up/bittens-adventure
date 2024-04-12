@@ -31,7 +31,7 @@
 #include "sdl_bittendef.h"
 #include "r_render.h"
 #include "e_entity.h"
-#include "g_game.h"
+#include "bit_game.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -187,7 +187,7 @@ void draw_tile(void *image, unsigned int sx, unsigned int sy, unsigned int sw, u
 	SDL_RenderCopy(renderer, (SDL_Texture*)image, &src_rect, &dest_rect);
 }
 
-void draw_layer(tmx_map *map, tmx_layer *layer, g_game* game) {
+void draw_layer(tmx_map *map, tmx_layer *layer) {
 	unsigned long i, j;
 	unsigned int gid, x, y, w, h, flags;
 	float op;
@@ -212,13 +212,13 @@ void draw_layer(tmx_map *map, tmx_layer *layer, g_game* game) {
 					image = ts->image->resource_image;
 				}
 				flags = (layer->content.gids[(i*map->width)+j]) & ~TMX_FLIP_BITS_REMOVAL;
-				draw_tile(image, x, y, w, h, (j*ts->tile_width)+game->player.x, (i*ts->tile_height)+game->player.y, op, flags);
+				draw_tile(image, x, y, w, h, (j*ts->tile_width)+bitgame.player.x, (i*ts->tile_height)+bitgame.player.y, op, flags);
 			}
 		}
 	}
 }
 
-void draw_image_layer(tmx_image *image, g_game* game) {
+void draw_image_layer(tmx_image *image) {
 	SDL_Rect dim;
 	dim.x = 0;
 	dim.y = 0;
@@ -228,28 +228,28 @@ void draw_image_layer(tmx_image *image, g_game* game) {
 	SDL_RenderCopy(renderer, texture, NULL, &dim);
 }
 
-void draw_all_layers(tmx_map *map, tmx_layer *layers, g_game* game) {
+void draw_all_layers(tmx_map *map, tmx_layer *layers) {
 	while (layers) {
 		if (layers->visible) {
 
 			if (layers->type == L_GROUP) {
-				draw_all_layers(map, layers->content.group_head, game);
+				draw_all_layers(map, layers->content.group_head);
 			}
 			else if (layers->type == L_OBJGR) {
 				draw_objects(layers->content.objgr);
 			}
 			else if (layers->type == L_IMAGE) {
-				draw_image_layer(layers->content.image, game);
+				draw_image_layer(layers->content.image);
 			}
 			else if (layers->type == L_LAYER) {
-				draw_layer(map, layers, game);
+				draw_layer(map, layers);
 			}
 		}
 		layers = layers->next;
 	}
 }
 
-void render_map(tmx_map *map, g_game* game) {
+void render_map(tmx_map *map) {
 	set_color(map->backgroundcolor);
-	draw_all_layers(map, map->ly_head, game);
+	draw_all_layers(map, map->ly_head);
 }

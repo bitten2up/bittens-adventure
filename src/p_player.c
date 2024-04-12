@@ -27,35 +27,35 @@
 #include "e_entity.h"
 #include "e_collision.h"
 
-void p_move(g_game* game)
+void p_move()
 {
-  game->player.y+=game->player.direction.up - game->player.direction.down;
-  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
+  bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.y -= game->player.direction.up - game->player.direction.down;
-    game->state = battle;
-    game->player.entitySprite.dst.x = SCREENWIDTH/4;
-    game->player.entitySprite.dst.y = SCREENHEIGHT/2;
-    game->player.entitySprite.dst.w = 32;
-    game->player.entitySprite.dst.h = 32;
+    bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
+    bitgame.state = battle;
+    bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
+    bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
+    bitgame.player.entitySprite.dst.w = 32;
+    bitgame.player.entitySprite.dst.h = 32;
   }
-  game->player.x += game->player.direction.left - game->player.direction.right;
-  if (checkCollision(game->map, (game->map->width/2)-((game->player.x)/32)-5, (game->map->height/2)-((game->player.y+8)/32)) == CHESTS_LAYER)
+  bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
   {
-    game->player.x -= game->player.direction.left - game->player.direction.right;
-    game->state = battle;
-    game->player.entitySprite.dst.x = SCREENWIDTH/4;
-    game->player.entitySprite.dst.y = SCREENHEIGHT/2;
-    game->player.entitySprite.dst.w = 32;
-    game->player.entitySprite.dst.h = 32;
+    bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
+    bitgame.state = battle;
+    bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
+    bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
+    bitgame.player.entitySprite.dst.w = 32;
+    bitgame.player.entitySprite.dst.h = 32;
   }
 }
 
-void p_enterOverworld(g_game* game)
+void p_enterOverworld()
 {
-  game->player.entitySprite.dst.x = SCREENWIDTH/2;
-  game->player.entitySprite.dst.y = SCREENHEIGHT/2;
-  game->player.entitySprite.dst.w = 32;
-  game->player.entitySprite.dst.h = 32;
-  game->state = overworld;
+  bitgame.player.entitySprite.dst.x = SCREENWIDTH/2;
+  bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
+  bitgame.player.entitySprite.dst.w = 32;
+  bitgame.player.entitySprite.dst.h = 32;
+  bitgame.state = overworld;
 }

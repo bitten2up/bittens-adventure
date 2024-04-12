@@ -34,8 +34,8 @@
 #include "bittendef.h"
 
 int patch_main(bit_game* game) {
-    game->settings.width = 900;
-    game->settings.silent = true; // dont show modded text
+    bitgame->settings.width = 900;
+    bitgame->settings.silent = true; // dont show modded text
     printf("Bitten engine patching worked\nscreen width is now: %i", SCREENWIDTH);
     return;
 }
