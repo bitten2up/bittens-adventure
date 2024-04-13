@@ -32,33 +32,45 @@
 #include <tmx.h>
 #include <stdbool.h>
 
-typedef struct bit_game bit_game;
-typedef struct bit_settings bit_settings;
+
 typedef enum {
     title,
     overworld,
     battle,
 } bit_state;
-struct bit_settings
+
+typedef struct
 {
     int width;
     int height;
     bool audio;
     bool modded;
     bool silent; // dont show modded text durring gameplay
-};
+} bit_settings;
 
-struct bit_game
+typedef struct
+{
+  Uint32 startTime; // internal, allows us to get deltaTime
+  Uint32 endTime; // internal, allows us to get deltaTime
+  Uint32 deltaTime; // time between the last frame
+  short fps; // current fps
+  short timePerFrame; // miliseconds
+  bool showFps;
+} bit_preformance;
+
+typedef struct
 {
     bit_settings settings;
     e_player player;
     //bit_enemy enemy;
     bit_state state;
     //bit_battleAni battleAni;
+    bit_preformance preformance;
     tmx_map* map;
     bool invalidSave;
     bool gameRunning;
-};
+} bit_game;
+
 void bit_main(void);
 
 extern bit_game bitgame;

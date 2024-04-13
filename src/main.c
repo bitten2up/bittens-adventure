@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
 #ifdef DISCORD
   discordInit();
 #endif
+
   loadGame();
   bitgame.state = title;
   // load sprite

@@ -47,12 +47,12 @@
 
 void bit_main()
 {
-  // TODO: move this to g_game
-  Uint32 startTime = 0;
-  Uint32 endTime = 0;
-  Uint32 delta = 0;
-  short fps = 60;
-  short timePerFrame = 16; // miliseconds
+  bitgame.preformance.startTime = 0;
+  bitgame.preformance.endTime = 0;
+  bitgame.preformance.deltaTime = 0;
+  bitgame.preformance.fps = 60;
+  bitgame.preformance.timePerFrame = 16; // miliseconds
+  bitgame.preformance.showFps = true;
 
 
   while (bitgame.gameRunning)
@@ -89,28 +89,28 @@ void bit_main()
 
     r_display();
 
-    if (!startTime) {
+    if (!bitgame.preformance.startTime) {
       // get the time in ms passed from the moment the program started
-      startTime = SDL_GetTicks;
+      bitgame.preformance.startTime = SDL_GetTicks;
     }
     else {
-      delta = endTime - startTime; // how many ms for a frame
+      bitgame.preformance.deltaTime = bitgame.preformance.endTime - bitgame.preformance.startTime; // how many ms for a frame
     }
 
 
     // if less than 16ms, delay 
-    if (delta < timePerFrame) {
-      SDL_Delay(timePerFrame - delta);
+    if (bitgame.preformance.deltaTime < bitgame.preformance.timePerFrame) {
+      SDL_Delay(bitgame.preformance.timePerFrame - bitgame.preformance.deltaTime);
     }
 
-    // if delta is bigger than 16ms between frames, get the actual fps
-    if (delta > timePerFrame) {
-      fps = 1000 / delta;
+    // if deltaTime is bigger than 16ms between frames, get the actual fps
+    if (bitgame.preformance.deltaTime > bitgame.preformance.timePerFrame) {
+      bitgame.preformance.fps = 1000 / bitgame.preformance.deltaTime;
     }
     
 
-    startTime = endTime;
-    endTime = SDL_GetTicks();
+    bitgame.preformance.startTime = bitgame.preformance.endTime;
+    bitgame.preformance.endTime = SDL_GetTicks();
   }
   saveGame();
   tmx_map_free(bitgame.map);
