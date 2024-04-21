@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2023 bitten2up
+* Copyright (c) 2021-2024 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -95,6 +95,7 @@ void r_text(char* message, int x, int y) {
   textRec.w = text_width;
   textRec.h = text_height;
   SDL_RenderCopy(renderer, text, NULL, &textRec);
+	SDL_DestroyTexture(text);
 }
 
 void CloseWindow(void)
@@ -226,6 +227,7 @@ void draw_image_layer(tmx_image *image) {
 	SDL_Texture *texture = (SDL_Texture*)image->resource_image; // Texture loaded by libTMX
 	SDL_QueryTexture(texture, NULL, NULL, &(dim.w), &(dim.h));
 	SDL_RenderCopy(renderer, texture, NULL, &dim);
+	SDL_DestroyTexture(texture);
 }
 
 void draw_all_layers(tmx_map *map, tmx_layer *layers) {

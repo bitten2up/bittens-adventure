@@ -3,7 +3,8 @@
 
 #include "bit_game.h"
 
-void p_move();
+void p_moveOverworld();
+void p_movePlatformer();
 void p_enterOverworld();
 
 #endif

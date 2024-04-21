@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2023 bitten2up
+* Copyright (c) 2021-2024 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -70,13 +70,20 @@ void bit_main()
         #ifdef DISCORD
         updateDiscordPresence("Overworld", "e");
         #endif
-        p_move();
+        p_moveOverworld();
+        render_map(bitgame.map);
+        r_sprite(&bitgame.player.entitySprite);
+        break;
+      case platformer:
+        #ifdef DISCORD
+        updateDiscordPresence("platforming", "wow")
+        #endif
         render_map(bitgame.map);
         r_sprite(&bitgame.player.entitySprite);
         break;
       case battle:
         #ifdef DISCORD
-        updateDiscordPresence("Battling", "themself");
+        updateDiscordPresence("Battling", "herself");
         #endif
         b_battle();
         break;

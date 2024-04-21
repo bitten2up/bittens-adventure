@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2023 bitten2up
+* Copyright (c) 2021-2024 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,9 @@
 #include "e_entity.h"
 #include "e_collision.h"
 
-void p_move()
+// overworld shit
+
+void p_moveOverworld()
 {
   bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
@@ -43,7 +45,7 @@ void p_move()
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
-    bitgame.state = battle;
+    bitgame.state = platformer;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
     bitgame.player.entitySprite.dst.w = 32;
@@ -58,4 +60,29 @@ void p_enterOverworld()
   bitgame.player.entitySprite.dst.w = 32;
   bitgame.player.entitySprite.dst.h = 32;
   bitgame.state = overworld;
+}
+
+// platformer shit
+void p_movePlatformer()
+{
+  bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
+  {
+    bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
+    bitgame.state = battle;
+    bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
+    bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
+    bitgame.player.entitySprite.dst.w = 32;
+    bitgame.player.entitySprite.dst.h = 32;
+  }
+  bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
+  {
+    bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
+    bitgame.state = platformer;
+    bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
+    bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
+    bitgame.player.entitySprite.dst.w = 32;
+    bitgame.player.entitySprite.dst.h = 32;
+  }
 }
