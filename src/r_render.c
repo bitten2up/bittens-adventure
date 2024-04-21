@@ -26,6 +26,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <tmx.h>
+#include <cLDtk.h>
 #include <stdio.h>
 
 #include "sdl_bittendef.h"
@@ -120,6 +121,43 @@ void r_sprite(e_entitySprite* e)
 void r_display()
 {
 	SDL_RenderPresent(renderer);
+}
+
+//////////////
+// cLDtk shit
+//////////////
+static void DrawSprite(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRect, SDL_Rect destinationRect, int flip)
+{
+    SDL_RendererFlip sdl_flip = SDL_FLIP_NONE;
+
+    switch (flip)
+    {
+    case 0:
+        sdl_flip = SDL_FLIP_NONE;
+        break;
+    case 1:
+        sdl_flip = SDL_FLIP_HORIZONTAL;
+        break;
+    case 2:
+        sdl_flip = SDL_FLIP_VERTICAL;
+        break;
+    case 3:
+        sdl_flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        break;
+    }
+
+    SDL_RenderCopyEx(renderer, texture, &sourceRect, &destinationRect, 0, NULL, sdl_flip);
+}
+
+void r_drawTiles(struct layerInstances* layer, SDL_Renderer* renderer, SDL_Texture* texture)
+{
+    for (int y = layer->autoTiles_data_ptr->count; y-- > 0;)
+    {
+        DrawSprite(renderer, texture,
+            (SDL_Rect){ layer->autoTiles_data_ptr[y].SRCx, layer->autoTiles_data_ptr[y].SRCy, bitgame.player.y, bitgame.player.x },
+            (SDL_Rect){ layer->autoTiles_data_ptr[y].x, layer->autoTiles_data_ptr[y].y, bitgame.player.y, bitgame.player.x },
+            layer->autoTiles_data_ptr[y].f);
+    }
 }
 
 //////////////

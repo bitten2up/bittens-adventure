@@ -41,6 +41,8 @@ void r_text(char* message, int x, int y);
 void r_display();
 // libtmx shit
 void render_map(tmx_map *map);
+//libcLDtk shit
+void r_drawTiles(struct layerInstances* layer, SDL_Renderer* renderer, SDL_Texture* texture);
 // dealloc memory
 void CloseWindow(void);
 #endif

@@ -5,12 +5,13 @@ project(bittens-adventure VERSION 1.0.0 LANGUAGES C)
 if(MSVC AND NOT VCPKG_TOOLCHAIN)
   message(FATAL_ERROR "MSVC is only supported when using vcpkg")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wpedantic -Wextra -std=c22 -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wpedantic -Wextra -std=c22")
 
 add_executable(bittens-adventure  "main.c" "bit_game.c" "b_battle.c" "p_player.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
 
 find_package(tmx REQUIRED)
 target_link_libraries(bittens-adventure PRIVATE tmx)
+#target_link_libraries(bittens-adventure PRIVATE cLDtk)
 
 if(VCPKG_TOOLCHAIN)
   #find_package(sdl2 REQUIRED) # transitively included?

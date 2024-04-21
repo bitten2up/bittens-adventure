@@ -46,12 +46,24 @@ struct e_direction {
   int8_t down;
 };
 
+enum e_state {
+	grounded,
+};
+
+#define defaultGravity 1
+
 struct e_player{
-	e_entitySprite entitySprite;
-	int8_t name[10];
-	struct e_direction direction;
+	// x and y for later conversions
 	int32_t x;
 	int32_t y;
+
+	int8_t gravity;
+	uint8_t angle;
+	int8_t voly;
+
+	struct e_direction direction;
+	enum e_state state;
+	e_entitySprite entitySprite;
 };
 
 #endif

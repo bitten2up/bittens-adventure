@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
+//#include <cLDtk.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -53,7 +54,7 @@ int main(int argc, char* argv[])
   loadGame();
   bitgame.state = title;
   // load sprite
-//  bitgame.player.entitySprite.sprite = loadTexture("./assets/bitten.png");
+  bitgame.player.entitySprite.sprite = loadTexture("./assets/bitten.png");
   bitgame.player.entitySprite.src.x = 0;
   bitgame.player.entitySprite.src.y = 0;
   bitgame.player.entitySprite.src.w = 32;
@@ -63,6 +64,8 @@ int main(int argc, char* argv[])
   bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
   bitgame.player.entitySprite.dst.w = 32;
   bitgame.player.entitySprite.dst.h = 32;
+  bitgame.player.gravity = defaultGravity;
+  bitgame.player.voly = 0;
 
   tmx_img_free_func = (void (*)(void*))SDL_DestroyTexture;
   bitgame.map = tmx_load("./assets/maps/bit_towntest.tmx");
@@ -70,6 +73,8 @@ int main(int argc, char* argv[])
     tmx_perror("Cannot load map");
     exit(1);
   }
+  //loadJSONFile("{\"jsonVersion\":\"\"}", "assets/test.ldtk");
+
   bitgame.gameRunning = true;
   
   bit_main();

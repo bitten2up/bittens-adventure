@@ -78,6 +78,7 @@ void bit_main()
         #ifdef DISCORD
         updateDiscordPresence("platforming", "wow")
         #endif
+        p_movePlatformer();
         render_map(bitgame.map);
         r_sprite(&bitgame.player.entitySprite);
         break;
