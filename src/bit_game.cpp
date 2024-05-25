@@ -34,6 +34,8 @@
 // bitten headers
 //////////////////
 
+extern "C"
+{
 #include "sdl_bittendef.h"
 #include "bit_game.h"
 #include "r_render.h"
@@ -44,6 +46,7 @@
 #include "b_battle.h"
 #include "e_collision.h"
 #include "f_save.h"
+}
 
 void bit_main()
 {
@@ -99,7 +102,7 @@ void bit_main()
 
     if (!bitgame.preformance.startTime) {
       // get the time in ms passed from the moment the program started
-      bitgame.preformance.startTime = SDL_GetTicks;
+      bitgame.preformance.startTime = SDL_GetTicks();
     }
     else {
       bitgame.preformance.deltaTime = bitgame.preformance.endTime - bitgame.preformance.startTime; // how many ms for a frame

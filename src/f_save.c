@@ -64,7 +64,7 @@ int loadGame()
   else {
 		FILE *f1 = fopen("bitten.sav", "rb"); // open in binary mode
 		char* buffer;
-		long saveSize;
+		long unsigned int saveSize;
     // if file is null reset save
 		if (f1 == NULL){
 		  fclose(f1);

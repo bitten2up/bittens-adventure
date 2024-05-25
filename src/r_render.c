@@ -49,6 +49,7 @@ void InitWindow(const char* p_title, int p_w, int p_h)
 	{
 		printf("Window failed to init %s\n", SDL_GetError());
 	}
+
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL)
 	{

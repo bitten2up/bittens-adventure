@@ -29,21 +29,28 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+extern "C"
+{
 #include "bit_game.h"
 #include "sdl_bittendef.h"
 #include "r_render.h"
 #include "f_save.h"
+}
 
 bit_game bitgame;
 int main(int argc, char* argv[])
 {
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
   if (SDL_Init(SDL_INIT_VIDEO > 0))
   {
     printf("ERROR: SDL has failed to init %s\n", SDL_GetError());
+    return 1;
   }
   if (!(IMG_Init(IMG_INIT_PNG)))
   {
     printf("ERROR: SDL_image has failed to init png %s\n", SDL_GetError());
+    return 1;
   }
   InitWindow(GAME_NAME, SCREENWIDTH, SCREENHEIGHT);
 

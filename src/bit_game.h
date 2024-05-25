@@ -28,9 +28,12 @@
 **/ 
 #ifndef BIT_GAME_H
 #define BIT_GAME_H
-#include "e_entity.h"
 #include <tmx.h>
 #include <stdbool.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "e_entity.h"
 
 
 typedef enum {
@@ -54,8 +57,8 @@ typedef struct
   Uint32 startTime; // internal, allows us to get deltaTime
   Uint32 endTime; // internal, allows us to get deltaTime
   Uint32 deltaTime; // time between the last frame
-  short fps; // current fps
-  short timePerFrame; // miliseconds
+  uint32_t fps; // current fps
+  uint32_t timePerFrame; // miliseconds
   bool showFps;
 } bit_preformance;
 
@@ -76,4 +79,7 @@ void bit_main(void);
 
 extern bit_game bitgame;
 
+#ifdef __cplusplus
+}
+#endif
 #endif

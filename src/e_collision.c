@@ -27,6 +27,7 @@
 /***********************************************************
 * this file handles the collision between sprites
 ************************************************************/
+// needs to be compleatly nuked most likely
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -105,9 +106,9 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 
     }
     // simple layers are pritty easy
-  else if (chests->type == L_LAYER)
+  else// if (chests->type == L_LAYER)
   {
-    printf("%i\n", chests->content.gids[y * map->width + x]);
+    //printf("%i\n", chests->content.gids[y * map->width + x]);
     return chests->content.gids[y * map->width + x];
   }
 }
@@ -145,8 +146,8 @@ int32_t disableCollision(tmx_map* map, int x, int y)
       return 1;
 
     }
-    // simple layers are pritty easy
-  else if (chests->type==L_LAYER)
+    // not fucking happening
+  else
   {
     return 1;
   }
