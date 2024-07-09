@@ -36,16 +36,16 @@
 
 extern "C"
 {
-#include "sdl_bittendef.h"
-#include "bit_game.h"
-#include "r_render.h"
-#include "i_event.h"
-#include "e_entity.h"
-#include "bit_game.h"
-#include "p_player.h"
-#include "b_battle.h"
-#include "e_collision.h"
-#include "f_save.h"
+  #include "sdl_bittendef.h"
+  #include "bit_game.h"
+  #include "r_render.h"
+  #include "i_event.h"
+  #include "e_entity.h"
+  #include "bit_game.h"
+  #include "p_player.h"
+  #include "b_battle.h"
+  #include "e_collision.h"
+  #include "f_save.h"
 }
 
 void bit_main()

@@ -29,7 +29,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
-//#include "raylib.h"
 #include "tmx.h"
 // set the title of the game
 #define GAME_NAME "bittens adventure"
@@ -40,12 +39,12 @@
 #else
 #define PATCH_DLL "libbit-patch.so"
 #endif
-//#define DISCORD // Enables discord rpc, use MAKE DISCORDRPC=TRUE to compile with this flag
 
 // files
 #ifndef PLATFORM_WEB
 #define SAVE_FILE "bitten.sav"
 #endif
+
 // TODO make this editable in an settings menu
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 450
@@ -56,6 +55,7 @@
 ////////////////////////////////////////////////////////////
 #define BIT_VERSION 0x01
 
+// should be moved elsewhere
 ////////////////////////////////////////////////////////////
 // tmx layers with names emum
 ////////////////////////////////////////////////////////////
