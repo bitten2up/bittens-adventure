@@ -12,3 +12,21 @@ well.. if you looked through `r_render.c` you can find broken code to attempt an
 ## the plan
 
 make something thats easy to use. one of the goals is being able to figure out if we are coliding at different aspect ratios/resolutions and be able to have the character not be dead stuck in the middle of the screen
+
+
+## ok but what's the catch
+
+well... inorder to do that, i don't want to just remove whats currently working, so I will make a simple map configuration format that will define which format to use.
+
+the goal would be something like this for the time being
+
+```text
+version 1
+using tiled/LDtk/custom
+```
+
+now i dont feel like parsing text, so ill take the easy way out for now
+
+```c
+char file[] = {'0x1', '0x0'} // first value is version, second is format (in this case tiled)
+```

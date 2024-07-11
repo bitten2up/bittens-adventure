@@ -17,8 +17,8 @@ jobs:
       with:
         toolchain: stable
     - name: install x11-dev
-      run: sudo apt install libxi-dev libxinerama-dev libxcursor-dev -y
-    - name: install Raylib
-      run: git clone https://github.com/raysan5/raylib; cd raylib/src; make;
+      run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libz-dev libxml2-dev
+    - name: install libtmx
+      run: git clone https://github.com/baylej/tmx && mkdir build && cd build && cmake .. && make -j4
     - name: Compile
-      run: make RAYLIB_PATH=./raylib -B;
+      run: mkdir build && cd build && cmake .. && make;
