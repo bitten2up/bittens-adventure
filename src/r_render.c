@@ -22,12 +22,13 @@
 * SOFTWARE.
 */
 
+#include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <tmx.h>
 #include <cLDtk.h>
-#include <stdio.h>
 
 #include "sdl_bittendef.h"
 #include "r_render.h"
