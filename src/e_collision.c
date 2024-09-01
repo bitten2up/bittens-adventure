@@ -60,9 +60,9 @@ void undoTile(int tilex, int tiley);
 int32_t checkCollision(tmx_map* map, int x, int y)
 {
   // setup layers
-  tmx_layer* chests = tmx_find_layer_by_id(map, CHESTS_LAYER); // chests
-#ifdef DEBUGBUILD
-  printf("value of tile: %i\n", chests->content.gids[y * map->width + x]);
+  tmx_layer* chests = tmx_find_layer_by_name(map, "chests"); // chests
+#ifdef DEBUG
+  //printf("value of tile: %i\n", chests->content.gids[y * map->width + x]);
 #endif
   //if (tile->user_data.integer){
   //    return 0;
@@ -75,7 +75,7 @@ int32_t checkCollision(tmx_map* map, int x, int y)
       // go through the entire list of possible objects
       int counter = 0;
       int tilex = ((currentObject->x)/32);
-      int tiley = ((currentObject->y+8)/32)+4;
+      int tiley = ((currentObject->y)/32);
       currentObject = currentObject->next;
       if ((x == tilex) && (y == tiley))
       {
@@ -83,18 +83,15 @@ int32_t checkCollision(tmx_map* map, int x, int y)
       }
       while (currentObject != NULL)
       {
-        tilex = ((currentObject->x)/32)+1;
-        tiley = ((currentObject->y+8)/32)+4;
         // make this work with tilex and tiley
         if ((x == tilex) && (y == tiley))
         {
           return CHESTS_LAYER;
         }
-#ifdef DEBUGBUILD
-        else
+#ifdef DEBUG
         {
-          printf("tilex didn't work, x: %i, tilex: %i\n", x, tilex);
-          printf("tiley didn't work, y: %i, tiley: %i\n", y, tiley);
+          printf("x: %i, tilex: %i\n", x, tilex);
+          printf("y: %i, tiley: %i\n", y, tiley);
         }
 #endif
         counter++;
@@ -106,10 +103,10 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 
     }
     // simple layers are pritty easy
-  else// if (chests->type == L_LAYER)
+  else if (chests->type == L_LAYER)
   {
     //printf("%i\n", chests->content.gids[y * map->width + x]);
-    return chests->content.gids[y * map->width + x];
+    return chests->content.gids[(y-2) * map->width + (x+3)];
   }
 }
 

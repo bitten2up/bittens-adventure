@@ -79,7 +79,7 @@ void bit_main()
         break;
       case platformer:
         #ifdef DISCORD
-        updateDiscordPresence("platforming", "wow")
+        updateDiscordPresence("platforming", "wow");
         #endif
         p_movePlatformer();
         render_map(bitgame.map);
