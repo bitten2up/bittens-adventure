@@ -25,6 +25,9 @@
 /*
 * this file toggles debugging and release flags for the game
 */
+
+// unused file because `sdl_bittendef.h` ended up replacing it.
+
 #ifndef BITTENDEF_H
 #define BITTENDEF_H
 #include <stdbool.h>

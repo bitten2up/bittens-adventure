@@ -23,12 +23,12 @@
 */
 
 #include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
-//#include <cLDtk.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "discord.h"
+
+//#include <cLDtk.h>
 
 extern "C"
 {
