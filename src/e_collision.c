@@ -88,8 +88,8 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 #ifdef DEBUG
         else
         {
-          printf("x: %i, tilex: %i\n", x, tilex);
-          printf("y: %i, tiley: %i\n", y, tiley);
+          printf("tilex miss, x: %i, tilex: %i\n", x, tilex);
+          printf("tiley miss, y: %i, tiley: %i\n", y, tiley);
         }
 #endif
         counter++;
