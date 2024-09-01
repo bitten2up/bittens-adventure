@@ -61,9 +61,6 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 {
   // setup layers
   tmx_layer* chests = tmx_find_layer_by_name(map, "chests"); // chests
-#ifdef DEBUG
-  //printf("value of tile: %i\n", chests->content.gids[y * map->width + x]);
-#endif
   //if (tile->user_data.integer){
   //    return 0;
   //}
@@ -89,6 +86,7 @@ int32_t checkCollision(tmx_map* map, int x, int y)
           return CHESTS_LAYER;
         }
 #ifdef DEBUG
+        else
         {
           printf("x: %i, tilex: %i\n", x, tilex);
           printf("y: %i, tiley: %i\n", y, tiley);
@@ -105,7 +103,10 @@ int32_t checkCollision(tmx_map* map, int x, int y)
     // simple layers are pritty easy
   else if (chests->type == L_LAYER)
   {
-    //printf("%i\n", chests->content.gids[y * map->width + x]);
+  #ifdef DEBUG
+   printf("value of tile: %i\n", chests->content.gids[(y-2) * map->width + (x + 3)]);
+  #endif
+
     return chests->content.gids[(y-2) * map->width + (x+3)];
   }
 }

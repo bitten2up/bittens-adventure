@@ -29,11 +29,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
-#include "tmx.h"
 // set the title of the game
 #define GAME_NAME "bittens adventure"
 // enables debugging features, disable this for releases
-//#define debug
 #ifdef WIN32
 #define PATCH_DLL "patch.dll"
 #else
