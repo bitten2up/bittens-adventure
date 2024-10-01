@@ -44,8 +44,8 @@
 #endif
 
 // TODO make this editable in an settings menu
-#define SCREENWIDTH 800
-#define SCREENHEIGHT 450
+#define SCREENWIDTH 792
+#define SCREENHEIGHT 432
 #define SCREENFPS 60
 
 ////////////////////////////////////////////////////////////

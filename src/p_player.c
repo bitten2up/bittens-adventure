@@ -32,7 +32,7 @@
 void p_moveOverworld()
 {
   bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32), (bitgame.map->height/2)-((bitgame.player.y)/32)) == CHESTS_LAYER)
   {
     bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
     //bitgame.state = platformer;
@@ -44,7 +44,7 @@ void p_moveOverworld()
     #endif
   }
   bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32), (bitgame.map->height/2)-((bitgame.player.y)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
     //bitgame.state = platformer;
@@ -74,7 +74,7 @@ static void p_jump()
 {
   if (airtime < 5)
   {
-    bitgame.player.voly = bitgame.player.direction.up * 20 - bitgame.player.gravity;
+    bitgame.player.voly = bitgame.player.direction.up * (20 - bitgame.player.gravity);
     airtime++;
   }
   else if (airtime < 20)

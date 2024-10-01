@@ -100,14 +100,15 @@ int32_t checkCollision(tmx_map* map, int x, int y)
       return 0;
 
     }
-    // simple layers are pritty easy
+    // simple layers are pretty easy
+    // WHY THE FUCK DOES THIS NOT ALWAYS WORK - bitten 2024
   else if (chests->type == L_LAYER)
   {
   #ifdef DEBUG
-   printf("value of tile: %i\n", chests->content.gids[(y-2) * map->width + (x + 3)]);
+     printf("value of tile: %i\n", chests->content.gids[(y-2) * map->width + (x - 2)]);
   #endif
 
-    return chests->content.gids[(y-2) * map->width + (x+3)];
+    return chests->content.gids[((y - 3) * map->width) + (x - 2)];
   }
 }
 
