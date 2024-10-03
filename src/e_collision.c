@@ -34,6 +34,7 @@
 ////////////////////////////////////////////////////////////
 // STD and SDL
 ////////////////////////////////////////////////////////////
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -51,6 +52,9 @@
 #include "p_player.h"
 #include "bit_game.h"
 #include "discord.h"
+#ifdef DEBUG
+#include "r_render.h"
+#endif
 
 ///////
 // quick tilepos to pos conversion function
@@ -101,11 +105,17 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 
     }
     // simple layers are pretty easy
-    // WHY THE FUCK DOES THIS NOT ALWAYS WORK - bitten 2024
+    // WHY DOES THIS NOT ALWAYS WORK - 2024
   else if (chests->type == L_LAYER)
   {
   #ifdef DEBUG
-     printf("value of tile: %i\n", chests->content.gids[(y-2) * map->width + (x - 2)]);
+
+     char* text;
+     if (asprintf(&text, "value of tile: %i; value of x: %i; value of y: %i", chests->content.gids[(y-2) * map->width + (x - 2)], x, y) >= 0)
+     {
+	     r_text(text, 0, 0, 0.1);
+	     free(text);
+     }
   #endif
 
     return chests->content.gids[((y - 3) * map->width) + (x - 2)];
@@ -124,7 +134,7 @@ int32_t disableCollision(tmx_map* map, int x, int y)
       int counter;
       while (test != NULL)
       {
-        // make this work with tilex and tiley dont fucking question it
+        // make this work with tilex and tiley dont question it
         int tilex = ((test->x)/32)+counter;
         int tiley = ((test->y+8)/32)-1; // dont ask me wtf this has to be subtracted by 1 idk
         if ((y == tiley) && (x == tilex))

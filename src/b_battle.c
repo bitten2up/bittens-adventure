@@ -41,6 +41,6 @@
 // TODO: the rest of this
 
 void b_battle() {
-  r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
+  r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3, 0.5);
   r_sprite(&bitgame.player.entitySprite);
 }

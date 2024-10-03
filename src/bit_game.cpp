@@ -67,15 +67,15 @@ void bit_main()
         #ifdef DISCORD
         updateDiscordPresence("title screen", "press start");
         #endif
-        r_text("bitten's adventure", SCREENWIDTH/2, SCREENHEIGHT/2);
+        r_text("bitten's adventure", SCREENWIDTH/2, SCREENHEIGHT/2, 0.5);
         break;
       case overworld:
         #ifdef DISCORD
         updateDiscordPresence("Overworld", "e");
         #endif
         p_moveOverworld();
-        render_map(bitgame.map);
-        r_sprite(&bitgame.player.entitySprite);
+        //render_map(bitgame.map);
+        //r_sprite(&bitgame.player.entitySprite);
         break;
       case platformer:
         #ifdef DISCORD

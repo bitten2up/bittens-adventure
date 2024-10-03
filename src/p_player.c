@@ -27,7 +27,7 @@
 #include "e_entity.h"
 #include "e_collision.h"
 
-// overworld shit
+// overworld stuff
 
 void p_moveOverworld()
 {

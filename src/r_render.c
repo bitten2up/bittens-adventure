@@ -28,7 +28,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <tmx.h>
-#include <cLDtk.h>
+//#include <cLDtk.h>
 
 #include "sdl_bittendef.h"
 #include "r_render.h"
@@ -82,7 +82,7 @@ SDL_Texture* loadTexture(const char* p_filePath)
 - x, y: upper left corner.
 - texture, rect: outputs.
 */
-void r_text(char* message, int x, int y) {
+void r_text(char* message, int x, int y, float size) {
   int text_width;
   int text_height;
   SDL_Surface *surface;
@@ -128,6 +128,7 @@ void r_display()
 //////////////
 // cLDtk shit
 //////////////
+#if 0
 static void DrawSprite(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRect, SDL_Rect destinationRect, int flip)
 {
     SDL_RendererFlip sdl_flip = SDL_FLIP_NONE;
@@ -161,6 +162,8 @@ void r_drawTiles(struct layerInstances* layer, SDL_Renderer* renderer, SDL_Textu
             layer->autoTiles_data_ptr[y].f);
     }
 }
+
+#endif
 
 //////////////
 // libtmx shit
