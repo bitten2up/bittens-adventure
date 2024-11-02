@@ -39,6 +39,7 @@
 #include <string.h>
 #include <time.h>
 #include <SDL2/SDL.h>
+#include "r_render.h"
 #include "tmx.h"
 
 
@@ -105,7 +106,9 @@ int32_t checkCollision(tmx_map* map, int x, int y)
   else if (chests->type == L_LAYER)
   {
   #ifdef DEBUG
-     printf("value of tile: %i\n", chests->content.gids[(y-2) * map->width + (x - 2)]);
+    char buffer[2042];
+    sprintf(buffer, "value of tile: %i", chests->content.gids[((y - 3) * map->width) + (x - 2)]);
+    r_textbox(buffer, 200, 20);
   #endif
 
     return chests->content.gids[((y - 3) * map->width) + (x - 2)];
