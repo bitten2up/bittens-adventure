@@ -107,11 +107,11 @@ int32_t checkCollision(tmx_map* map, int x, int y)
   {
   #ifdef DEBUG
     char buffer[2042];
-    sprintf(buffer, "(%i %i)(%i,%i): %i", x, y, bitgame.player.x, bitgame.player.y, chests->content.gids[((y - 2) * map->width) + (x - 2)]);
+    sprintf(buffer, "(%i %i)(%i,%i): %i", x, y, bitgame.player.x, bitgame.player.y, chests->content.gids[((y) * map->width) + (x)]);
     r_textbox(buffer, 400, 20);
   #endif
 
-    return chests->content.gids[((y - 2) * map->width) + (x - 2)];
+    return chests->content.gids[((y - 3) * map->width) + (x - 3)];
   }
   else
   {

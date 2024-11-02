@@ -290,7 +290,7 @@ void draw_layer(tmx_map *map, tmx_layer *layer) {
 					image = ts->image->resource_image;
 				}
 				flags = (layer->content.gids[(i*map->width)+j]) & ~TMX_FLIP_BITS_REMOVAL;
-				draw_tile(image, x, y, w, h, (j*ts->tile_width)+bitgame.player.x, (i*ts->tile_height)+bitgame.player.y, op, flags);
+				draw_tile(image, x, y, w, h, ((j+bitgame.player.x)*ts->tile_width), ((i+bitgame.player.y)*ts->tile_height), op, flags);
 			}
 		}
 	}
