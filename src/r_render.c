@@ -101,6 +101,43 @@ void r_text(char* message, int x, int y) {
 	SDL_DestroyTexture(text);
 }
 
+// really bad textbox
+void r_textbox(char* message, int x, int y) {
+  int text_width;
+  int text_height;
+  SDL_Surface *surface;
+  SDL_Color textColor = {0, 0, 0, 0};
+
+  surface = TTF_RenderText_Solid(font, message, textColor);
+  text_width = surface->w;
+  text_height = surface->h;
+	r_rect(x,y,text_width+10,text_height+10);
+  text = SDL_CreateTextureFromSurface(renderer, surface);
+  SDL_FreeSurface(surface);
+  textRec.x = x - text_width * 0.5;
+  textRec.y = y - text_height * 0.5;
+  textRec.w = text_width;
+  textRec.h = text_height;
+  SDL_RenderCopy(renderer, text, NULL, &textRec);
+	SDL_DestroyTexture(text);
+}
+
+/*
+- x, y: upper left corner.
+- texture, rect: outputs.
+*/
+// shit probally should have a struct but who fucking cares
+void r_rect(int x, int y, int w, int h) {
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+  textRec.x = x - w * 0.5;
+  textRec.y = y - h * 0.5;
+  textRec.w = w;
+  textRec.h = h;
+  SDL_RenderFillRect(renderer, &textRec);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_DestroyTexture(text);
+}
+
 void CloseWindow(void)
 {
 	SDL_DestroyTexture(text);
