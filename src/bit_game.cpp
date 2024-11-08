@@ -21,6 +21,18 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+//----------------------------------------------------------
+// bit_game.cpp
+/***********************************************************
+* main game loop
+************************************************************/
+// Horible, despratly needs to be cleaned up...
+
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+// STD, SDL, and tmx
+////////////////////////////////////////////////////////////
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -30,9 +42,9 @@
 #include <stdbool.h>
 #include "discord.h"
 
-//////////////////
-// bitten headers
-//////////////////
+////////////////////////////////////////////////////////////
+// ENGINE HEADERS
+////////////////////////////////////////////////////////////
 
 extern "C"
 {
@@ -48,6 +60,7 @@ extern "C"
   #include "f_save.h"
 }
 
+// mainloop
 void bit_main()
 {
   bitgame.preformance.startTime = 0;

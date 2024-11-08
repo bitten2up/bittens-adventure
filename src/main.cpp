@@ -21,19 +21,35 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+//----------------------------------------------------------
+// main.cpp
+/***********************************************************
+* this file setus up everything
+************************************************************/
+
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+// STD, SDL, and tmx
+////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <tmx.h>
+
+//#include <cLDtk.h> // sorry cLDtk, tmx seems to be working fine for now :)
+
+////////////////////////////////////////////////////////////
+// ENGINE HEADERS
+////////////////////////////////////////////////////////////
+
 #include "discord.h"
-
-//#include <cLDtk.h>
-
 extern "C"
 {
-#include "bit_game.h"
-#include "sdl_bittendef.h"
+#include "sdl_bittendef.h"           // defines for the engine
+#include "bit_game.h" // a c header for some fucking reason
 #include "r_render.h"
 #include "f_save.h"
 }

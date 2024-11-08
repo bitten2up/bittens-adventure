@@ -28,19 +28,19 @@
 * this file handles the collision between sprites
 ************************************************************/
 // needs to be compleatly nuked most likely
+// november 2024 update: oh my god its fucking working... maybe i dont need to nuke it
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-// STD and SDL
+// STD, SDL, and tmx
 ////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
 #include <SDL2/SDL.h>
-#include "r_render.h"
-#include "tmx.h"
+#include <tmx.h>
 
 
 ////////////////////////////////////////////////////////////
@@ -51,6 +51,7 @@
 #include "e_collision.h"             // collision handling
 #include "p_player.h"
 #include "bit_game.h"
+#include "r_render.h"
 #include "discord.h"
 
 ///////
@@ -113,6 +114,10 @@ int32_t checkCollision(tmx_map* map, int x, int y)
 
     if (chests->content.gids[((y - 3) * map->width) + (x - 3)] > 0)
 	    return chests->content.gids[((y - 3) * map->width) + (x - 3)];
+    else if (chests->content.gids[((y - 4) * map->width) + (x - 4)] > 0)
+	    return chests->content.gids[((y - 4) * map->width) + (x - 4)];
+    else
+	    return chests->content.gids[((y - 2) * map->width) + (x - 2)];
   }
   else
   {

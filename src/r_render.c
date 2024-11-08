@@ -21,6 +21,18 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+//----------------------------------------------------------
+// r_render.c
+/***********************************************************
+* this file handles all rendering related logic
+************************************************************/
+// very dumb and we have to work around some of the things it does, but it works
+
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+// STD, SDL, and tmx
+////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -28,9 +40,13 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <tmx.h>
-//#include <cLDtk.h>
+//#include <cLDtk.h> // sorry cLDtk, tmx seems to be working fine for now :)
 
-#include "sdl_bittendef.h"
+////////////////////////////////////////////////////////////
+// ENGINE HEADERS
+////////////////////////////////////////////////////////////
+
+#include "sdl_bittendef.h"           // defines for the engine
 #include "r_render.h"
 #include "e_entity.h"
 #include "bit_game.h"

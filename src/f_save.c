@@ -21,15 +21,31 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+//----------------------------------------------------------
+// f_save.c
+/***********************************************************
+* this file handles reading and writing save files
+************************************************************/
+// was written from scratch, could be cleaned up, but im currently happy with it
+
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+// STD
+////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include "defaultSave.h"	// default savefile
 
-#include "sdl_bittendef.h"
+////////////////////////////////////////////////////////////
+// ENGINE HEADERS
+////////////////////////////////////////////////////////////
+
+#include "sdl_bittendef.h"           // defines for the engine
+#include "defaultSave.h"	// default savefile, also horible way we can make a buffer :)
 #include "bit_game.h"
 #include "f_save.h"
 
