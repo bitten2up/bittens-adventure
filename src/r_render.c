@@ -28,7 +28,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <tmx.h>
-#include <cLDtk.h>
+//#include <cLDtk.h>
 
 #include "sdl_bittendef.h"
 #include "r_render.h"
@@ -165,6 +165,7 @@ void r_display()
 //////////////
 // cLDtk shit
 //////////////
+#if 0 // maybe later
 static void DrawSprite(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRect, SDL_Rect destinationRect, int flip)
 {
     SDL_RendererFlip sdl_flip = SDL_FLIP_NONE;
@@ -198,6 +199,7 @@ void r_drawTiles(struct layerInstances* layer, SDL_Renderer* renderer, SDL_Textu
             layer->autoTiles_data_ptr[y].f);
     }
 }
+#endif
 
 //////////////
 // libtmx shit
@@ -290,7 +292,7 @@ void draw_layer(tmx_map *map, tmx_layer *layer) {
 					image = ts->image->resource_image;
 				}
 				flags = (layer->content.gids[(i*map->width)+j]) & ~TMX_FLIP_BITS_REMOVAL;
-				draw_tile(image, x, y, w, h, ((j+bitgame.player.x)*ts->tile_width), ((i+bitgame.player.y)*ts->tile_height), op, flags);
+				draw_tile(image, x, y, w, h, ((j+bitgame.player.x/32)*ts->tile_width+bitgame.player.x%32), ((i+bitgame.player.y/32)*ts->tile_height+bitgame.player.y%32), op, flags);
 			}
 		}
 	}

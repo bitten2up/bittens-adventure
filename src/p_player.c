@@ -32,7 +32,7 @@
 void p_moveOverworld()
 {
   bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)), (bitgame.map->height/2)-((bitgame.player.y))) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
     //bitgame.state = platformer;
@@ -44,7 +44,7 @@ void p_moveOverworld()
     #endif
   }
   bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)), (bitgame.map->height/2)-((bitgame.player.y))) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
     //bitgame.state = platformer;
@@ -55,7 +55,6 @@ void p_moveOverworld()
     bitgame.player.entitySprite.dst.h = 32;
     #endif
   }
-  bitgame.player.direction.up = bitgame.player.direction.down = bitgame.player.direction.left = bitgame.player.direction.right = 0;
 }
 
 void p_enterOverworld()

@@ -111,7 +111,8 @@ int32_t checkCollision(tmx_map* map, int x, int y)
     r_textbox(buffer, 400, 20);
   #endif
 
-    return chests->content.gids[((y - 3) * map->width) + (x - 3)];
+    if (chests->content.gids[((y - 3) * map->width) + (x - 3)] > 0)
+	    return chests->content.gids[((y - 3) * map->width) + (x - 3)];
   }
   else
   {

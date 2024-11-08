@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.5)
-
-project(bittens-adventure VERSION 1.0.0 LANGUAGES C)
-
 if(MSVC AND NOT VCPKG_TOOLCHAIN)
   message(FATAL_ERROR "MSVC is only supported when using vcpkg")
 endif()
