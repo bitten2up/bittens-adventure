@@ -47,25 +47,21 @@ void p_moveOverworld()
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
-    //bitgame.state = platformer;
-    #if 0
+    bitgame.state = battle;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
     bitgame.player.entitySprite.dst.w = 32;
     bitgame.player.entitySprite.dst.h = 32;
-    #endif
   }
   bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
-    //bitgame.state = platformer;
-    #if 0
+    bitgame.state = battle;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
     bitgame.player.entitySprite.dst.w = 32;
     bitgame.player.entitySprite.dst.h = 32;
-    #endif
   }
 }
 
@@ -81,28 +77,53 @@ void p_enterOverworld()
 // platformer shit
 //
 
-int8_t airtime = 0;
+uint8_t airtime = 0;
+#if 1
 static void p_jump()
 {
   if (airtime < 5)
   {
-    bitgame.player.voly = bitgame.player.direction.up * (20 - bitgame.player.gravity);
-    airtime++;
+    bitgame.player.voly = bitgame.player.direction.up * (20 * bitgame.player.gravity);
   }
-  else if (airtime < 20)
-    airtime++;
+  else if (airtime < 20) {}
   else
     bitgame.player.voly = -bitgame.player.gravity * (airtime-5);
   bitgame.player.y += bitgame.player.voly;
+  airtime++;
+  printf("airtime:%i\n",airtime);
 }
+#else
+#define square(x) (x)*(x)
+static void p_jump()
+{
+  static bool jumping = false;
+  if (airtime == 0)
+  {
+    if (bitgame.player.direction.up == 1)
+      jumping = true;
+    else
+      jumping = false;
+
+  }
+
+
+  if (jumping)
+  {
+    airtime++;
+    bitgame.player.voly = square(-bitgame.player.gravity*airtime) + (12*airtime);
+  }
+
+}
+#endif
 
 void p_movePlatformer()
 {
 
   p_jump();
 
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32)-5, (bitgame.map->height/2)-((bitgame.player.y+8)/32)) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
+    printf("airtime:%i\n",airtime);
     bitgame.player.y -= bitgame.player.voly;
     bitgame.player.direction.up = 0;
     bitgame.player.voly = 0;
@@ -118,9 +139,9 @@ void p_movePlatformer()
   }
 
 
-  bitgame.player.x += (bitgame.player.direction.left - bitgame.player.direction.right)*5;
+  bitgame.player.x += (bitgame.player.direction.left - bitgame.player.direction.right);
 
-  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x)/32), (bitgame.map->height/2)-((bitgame.player.y)/32)) == CHESTS_LAYER)
+  if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
   #if 0

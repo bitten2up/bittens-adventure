@@ -53,11 +53,15 @@ void i_poll()
             bitgame.gameRunning = false;
             break;
           case SDLK_UP:
-          case SDLK_x:
             if (bitgame.state == (overworld || platformer) && event.key.repeat == 0)
             {
               bitgame.player.direction.up = 1;
-              bitgame.player.entitySprite.src.x = 0;
+            }
+            break;
+          case SDLK_x:
+            if (bitgame.state == (platformer) && event.key.repeat == 0)
+            {
+              bitgame.player.direction.up = 1;
             }
             break;
           case SDLK_DOWN:
@@ -99,6 +103,12 @@ void i_poll()
             break;
           case SDLK_RIGHT:
             bitgame.player.direction.right = 0;
+            break;
+          case SDLK_x:
+            if (bitgame.state == (platformer))
+            {
+              bitgame.player.direction.up = 0;
+            }
             break;
           default:
             break;
