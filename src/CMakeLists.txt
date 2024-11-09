@@ -4,7 +4,11 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wpedantic -Wextra -std=c23")
 
 add_executable(bittens-adventure  "main.cpp" "bit_game.cpp" "b_battle.c" "p_player.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c")
-
+set_target_properties(bittens-adventure PROPERTIES OUTPUT_NAME bittens-adventure)
+set_target_properties(bittens-adventure
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
 find_package(tmx REQUIRED)
 target_link_libraries(bittens-adventure PRIVATE tmx)
 #target_link_libraries(bittens-adventure PRIVATE cLDtk)
