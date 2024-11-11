@@ -43,20 +43,21 @@
 
 void p_moveOverworld()
 {
-  bitgame.player.y+=bitgame.player.direction.up - bitgame.player.direction.down;
+  bitgame.player.y+=bitgame.player.inputs.up - bitgame.player.inputs.down;
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
-    bitgame.player.y -= bitgame.player.direction.up - bitgame.player.direction.down;
+    bitgame.player.y -= bitgame.player.inputs.up - bitgame.player.inputs.down;
     bitgame.state = battle;
+    bitgame.menu.curmenu = battleMain;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
     bitgame.player.entitySprite.dst.w = 32;
     bitgame.player.entitySprite.dst.h = 32;
   }
-  bitgame.player.x += bitgame.player.direction.left - bitgame.player.direction.right;
+  bitgame.player.x += bitgame.player.inputs.left - bitgame.player.inputs.right;
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
-    bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
+    bitgame.player.x -= bitgame.player.inputs.left - bitgame.player.inputs.right;
     bitgame.state = battle;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
@@ -83,7 +84,7 @@ static void p_jump()
 {
   if (airtime < 5)
   {
-    bitgame.player.voly = bitgame.player.direction.up * (20 * bitgame.player.gravity);
+    bitgame.player.voly = bitgame.player.inputs.up * (20 * bitgame.player.gravity);
   }
   else if (airtime < 20) {}
   else
@@ -99,7 +100,7 @@ static void p_jump()
   static bool jumping = false;
   if (airtime == 0)
   {
-    if (bitgame.player.direction.up == 1)
+    if (bitgame.player.inputs.up == 1)
       jumping = true;
     else
       jumping = false;
@@ -125,7 +126,7 @@ void p_movePlatformer()
   {
     printf("airtime:%i\n",airtime);
     bitgame.player.y -= bitgame.player.voly;
-    bitgame.player.direction.up = 0;
+    bitgame.player.inputs.up = 0;
     bitgame.player.voly = 0;
     airtime = 0;
 
@@ -139,11 +140,11 @@ void p_movePlatformer()
   }
 
 
-  bitgame.player.x += (bitgame.player.direction.left - bitgame.player.direction.right);
+  bitgame.player.x += (bitgame.player.inputs.left - bitgame.player.inputs.right);
 
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
-    bitgame.player.x -= bitgame.player.direction.left - bitgame.player.direction.right;
+    bitgame.player.x -= bitgame.player.inputs.left - bitgame.player.inputs.right;
   #if 0
     bitgame.state = platformer;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;

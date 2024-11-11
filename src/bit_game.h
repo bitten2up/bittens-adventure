@@ -62,9 +62,31 @@ typedef struct
   bool showFps;
 } bit_preformance;
 
+// allows us to have shitty menus
+
+typedef enum
+{
+	menuNone,
+	battleMain,
+} bit_curmenu;
+
+typedef struct
+{
+	int8_t x;
+	int8_t y;
+} bit_menupos;
+
+typedef struct {
+	bit_curmenu curmenu;
+	bit_menupos menupos;
+} bit_menu;
+
+// global struct
+
 typedef struct
 {
     bit_settings settings;
+    bit_menu menu;
     e_player player;
     //bit_enemy enemy;
     bit_state state;

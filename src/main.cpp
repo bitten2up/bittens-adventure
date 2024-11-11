@@ -77,6 +77,8 @@ int main(int argc, char* argv[])
 
   loadGame();
   bitgame.state = title;
+  bitgame.menu.menupos.x = bitgame.menu.menupos.y = 0;
+  bitgame.menu.curmenu = menuNone;
   // load sprite
   bitgame.player.entitySprite.sprite = loadTexture("./assets/bitten.png");
   bitgame.player.entitySprite.src.x = 0;

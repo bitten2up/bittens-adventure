@@ -30,12 +30,6 @@
 #include "e_collision.h"
 #include "p_player.h"
 
-struct direction {
-  char left;
-  char right;
-  char up;
-  char down;
-};
 
 void move();
 SDL_Event event;
@@ -53,34 +47,32 @@ void i_poll()
             bitgame.gameRunning = false;
             break;
           case SDLK_UP:
+            bitgame.player.inputs.up = 1;
             if (bitgame.state == (overworld || platformer) && event.key.repeat == 0)
             {
-              bitgame.player.direction.up = 1;
-            }
-            break;
-          case SDLK_x:
-            if (bitgame.state == (platformer) && event.key.repeat == 0)
-            {
-              bitgame.player.direction.up = 1;
+              bitgame.player.entitySprite.src.x = 0;
             }
             break;
           case SDLK_DOWN:
+            bitgame.player.inputs.down = 1;
             if (bitgame.state == (overworld || platformer)){
-              bitgame.player.direction.down = 1;
               bitgame.player.entitySprite.src.x = 32;
             }
             break;
           case SDLK_LEFT:
+            bitgame.player.inputs.left = 1;
             if (bitgame.state == (overworld || platformer)){
-              bitgame.player.direction.left = 1;
               bitgame.player.entitySprite.src.x = 64;
             }
             break;
           case SDLK_RIGHT:
+            bitgame.player.inputs.right = 1;
             if (bitgame.state == (overworld || platformer)){
-              bitgame.player.direction.right = 1;
               bitgame.player.entitySprite.src.x = 96;
             }
+            break;
+          case SDLK_x:
+            bitgame.player.inputs.x = 1;
             break;
           case SDLK_RETURN:
             if (bitgame.state == title || bitgame.state == battle)
@@ -93,22 +85,19 @@ void i_poll()
       case SDL_KEYUP:
         switch( event.key.keysym.sym ) {
           case SDLK_DOWN:
-            bitgame.player.direction.down = 0;
+            bitgame.player.inputs.down = 0;
             break;
           case SDLK_UP:
-            bitgame.player.direction.up = 0;
+            bitgame.player.inputs.up = 0;
             break;
           case SDLK_LEFT:
-            bitgame.player.direction.left = 0;
+            bitgame.player.inputs.left = 0;
             break;
           case SDLK_RIGHT:
-            bitgame.player.direction.right = 0;
+            bitgame.player.inputs.right = 0;
             break;
           case SDLK_x:
-            if (bitgame.state == (platformer))
-            {
-              bitgame.player.direction.up = 0;
-            }
+            bitgame.player.inputs.x = 0;
             break;
           default:
             break;

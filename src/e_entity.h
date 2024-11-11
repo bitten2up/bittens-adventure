@@ -39,11 +39,12 @@ struct e_entitySprite {
 	SDL_Rect src;
 	SDL_Rect dst;
 };
-struct e_direction {
+struct p_inputs {
   int8_t left;
   int8_t right;
   int8_t up;
   int8_t down;
+  int8_t x;
 };
 
 enum e_state {
@@ -61,7 +62,7 @@ struct e_player{
 	uint8_t angle;
 	int8_t voly;
 
-	struct e_direction direction;
+	struct p_inputs inputs;
 	enum e_state state;
 	e_entitySprite entitySprite;
 };
