@@ -67,6 +67,15 @@ static void b_battleMain()
     bitgame.menu.menupos.x = 0;
   }
 
+  // menu switching test
+  else if (bitgame.player.inputs.x == 1)
+  {
+	bitgame.menu.curmenu = menuNone;
+
+	// we don't want this input to repeat
+	bitgame.player.inputs.x = 0;
+  }
+
   if (bitgame.menu.menupos.x == 0 && bitgame.menu.menupos.y == 0) // we are at the top left, so fill in that box
   	r_textbox("Attack", SCREENWIDTH/4, (SCREENHEIGHT/4)*3);
   else
@@ -82,5 +91,14 @@ static void b_battleMain()
 
 void b_battle() {
   r_text("bitten", SCREENWIDTH/4, SCREENHEIGHT/3);
-  b_battleMain();
+  switch (bitgame.menu.curmenu)
+  {
+	case battleMain:
+  		b_battleMain();
+		break;
+	default:
+		r_text("INVALID MENU", SCREENWIDTH/4, (SCREENHEIGHT/4)*3);
+		break;
+  }
+
 }
