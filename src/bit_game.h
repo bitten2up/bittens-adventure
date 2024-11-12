@@ -88,7 +88,7 @@ typedef struct
     bit_settings settings;
     bit_menu menu;
     e_player player;
-    //bit_enemy enemy;
+    e_enemy enemy;
     bit_state state;
     //bit_battleAni battleAni;
     bit_preformance preformance;

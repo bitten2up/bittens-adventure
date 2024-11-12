@@ -34,9 +34,13 @@ void InitWindow(const char* p_title, int p_w, int p_h);
 
 // load image
 SDL_Texture* loadTexture(const char* p_filePath);
+
+// free texture
+void freeTexture(SDL_Texture* t);
+
 // drawing
 void r_clear();
-void r_sprite(e_entitySprite* e);
+void r_sprite(e_sprite* e);
 void r_text(char* message, int x, int y);
 void r_textbox(char* message, int x, int y);
 void r_rect(int x, int y, int w, int h);

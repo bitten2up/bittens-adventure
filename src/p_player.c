@@ -38,6 +38,7 @@
 #include "p_player.h"
 #include "e_entity.h"
 #include "e_collision.h"
+#include "r_render.h"
 
 // overworld shit
 
@@ -48,21 +49,31 @@ void p_moveOverworld()
   {
     bitgame.player.y -= bitgame.player.inputs.up - bitgame.player.inputs.down;
     bitgame.state = battle;
-    bitgame.menu.curmenu = battleMain;
-    bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
-    bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
-    bitgame.player.entitySprite.dst.w = 32;
-    bitgame.player.entitySprite.dst.h = 32;
   }
   bitgame.player.x += bitgame.player.inputs.left - bitgame.player.inputs.right;
   if (checkCollision(bitgame.map, (bitgame.map->width/2)-((bitgame.player.x-16)/32), (bitgame.map->height/2)-((bitgame.player.y-16)/32)) == CHESTS_LAYER)
   {
     bitgame.player.x -= bitgame.player.inputs.left - bitgame.player.inputs.right;
     bitgame.state = battle;
+  }
+  if (bitgame.state == battle)
+  {
+    bitgame.menu.curmenu = battleMain;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
     bitgame.player.entitySprite.dst.w = 32;
     bitgame.player.entitySprite.dst.h = 32;
+
+// load enemy
+    bitgame.enemy.entitySprite.sprite = loadTexture("./assets/bitten.png");
+    bitgame.enemy.entitySprite.src.x = 0;
+    bitgame.enemy.entitySprite.src.y = 0;
+    bitgame.enemy.entitySprite.src.w = 32;
+    bitgame.enemy.entitySprite.src.h = 32;
+    bitgame.enemy.entitySprite.dst.x = (SCREENWIDTH/4)*3;
+    bitgame.enemy.entitySprite.dst.y = SCREENHEIGHT/2;
+    bitgame.enemy.entitySprite.dst.w = 32;
+    bitgame.enemy.entitySprite.dst.h = 32;
   }
 }
 

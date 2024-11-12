@@ -56,7 +56,6 @@ static void b_battleMain()
 {
   // TODO: make a menu framework, this will do for now though
   
-  // bitgame.menu.menupos probally could just be a bitmask so then we can use switch statements..
   
   if (bitgame.menu.menupos.x == 0 && bitgame.player.inputs.right == 1)
   {
@@ -76,6 +75,7 @@ static void b_battleMain()
 	bitgame.player.inputs.x = 0;
   }
 
+  // bitgame.menu.menupos probally could just be a bitmask so then we can use switch statements..
   if (bitgame.menu.menupos.x == 0 && bitgame.menu.menupos.y == 0) // we are at the top left, so fill in that box
   	r_textbox("Attack", SCREENWIDTH/4, (SCREENHEIGHT/4)*3);
   else
@@ -87,6 +87,7 @@ static void b_battleMain()
   	r_text("Items", (SCREENWIDTH/4)*3, (SCREENHEIGHT/4)*3);
 
   r_sprite(&bitgame.player.entitySprite);
+  r_sprite(&bitgame.enemy.entitySprite);
 }
 
 void b_battle() {

@@ -34,11 +34,12 @@
 typedef struct e_entitySprite e_entitySprite;
 typedef struct e_player e_player;
 
-struct e_entitySprite {
+typedef struct {
 	SDL_Texture* sprite;
 	SDL_Rect src;
 	SDL_Rect dst;
-};
+} e_sprite ;
+
 struct p_inputs {
   int8_t left;
   int8_t right;
@@ -53,7 +54,8 @@ enum e_state {
 
 #define defaultGravity 1
 
-struct e_player{
+struct e_player
+{
 	// x and y for later conversions
 	int32_t x;
 	int32_t y;
@@ -64,7 +66,14 @@ struct e_player{
 
 	struct p_inputs inputs;
 	enum e_state state;
-	e_entitySprite entitySprite;
+	e_sprite entitySprite;
 };
+
+typedef struct {
+	char name[256];
+	e_sprite entitySprite;
+	uint16_t health;
+} e_enemy;
+
 
 #endif

@@ -92,7 +92,18 @@ SDL_Texture* loadTexture(const char* p_filePath)
 	return texture;
 }
 
+void freeTexture(SDL_Texture* t)
+{
+	if (t == NULL)
+	{
+		printf("double free on texture...");
+		exit(1);
+	}
 
+	SDL_DestroyTexture(t);
+
+	t = NULL; // for my sanity
+}
 
 /*
 - x, y: upper left corner.
@@ -167,7 +178,7 @@ void r_clear(void)
 	SDL_RenderClear(renderer);
 }
 
-void r_sprite(e_entitySprite* e)
+void r_sprite(e_sprite* e)
 {
 	SDL_RenderCopy(renderer, e->sprite, &e->src, &e->dst);
 }
