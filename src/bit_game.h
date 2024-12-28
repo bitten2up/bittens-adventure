@@ -68,6 +68,7 @@ typedef enum
 {
 	menuNone,
 	battleMain,
+	battleAttack,
 } bit_curmenu;
 
 typedef struct
