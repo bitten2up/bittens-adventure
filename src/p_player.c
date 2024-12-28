@@ -58,6 +58,8 @@ void p_moveOverworld()
   }
   if (bitgame.state == battle)
   {
+	  // we don't want this input to repeat
+    bitgame.player.inputs.up = bitgame.player.inputs.down = bitgame.player.inputs.left = bitgame.player.inputs.right = 0;
     bitgame.menu.curmenu = battleMain;
     bitgame.player.entitySprite.dst.x = SCREENWIDTH/4;
     bitgame.player.entitySprite.dst.y = SCREENHEIGHT/2;
