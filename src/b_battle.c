@@ -90,7 +90,7 @@ static void b_battleMain()
   r_sprite(&bitgame.enemy.entitySprite);
 }
 
-void b_battleAttack()
+static void b_battleAttack()
 {
   // TODO: make a menu framework, this will do for now though
   

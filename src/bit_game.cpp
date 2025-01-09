@@ -27,6 +27,8 @@
 * main game loop
 ************************************************************/
 // Horible, despratly needs to be cleaned up...
+//
+// 2024, seems better
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -100,7 +102,7 @@ void bit_main()
         break;
       case battle:
         #ifdef DISCORD
-        updateDiscordPresence("Battling", "herself");
+        updateDiscordPresence("Battling", "herself?????");
         #endif
         b_battle();
         break;
