@@ -48,28 +48,25 @@ void i_poll()
             break;
           case SDLK_UP:
             bitgame.player.inputs.up = 1;
-            if (bitgame.state == (overworld || platformer) && event.key.repeat == 0)
+            if (bitgame.state == overworld || bitgame.state == platformer)
             {
               bitgame.player.entitySprite.src.x = 0;
             }
             break;
           case SDLK_DOWN:
             bitgame.player.inputs.down = 1;
-            if (bitgame.state == (overworld || platformer)){
+            if (bitgame.state == overworld || bitgame.state == platformer)
               bitgame.player.entitySprite.src.x = 32;
-            }
             break;
           case SDLK_LEFT:
             bitgame.player.inputs.left = 1;
-            if (bitgame.state == (overworld || platformer)){
+            if (bitgame.state == overworld || bitgame.state == platformer)
               bitgame.player.entitySprite.src.x = 64;
-            }
             break;
           case SDLK_RIGHT:
             bitgame.player.inputs.right = 1;
-            if (bitgame.state == (overworld || platformer)){
+            if (bitgame.state == overworld || bitgame.state == platformer)
               bitgame.player.entitySprite.src.x = 96;
-            }
             break;
           case SDLK_x:
             bitgame.player.inputs.x = 1;

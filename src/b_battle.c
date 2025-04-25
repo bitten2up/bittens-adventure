@@ -103,7 +103,7 @@ static void b_battleAttack()
   {
     bitgame.menu.menupos.x = 0;
   }
-  r_textbox("Attack", (SCREENWIDTH/8), (SCREENHEIGHT)/3);
+  r_text("Attack", (SCREENWIDTH/8), (SCREENHEIGHT)/3);
   // bitgame.menu.menupos probally could just be a bitmask so then we can use switch statements..
   if (bitgame.menu.menupos.x == 0 && bitgame.menu.menupos.y == 0) // we are at the top left, so fill in that box
   	r_textbox("Jabbbbbba", SCREENWIDTH/4, (SCREENHEIGHT/4)*3);
@@ -120,7 +120,7 @@ static void b_battleAttack()
 }
 
 void b_battle() {
-  r_textbox("bitten", SCREENWIDTH/8, SCREENHEIGHT/4);
+  r_textbox("bitten", 75, 15);
   switch (bitgame.menu.curmenu)
   {
 	case battleMain:
