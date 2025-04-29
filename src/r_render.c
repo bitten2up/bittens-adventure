@@ -176,8 +176,8 @@ void InitGles(void)
 	gladLoadGLES2Loader(SDL_GL_GetProcAddress);
 	SDL_GL_SetSwapInterval(0);
 
-	glGenVertexArraysOES(1, &vao);
-	glBindVertexArrayOES(vao);
+	//glGenVertexArraysOES(1, &vao);
+	//glBindVertexArrayOES(vao);
 
 	glGenBuffers(1, &vbo);
 
