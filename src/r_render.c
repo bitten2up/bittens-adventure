@@ -38,7 +38,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-
+#if defined(BITVULKAN)
+#include <SDL2/SDL_vulkan.h>
+#include <vulkan/vulkan.h>
+#elif defined(BITGLES2)
+#include <glad/glad.h>
+#define GL_GLEXT_PROTOTYPES 1
+#include <SDL2/SDL_opengles2.h>
+#endif
 #include <tmx.h>
 //#include <cLDtk.h> // sorry cLDtk, tmx seems to be working fine for now :)
 
@@ -57,21 +64,172 @@ TTF_Font* font;
 SDL_Texture* text;
 SDL_Rect textRec;
 
+#if defined(BITVULKAN)
+// vulkan shit
+VkInstance vkInst;
+VkPhysicalDevice *physical_devices;
+VkPhysicalDevice gpu;
+VkDevice device;
+VkQueueFamilyProperties *queue_props;
+VkPhysicalDeviceFeatures features;
+
+uint32_t physicalDeviceCount;
+uint32_t extension_count;
+uint32_t queue_count;
+const char** extension_names = 0;
+
+const VkApplicationInfo app = {
+    .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+    .pNext = NULL,
+    .pApplicationName = "BITTENS_ADVENTURE",
+    .applicationVersion = 0,
+    .pEngineName = "BITTEN ENGINE",
+    .engineVersion = 0,
+    .apiVersion = VK_API_VERSION_1_0,
+};
+VkInstanceCreateInfo inst_info = {
+	.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+	.pNext = NULL,
+	.pApplicationInfo = &app,
+	.enabledLayerCount = NULL,
+	.ppEnabledLayerNames = NULL,
+	.enabledExtensionCount = extension_count,
+	.ppEnabledExtensionNames = (const char *const *) extension_names;
+};
+
+float queue_priorities[1] = {0.0};
+uint32_t graphicsQueueIndex = UINT32_MAX;
+
+const VkDeviceQueueCreateInfo queue = {
+    .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+    .pNext = NULL,
+    .queueFamilyIndex = graphicsQueueIndex,
+    .queueCount = 1,
+    .pQueuePriorities = queue_priorities
+};
+
+void InitVulkan()
+{
+	// vulkan shit
+	SDL_Vulkan_GetInstanceExtensions(window, &extension_count, extension_names);
+
+	vkCreateInstance(&inst_info, NULL, vkInst);
+
+	physical_devices = malloc(sizeof(VkPhysicalDevice) * physicalDeviceCount);
+	VkResult err = vkEnumeratePhysicalDevices(vkInst, physicalDeviceCount);
+	gpu = physical_devices[0];
+
+	vkGetPhysicalDeviceQueueFamilyProperties(gpu, &queue_count, queue_props);
+	assert(queue_count >= 1);
+
+	vkGetPhysicalDeviceFeatures(gpu, &features);
+
+	uint32_t graphicsQueueIndex = UINT32_MAX;
+	for (i = 0; i < queue_count; i++) {
+	    if ((queue_props[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0) {
+	        if (graphicsQueueIndex == UINT32_MAX)
+	            graphicsQueueIndex = i;
+	   }
+	}
+
+	VkDeviceCreateInfo createInfo = {
+	    .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+	    .pNext = NULL,
+	    .queueCreateInfoCount = 1,
+	    .pQueueCreateInfos = &queue,
+	    .enabledLayerCount = 0,
+	    .ppEnabledLayerNames = NULL,
+	    .enabledExtensionCount = extension_count,
+	    .ppEnabledExtensionNames = (const char *const *)extension_names,
+	    .pEnabledFeatures = NULL
+	};
+
+	vkCreateDevice(gpu, &device, NULL, createInfo);
+}
+#elif defined(BITGLES2)
+const GLchar* vertexSource =
+	"attribute vec4 position;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_position = vec4(position, 1.0);\n"
+	"}\n";
+
+const GLchar* fragmentSource =
+	"percision mediump float;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_Fragcolor = vec4(10.,1.0,1.0,1.0);\n"
+	"}\n";
+
+SDL_GLContext glContext;
+GLuint vao, vbo;
+GLuint shaderProgram;
+void InitGles(void)
+{
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+	glContext = SDL_GL_CreateContext(window);
+	SDL_GL_MakeCurrent(window, glContext);
+	gladLoadGLES2Loader(SDL_GL_GetProcAddress);
+	SDL_GL_SetSwapInterval(0);
+
+	glGenVertexArraysOES(1, &vao);
+	glBindVertexArrayOES(vao);
+
+	glGenBuffers(1, &vbo);
+
+	// triangle
+	GLfloat vertices[] = {0.0f, 0.5f, 0.5f, -0.5f, -0.5f};
+
+	glBindBuffer(GL_ARRAY_BUFFER,vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexSource, NULL);
+	glCompileShader(vertexShader);
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	
+	glLinkProgram(shaderProgram);
+
+	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+}
+#endif
+
 void* SDL_tex_loader(const char *path);
 
 void InitWindow(const char* p_title, int p_w, int p_h)
 {
-	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
 	if (window == NULL)
 	{
 		printf("Window failed to init %s\n", SDL_GetError());
 	}
+
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL)
 	{
 		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
+
+#if defined(BITVULKAN)
+	InitVulkan();
+#elif defined(BITGLES2)
+	InitGles();
+#endif
+
 	TTF_Init();
 	font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
 	if (font == NULL) {
@@ -164,18 +322,41 @@ void r_rect(int x, int y, int w, int h) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_DestroyTexture(text);
 }
+#if defined(BITVULKAN)
+void VulkanShutdown(void)
+{
+	vkDestroyDevice(device, NULL);
+	vkDestroyInstance(vkInst, NULL);
+}
+#elif defined(BITGLES2)
+void GlesShutdown(void)
+{
+	SDL_GL_DeleteContext(glContext);
+}
+#endif
 
 void CloseWindow(void)
 {
 	SDL_DestroyTexture(text);
   TTF_Quit();
 	SDL_DestroyRenderer(renderer);
+#if defined(BITVULKAN)
+	VulkanShutdown();
+#elif defined(BITGLES2)
+	GlesShutdown();
+#endif
 	SDL_DestroyWindow(window);
+	SDL_Quit();
 }
 
 void r_clear(void)
 {
 	SDL_RenderClear(renderer);
+#ifdef BITGLES2
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+#endif
+
 }
 
 void r_sprite(e_sprite* e)
@@ -184,9 +365,21 @@ void r_sprite(e_sprite* e)
 }
 
 
+#ifdef BITGLES2
+static void DisplayGles(void)
+{
+	glDrawArrays(GL_TRIANGLES,0,3);
+
+	SDL_GL_SwapWindow(window);
+}
+#endif
+
 void r_display()
 {
 	SDL_RenderPresent(renderer);
+#ifdef BITGLES2
+	DisplayGles();
+#endif
 }
 
 //////////////

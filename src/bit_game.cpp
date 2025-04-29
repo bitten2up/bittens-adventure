@@ -141,6 +141,5 @@ void bit_main()
   saveGame();
   tmx_map_free(bitgame.map);
   CloseWindow();
-  SDL_Quit();
   return;
 }

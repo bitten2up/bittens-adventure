@@ -74,6 +74,11 @@ static void b_battleMain()
 	// we don't want this input to repeat
 	  bitgame.player.inputs.x = 0;
   }
+  else if (bitgame.player.inputs.x == 1 && bitgame.menu.menupos.x == 1 && bitgame.menu.menupos.y == 0)
+  {
+	  bitgame.menu.curmenu = menuNone;
+	  bitgame.player.inputs.x = 0;
+  }
 
   // bitgame.menu.menupos probally could just be a bitmask so then we can use switch statements..
   if (bitgame.menu.menupos.x == 0 && bitgame.menu.menupos.y == 0) // we are at the top left, so fill in that box
