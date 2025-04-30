@@ -362,7 +362,7 @@ void r_clear(void)
 #endif
 
 	SDL_RenderSetViewport(renderer, NULL);
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderClear(renderer);
 }
 
