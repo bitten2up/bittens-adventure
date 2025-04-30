@@ -162,8 +162,10 @@ const GLchar* fragmentSource =
 	"}\n";
 
 SDL_GLContext glContext;
+SDL_Texture* shaderOverlay;
 GLuint vao, vbo;
 GLuint shaderProgram;
+GLfloat vertices[] = {0.0f, 0.5f, 0.5f, -0.5f, -0.5f};
 void InitGles(void)
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -176,13 +178,12 @@ void InitGles(void)
 	gladLoadGLES2Loader(SDL_GL_GetProcAddress);
 	SDL_GL_SetSwapInterval(0);
 
-	//glGenVertexArraysOES(1, &vao);
-	//glBindVertexArrayOES(vao);
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
 
 	// triangle
-	GLfloat vertices[] = {0.0f, 0.5f, 0.5f, -0.5f, -0.5f};
 
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -199,10 +200,13 @@ void InitGles(void)
 	glAttachShader(shaderProgram, fragmentShader);
 	
 	glLinkProgram(shaderProgram);
+	glUseProgram(shaderProgram);
 
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	shaderOverlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREENWIDTH, SCREENHEIGHT);
 }
 #endif
 
@@ -351,12 +355,15 @@ void CloseWindow(void)
 
 void r_clear(void)
 {
-	SDL_RenderClear(renderer);
 #ifdef BITGLES2
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	//SDL_SetRenderTarget(renderer, shaderOverlay);
 #endif
 
+	SDL_RenderSetViewport(renderer, NULL);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderClear(renderer);
 }
 
 void r_sprite(e_sprite* e)
@@ -368,9 +375,12 @@ void r_sprite(e_sprite* e)
 #ifdef BITGLES2
 static void DisplayGles(void)
 {
-	glDrawArrays(GL_TRIANGLES,0,3);
+	SDL_SetRenderTarget(renderer, NULL);
+	SDL_RenderSetViewport(renderer, NULL);
 
-	SDL_GL_SwapWindow(window);
+	SDL_RenderFlush(renderer);
+	SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
+	glDrawArrays(GL_TRIANGLES,0,3);
 }
 #endif
 

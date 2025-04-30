@@ -3,7 +3,7 @@ if(MSVC AND NOT VCPKG_TOOLCHAIN)
 endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wpedantic -Wextra -std=c23 -g")
 
-add_executable(bittens-adventure  "main.cpp" "bit_game.cpp" "b_battle.c" "p_player.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c", "glad.h")
+add_executable(bittens-adventure  "main.cpp" "bit_game.cpp" "b_battle.c" "p_player.c" "e_collision.c" "f_save.c" "i_event.c" "r_render.c" "glad.c")
 set_target_properties(bittens-adventure PROPERTIES OUTPUT_NAME bittens-adventure)
 set_target_properties(bittens-adventure
     PROPERTIES
@@ -35,6 +35,6 @@ if (DISCORD)
 endif()
 set(DEBUG OFF CACHE BOOL ON)
 if (DEBUG) 
-    add_compile_options(-g)
     add_definitions(-DDEBUG)
 endif()
+add_definitions(-DBITGLES2)
