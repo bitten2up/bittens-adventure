@@ -151,14 +151,15 @@ const GLchar* vertexSource =
 	"attribute vec4 position;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_position = vec4(position, 1.0);\n"
+	"	gl_Position = vec4(position, 1.0);\n"
 	"}\n";
 
 const GLchar* fragmentSource =
 	"percision mediump float;\n"
+	"uniform vec2 windowSize;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_Fragcolor = vec4(10.,1.0,1.0,1.0);\n"
+	"	gl_Fragcolor = vec4(10.0,1.0,1.0,1.0);\n"
 	"}\n";
 
 SDL_GLContext glContext;
@@ -355,10 +356,10 @@ void CloseWindow(void)
 
 void r_clear(void)
 {
-#ifdef BITGLES2
+#ifndef BITGLES2
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	//SDL_SetRenderTarget(renderer, shaderOverlay);
+	SDL_SetRenderTarget(renderer, shaderOverlay);
 #endif
 
 	SDL_RenderSetViewport(renderer, NULL);
@@ -375,21 +376,32 @@ void r_sprite(e_sprite* e)
 #ifdef BITGLES2
 static void DisplayGles(void)
 {
+	// WE LEAKING MEM
+	// SDFOIHL
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderSetViewport(renderer, NULL);
-
+	
 	SDL_RenderFlush(renderer);
+	GLuint texture;
+	//glGenTextures(1, &texture);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
+	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, vertices);
 	glDrawArrays(GL_TRIANGLES,0,3);
+	SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
+	SDL_GL_UnbindTexture(shaderOverlay);
 }
 #endif
 
 void r_display()
 {
-	SDL_RenderPresent(renderer);
+	//SDL_RenderPresent(renderer);
 #ifdef BITGLES2
-	DisplayGles();
+	//DisplayGles();
 #endif
+	SDL_RenderPresent(renderer);
 }
 
 //////////////
