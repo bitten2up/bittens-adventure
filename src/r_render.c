@@ -159,7 +159,7 @@ const GLchar* fragmentSource =
 	"uniform vec2 windowSize;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_Fragcolor = vec4(10.0,1.0,1.0,1.0);\n"
+	"	gl_Fragcolor = vec4(1.0 - color.rgb, 1.0);\n"
 	"}\n";
 
 SDL_GLContext glContext;
@@ -167,6 +167,7 @@ SDL_Texture* shaderOverlay;
 GLuint vao, vbo;
 GLuint shaderProgram;
 GLfloat vertices[] = {0.0f, 0.5f, 0.5f, -0.5f, -0.5f};
+GLuint gltexture;
 void InitGles(void)
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -180,7 +181,6 @@ void InitGles(void)
 	SDL_GL_SetSwapInterval(0);
 
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
 
@@ -208,6 +208,10 @@ void InitGles(void)
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 	shaderOverlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREENWIDTH, SCREENHEIGHT);
+
+	glGenTextures(1, &gltexture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, gltexture);
 }
 #endif
 
@@ -378,20 +382,22 @@ static void DisplayGles(void)
 {
 	// WE LEAKING MEM
 	// SDFOIHL
-	SDL_SetRenderTarget(renderer, NULL);
-	SDL_RenderSetViewport(renderer, NULL);
+	uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
+	//SDL_SetRenderTarget(renderer, NULL);
+	//SDL_RenderSetViewport(renderer, NULL);
 	
-	SDL_RenderFlush(renderer);
-	GLuint texture;
-	//glGenTextures(1, &texture);
+	//SDL_RenderFlush(renderer);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
 	SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
+	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
 	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, vertices);
+	glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
+	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES,0,3);
+	//SDL_GL_SwapWindow(window);
 	SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
 	SDL_GL_UnbindTexture(shaderOverlay);
+	free(pixelbuffer);
 }
 #endif
 
@@ -399,7 +405,7 @@ void r_display()
 {
 	//SDL_RenderPresent(renderer);
 #ifdef BITGLES2
-	//DisplayGles();
+	DisplayGles();
 #endif
 	SDL_RenderPresent(renderer);
 }
