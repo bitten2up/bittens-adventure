@@ -151,7 +151,8 @@ const GLchar* vertexSource =
 	"attribute vec4 position;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_Position = vec4(position, 1.0);\n"
+	"	v_texCoord = (position + 1.0) * 0.5;\n"
+	"	gl_Position = vec4(position, 0.0, 1.0);\n"
 	"}\n";
 
 const GLchar* fragmentSource =
@@ -159,6 +160,7 @@ const GLchar* fragmentSource =
 	"uniform vec2 windowSize;\n"
 	"void main()\n"
 	"{\n"
+	"	vec 4 color = texture2D(u_texture. v_texCoord);\n"
 	"	gl_Fragcolor = vec4(1.0 - color.rgb, 1.0);\n"
 	"}\n";
 
@@ -166,7 +168,7 @@ SDL_GLContext glContext;
 SDL_Texture* shaderOverlay;
 GLuint vao, vbo;
 GLuint shaderProgram;
-GLfloat vertices[] = {0.0f, 0.5f, 0.5f, -0.5f, -0.5f};
+GLfloat vertices[] = {-1.0f, -1.0f, 1.0f, -1.0f, 0.0f, 1.0f};
 GLuint gltexture;
 void InitGles(void)
 {
@@ -382,22 +384,23 @@ static void DisplayGles(void)
 {
 	// WE LEAKING MEM
 	// SDFOIHL
-	uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
-	//SDL_SetRenderTarget(renderer, NULL);
-	//SDL_RenderSetViewport(renderer, NULL);
+	//uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
+	SDL_SetRenderTarget(renderer, NULL);
+	SDL_RenderSetViewport(renderer, NULL);
 	
-	//SDL_RenderFlush(renderer);
+	SDL_RenderFlush(renderer);
 
 	SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
-	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
-	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, vertices);
-	glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
+	glUseProgram(shaderProgram);
+	//SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, vertices);
+	//glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES,0,3);
 	//SDL_GL_SwapWindow(window);
-	SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
+	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
 	SDL_GL_UnbindTexture(shaderOverlay);
-	free(pixelbuffer);
+	//free(pixelbuffer);
 }
 #endif
 
