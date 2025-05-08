@@ -190,6 +190,8 @@ void InitGles(void)
 
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindVertexArray(vao);
+	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, &vbo);
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -384,23 +386,25 @@ static void DisplayGles(void)
 {
 	// WE LEAKING MEM
 	// SDFOIHL
-	//uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
+	uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderSetViewport(renderer, NULL);
 	
 	SDL_RenderFlush(renderer);
+	//glUseProgram(shaderProgram);
 
-	SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
-	glUseProgram(shaderProgram);
-	//SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, vertices);
-	//glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES,0,3);
+	//glActiveTexture(GL_TEXTURE0);
+	//SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
+	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
+	//glEnableVertexAttribArray(0);
+	glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
+	glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+	glFinish();
 	//SDL_GL_SwapWindow(window);
 	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
 	SDL_GL_UnbindTexture(shaderOverlay);
-	//free(pixelbuffer);
+	SDL_RenderFlush(renderer);
+	free(pixelbuffer);
 }
 #endif
 
