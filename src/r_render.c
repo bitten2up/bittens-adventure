@@ -60,6 +60,7 @@
 
 SDL_Window* window;
 SDL_Renderer* renderer;
+SDL_RendererInfo rendererInfo;
 TTF_Font* font;
 SDL_Texture* text;
 SDL_Rect textRec;
@@ -231,11 +232,14 @@ void InitWindow(const char* p_title, int p_w, int p_h)
 	}
 
 
+	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengles2");
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL)
 	{
 		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
+	SDL_GetRendererInfo(renderer, &rendererInfo);
+	printf("Current Renderer backend: %s\n", rendererInfo.name); 
 
 #if defined(BITVULKAN)
 	InitVulkan();
@@ -399,10 +403,10 @@ static void DisplayGles(void)
 	//glEnableVertexAttribArray(0);
 	glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
 	glDrawArrays(GL_TRIANGLE_STRIP,0,4);
-	glFinish();
-	//SDL_GL_SwapWindow(window);
+	//glFinish();
+	SDL_GL_SwapWindow(window);
 	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
-	SDL_GL_UnbindTexture(shaderOverlay);
+	//SDL_GL_UnbindTexture(shaderOverlay);
 	SDL_RenderFlush(renderer);
 	free(pixelbuffer);
 }
@@ -413,8 +417,9 @@ void r_display()
 	//SDL_RenderPresent(renderer);
 #ifdef BITGLES2
 	DisplayGles();
-#endif
+#else
 	SDL_RenderPresent(renderer);
+#endif
 }
 
 //////////////
