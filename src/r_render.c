@@ -161,19 +161,24 @@ const GLchar* fragmentSource =
 	"precision mediump float;\n"
 	"uniform vec4 windowSize;\n"
 	"uniform sampler2D u_texture;\n"
-	"varying vec2 v_texCoord;\n"
+//	"varying vec2 v_texCoord;\n"
 	"uniform vec4 u_Color;\n"
 	"void main()\n"
 	"{\n"
-	"	vec4 color = texture2D(u_texture, v_texCoord);\n"
+//	"	vec4 color = texture2D(u_texture, v_texCoord);\n"
 	"	gl_FragColor = u_Color;\n"
 	"}\n";
 
 SDL_GLContext glContext;
 SDL_Texture* shaderOverlay;
 GLuint vao, vbo;
+GLint posAttrib;
 GLuint shaderProgram;
-GLfloat vertices[] = { 0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f };
+GLfloat vertices[] = { 
+	0.0f, 0.5f, 1.0f, 0.0f, 0.0f,
+       	0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       	-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+};
 GLuint gltexture, glVertixColor;
 void InitGles(void)
 {
@@ -232,14 +237,13 @@ void InitGles(void)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindVertexArray(vao);
 	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, &vbo);
-
-	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), 0);
 
 	// setting color
 	glVertixColor = glGetUniformLocation(shaderProgram, "u_Color");
-	glUniform4f(glVertixColor, 255.0f, 0.0f, 0.0f, 0.0f);
+	glUniform4f(glVertixColor, 1.0f, 0.0f, 0.0f, 0.0f);
 
 	shaderOverlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREENWIDTH, SCREENHEIGHT);
 
@@ -404,7 +408,7 @@ void r_clear(void)
 #endif
 
 	SDL_RenderSetViewport(renderer, NULL);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderClear(renderer);
 }
 
@@ -427,12 +431,15 @@ static void DisplayGles(void)
 	//glUseProgram(shaderProgram);
 
 	//glActiveTexture(GL_TEXTURE0);
+	glViewport(0,0, SCREENWIDTH, SCREENHEIGHT);
+
 	//SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
 	//SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(vbo);
 	//glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
-	glDrawArrays(GL_TRIANGLES,1,sizeof(vertices));
-	glFinish();
+	glDrawArrays(GL_TRIANGLE_FAN,0,sizeof(vertices)/3);
+	glDisableVertexAttribArray(vbo);
+	//glFinish();
 	SDL_GL_SwapWindow(window);
 	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
 	//SDL_GL_UnbindTexture(shaderOverlay);
