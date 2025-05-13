@@ -149,6 +149,7 @@ void InitVulkan()
 }
 #elif defined(BITGLES2)
 const GLchar* vertexSource =
+	"#version 100\n"
 	"attribute vec4 position;\n"
 	"varying vec2 v_texCoord;\n"
 	"void main()\n"
@@ -158,20 +159,21 @@ const GLchar* vertexSource =
 	"}\n";
 
 const GLchar* fragmentSource =
+	"#version 100\n"
 	"precision mediump float;\n"
 	"uniform vec4 windowSize;\n"
 	"uniform sampler2D u_texture;\n"
-//	"varying vec2 v_texCoord;\n"
+	"varying vec2 v_texCoord;\n"
 	"uniform vec4 u_Color;\n"
 	"void main()\n"
 	"{\n"
-//	"	vec4 color = texture2D(u_texture, v_texCoord);\n"
-	"	gl_FragColor = u_Color;\n"
+	"	vec4 color = texture2D(u_texture, v_texCoord);\n"
+	"	gl_FragColor = color;\n"
 	"}\n";
 
 SDL_GLContext glContext;
 SDL_Texture* shaderOverlay;
-GLuint vao, vbo;
+GLuint vao, vbo, vbocolor;
 GLint posAttrib;
 GLuint shaderProgram;
 GLfloat vertices[] = { 
@@ -193,7 +195,7 @@ void InitGles(void)
 	SDL_GL_SetSwapInterval(0);
 
 	// shader shit
-	GLuint shaderStatus;
+	GLint shaderStatus;
 	char errorLog[1024];
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -231,6 +233,7 @@ void InitGles(void)
 	glGenVertexArrays(1, &vao);
 
 	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &vbocolor);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
@@ -239,11 +242,15 @@ void InitGles(void)
 	glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, &vbo);
 	posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), 0);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(float), 0);
 
 	// setting color
+	glBindBuffer(GL_ARRAY_BUFFER, vbocolor);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glVertixColor), &glVertixColor, GL_STATIC_DRAW);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 	glVertixColor = glGetUniformLocation(shaderProgram, "u_Color");
-	glUniform4f(glVertixColor, 1.0f, 0.0f, 0.0f, 0.0f);
+	glUniform4f(glVertixColor, 0.0f,0.0f, 0.0f, 0.0f);
 
 	shaderOverlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREENWIDTH, SCREENHEIGHT);
 
@@ -271,6 +278,7 @@ void InitWindow(const char* p_title, int p_w, int p_h)
 	{
 		printf("Renderer failed to init %s\n", SDL_GetError());
 	}
+  	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_GetRendererInfo(renderer, &rendererInfo);
 	printf("Current Renderer backend: %s\n", rendererInfo.name); 
 
@@ -372,6 +380,16 @@ void r_rect(int x, int y, int w, int h) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_DestroyTexture(text);
 }
+static void tempBox(int x, int y, int w, int h) {
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+  textRec.x = x - w * 0.5;
+  textRec.y = y - h * 0.5;
+  textRec.w = w;
+  textRec.h = h;
+  SDL_RenderFillRect(renderer, &textRec);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	SDL_DestroyTexture(text);
+}
 #if defined(BITVULKAN)
 void VulkanShutdown(void)
 {
@@ -423,28 +441,26 @@ static void DisplayGles(void)
 {
 	// WE LEAKING MEM
 	// SDFOIHL
-	//uint32_t* pixelbuffer = malloc(SCREENWIDTH*SCREENHEIGHT*4);
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderSetViewport(renderer, NULL);
+	//tempBox(0,SCREENHEIGHT/2,SCREENWIDTH,SCREENHEIGHT);
+	glEnable( GL_BLEND );
 	
 	SDL_RenderFlush(renderer);
 	//glUseProgram(shaderProgram);
 
-	//glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
+	SDL_GL_BindTexture(shaderOverlay, NULL,NULL);
 	glViewport(0,0, SCREENWIDTH, SCREENHEIGHT);
 
-	//SDL_GL_BindTexture(shaderOverlay, NULL, NULL);
-	//SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixelbuffer, SCREENWIDTH*4);
 	glEnableVertexAttribArray(vbo);
-	//glTexImage2D(gltexture, 0, GL_RGBA, SCREENWIDTH, SCREENHEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelbuffer);
-	glDrawArrays(GL_TRIANGLE_FAN,0,sizeof(vertices)/3);
+	glDrawArrays(GL_POINTS,0,sizeof(vertices)/3);
 	glDisableVertexAttribArray(vbo);
-	//glFinish();
+	glFinish();
 	SDL_GL_SwapWindow(window);
+	SDL_GL_UnbindTexture(shaderOverlay);
 	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
-	//SDL_GL_UnbindTexture(shaderOverlay);
 	SDL_RenderFlush(renderer);
-	//free(pixelbuffer);
 }
 #endif
 
