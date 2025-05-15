@@ -168,7 +168,7 @@ const GLchar* fragmentSource =
 	"void main()\n"
 	"{\n"
 	"	vec4 color = texture2D(u_texture, v_texCoord);\n"
-	"	gl_FragColor = color;\n"
+	"	gl_FragColor = u_Color;\n"
 	"}\n";
 
 SDL_GLContext glContext;
@@ -184,15 +184,7 @@ GLfloat vertices[] = {
 GLuint gltexture, glVertixColor;
 void InitGles(void)
 {
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
-	glContext = SDL_GL_CreateContext(window);
-	SDL_GL_MakeCurrent(window, glContext);
 	gladLoadGLES2Loader(SDL_GL_GetProcAddress);
-	SDL_GL_SetSwapInterval(0);
 
 	// shader shit
 	GLint shaderStatus;
@@ -236,6 +228,7 @@ void InitGles(void)
 	glGenBuffers(1, &vbocolor);
 
 
+#if 0
 	glBindBuffer(GL_ARRAY_BUFFER,vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindVertexArray(vao);
@@ -247,10 +240,12 @@ void InitGles(void)
 	// setting color
 	glBindBuffer(GL_ARRAY_BUFFER, vbocolor);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glVertixColor), &glVertixColor, GL_STATIC_DRAW);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	//glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+#endif
 
 	glVertixColor = glGetUniformLocation(shaderProgram, "u_Color");
-	glUniform4f(glVertixColor, 0.0f,0.0f, 0.0f, 0.0f);
+	glUniform4f(glVertixColor, 0.0f,255.0f, 0.0f, 255.0f);
+	printf("glErrors %i\n", glGetError());
 
 	shaderOverlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREENWIDTH, SCREENHEIGHT);
 
@@ -344,7 +339,33 @@ void r_text(char* message, int x, int y) {
 	SDL_DestroyTexture(text);
 }
 
-// really bad textbox
+/*
+- x, y: upper left corner.
+- texture, rect: outputs.
+*/
+// shit probally should have a struct but who fucking cares
+void r_rect(int x, int y, int w, int h) {
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  textRec.x = x - w * 0.5;
+  textRec.y = y - h * 0.5;
+  textRec.w = w;
+  textRec.h = h;
+  SDL_RenderFillRect(renderer, &textRec);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_DestroyTexture(text);
+}
+static void tempBox(int x, int y, int w, int h) {
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+  textRec.x = x - w * 0.5;
+  textRec.y = y - h * 0.5;
+  textRec.w = w;
+  textRec.h = h;
+  SDL_RenderFillRect(renderer, &textRec);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	SDL_DestroyTexture(text);
+}
+
+// really bad textbox, only exists because im too lazy to add a struct rn for foreground and background colors
 void r_textbox(char* message, int x, int y) {
   int text_width;
   int text_height;
@@ -365,31 +386,6 @@ void r_textbox(char* message, int x, int y) {
 	SDL_DestroyTexture(text);
 }
 
-/*
-- x, y: upper left corner.
-- texture, rect: outputs.
-*/
-// shit probally should have a struct but who fucking cares
-void r_rect(int x, int y, int w, int h) {
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-  textRec.x = x - w * 0.5;
-  textRec.y = y - h * 0.5;
-  textRec.w = w;
-  textRec.h = h;
-  SDL_RenderFillRect(renderer, &textRec);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_DestroyTexture(text);
-}
-static void tempBox(int x, int y, int w, int h) {
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-  textRec.x = x - w * 0.5;
-  textRec.y = y - h * 0.5;
-  textRec.w = w;
-  textRec.h = h;
-  SDL_RenderFillRect(renderer, &textRec);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	SDL_DestroyTexture(text);
-}
 #if defined(BITVULKAN)
 void VulkanShutdown(void)
 {
@@ -411,7 +407,7 @@ void CloseWindow(void)
 #if defined(BITVULKAN)
 	VulkanShutdown();
 #elif defined(BITGLES2)
-	GlesShutdown();
+	//GlesShutdown();
 #endif
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -420,9 +416,8 @@ void CloseWindow(void)
 void r_clear(void)
 {
 #ifndef BITGLES2
-	glClearColor(100.0f,0.0f,0.0f,1.0f);
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	SDL_SetRenderTarget(renderer, shaderOverlay);
 #endif
 
 	SDL_RenderSetViewport(renderer, NULL);
@@ -439,27 +434,23 @@ void r_sprite(e_sprite* e)
 #ifdef BITGLES2
 static void DisplayGles(void)
 {
-	// WE LEAKING MEM
-	// SDFOIHL
-	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetRenderTarget(renderer, shaderOverlay);
 	SDL_RenderSetViewport(renderer, NULL);
 	//tempBox(0,SCREENHEIGHT/2,SCREENWIDTH,SCREENHEIGHT);
-	glEnable( GL_BLEND );
 	
 	SDL_RenderFlush(renderer);
-	//glUseProgram(shaderProgram);
 
-	glActiveTexture(GL_TEXTURE0);
-	SDL_GL_BindTexture(shaderOverlay, NULL,NULL);
+	//SDL_GL_BindTexture(shaderOverlay, NULL,NULL);
 	glViewport(0,0, SCREENWIDTH, SCREENHEIGHT);
 
-	glEnableVertexAttribArray(vbo);
+	//glEnableVertexAttribArray(glVertixColor);
 	glDrawArrays(GL_POINTS,0,sizeof(vertices)/3);
-	glDisableVertexAttribArray(vbo);
+	//glDisableVertexAttribArray(glVertixColor);
 	glFinish();
 	SDL_GL_SwapWindow(window);
-	SDL_GL_UnbindTexture(shaderOverlay);
-	//SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
+	//SDL_GL_UnbindTexture(shaderOverlay);
+	SDL_SetRenderTarget(renderer, NULL);
+	SDL_RenderCopy(renderer, shaderOverlay, NULL, NULL);
 	SDL_RenderFlush(renderer);
 }
 #endif
@@ -475,7 +466,7 @@ void r_display()
 }
 
 //////////////
-// cLDtk shit
+// cLDtk stuff
 //////////////
 #if 0 // maybe later
 static void DrawSprite(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRect, SDL_Rect destinationRect, int flip)
