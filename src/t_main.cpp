@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2024 bitten2up
+* Copyright (c) 2021-2025 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@
  *  handles reading the tilemaps data.
  */
 /////////////////////////////
+
+/// my god this is almost a year old bitten... actually write the backend already 0_0 -bitten 2025
 
 #include "tmx.h"
 #include <cLDtk.h>

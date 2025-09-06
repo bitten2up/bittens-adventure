@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2024 bitten2up
+* Copyright (c) 2021-2025 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
+// should remove the vulkan backend, but incase i ever want to impement it its still here
 #if defined(BITVULKAN)
 #include <SDL2/SDL_vulkan.h>
 #include <vulkan/vulkan.h>
@@ -66,7 +68,7 @@ SDL_Texture* text;
 SDL_Rect textRec;
 
 #if defined(BITVULKAN)
-// vulkan shit
+// vulkan shit.. probally should remove but incase i ever decide to switch to vulkan for some weird reason...
 VkInstance vkInst;
 VkPhysicalDevice *physical_devices;
 VkPhysicalDevice gpu;
@@ -408,7 +410,7 @@ void CloseWindow(void)
 #if defined(BITVULKAN)
 	VulkanShutdown();
 #elif defined(BITGLES2)
-	//GlesShutdown();
+	GlesShutdown();
 #endif
 	SDL_DestroyWindow(window);
 	SDL_Quit();

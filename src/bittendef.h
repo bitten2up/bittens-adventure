@@ -1,7 +1,7 @@
 /*
 * MIT License
 *
-* Copyright (c) 2021-2024 bitten2up
+* Copyright (c) 2021-2025 bitten2up
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 */
 
 // unused file because `sdl_bittendef.h` ended up replacing it.
+// kept here for reference
 
 #ifndef BITTENDEF_H
 #define BITTENDEF_H
